@@ -134,7 +134,7 @@ load-nvmrc
 # ---------------------------
 # Julia
 # ---------------------------
-PATH="$HOME/tools/julia/julia-1.6.1/bin:$PATH"
+PATH="$HOME/tools/julia/julia-1.6.2/bin:$PATH"
 
 # ---------------------------
 # Rust
