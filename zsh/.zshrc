@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -8,7 +15,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="af-magic"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -82,6 +89,9 @@ PATH=$PATH:~/.local/bin
 export VISUAL="nvim"
 alias vim=nvim
 
+# Aliases
+alias fd=fdfind
+
 PATH=$PATH:~/tools/fzf/bin
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -91,6 +101,11 @@ export GIT_INTERNAL_GETTEXT_TEST_FALLBACKS=1
 export DISABLE_AUTO_TITLE='true'
 
 # ---------------------------
+# Go
+# ---------------------------
+PATH=$PATH:/usr/local/go/bin
+
+# ---------------------------
 # Python: pyenv
 # ---------------------------
 export PYENV_ROOT="$HOME/.pyenv"
@@ -98,6 +113,7 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=0
 export PYENV_VIRTUALENV_VERBOSE_ACTIVATE=1
 eval "$(pyenv init --path)"
+source $(pyenv root)/completions/pyenv.zsh
 # Note: pyenv is activated at the end of the script
 
 # Poetry
@@ -142,11 +158,6 @@ PATH="$HOME/tools/julia/julia-1.6.2/bin:$PATH"
 PATH="$HOME/.cargo/bin:$PATH"
 
 # ---------------------------
-# Go
-# ---------------------------
-PATH=$PATH:/usr/local/go/bin
-
-# ---------------------------
 # VASM
 # ---------------------------
 PATH=$PATH:$HOME/tools/vasm/vasm
@@ -156,5 +167,8 @@ PATH=$PATH:$HOME/tools/vasm/vasm
 # ---------------------------
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export PATH
