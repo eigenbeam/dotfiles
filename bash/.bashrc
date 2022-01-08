@@ -8,6 +8,8 @@ PATH=$PATH:~/.local/bin
 export VISUAL="nvim"
 alias vim=nvim
 
+source /home/w0hrk/tools/alacritty/extra/completions/alacritty.bash
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # Base16 Shell
@@ -25,6 +27,7 @@ export GIT_INTERNAL_GETTEXT_TEST_FALLBACKS=1
 export PYENV_ROOT="$HOME/.pyenv"
 PATH="$PYENV_ROOT/bin:$PATH"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=0
+eval "$(pyenv init --path)"
 # Note: pyenv is activated at the end of the bashrc
 
 # ---------------------------
@@ -35,33 +38,19 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 [[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion
 
 # ---------------------------
+# Julia
+# ---------------------------
+PATH=$PATH:$HOME/tools/julia/julia-1.7.1/bin
+
+# ---------------------------
 # Rust
 # ---------------------------
 PATH="$HOME/.cargo/bin:$PATH"
-
-{%@@ if profile == "hornburg" @@%}
-# ---------------------------
-# VASM
-# ---------------------------
-PATH=$PATH:$HOME/tools/vasm/vasm
-{%@@ endif @@%}
 
 # ---------------------------
 # Go
 # ---------------------------
 PATH=$PATH:/usr/local/go/bin
-
-# ---------------------------
-# Kubernetes completion
-# ---------------------------
-source <(kubectl completion bash)
-
-{%@@ if profile == "nsidc-kbeam-484" @@%}
-# ---------------------------
-# PulseSecure VPN Client
-# ---------------------------
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/pulse
-{%@@ endif @@%}
 
 # Activate pyenv
 eval "$(pyenv init -)"
