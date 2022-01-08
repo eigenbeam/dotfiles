@@ -1,2 +1,1 @@
-dotdrop
-nvim/**/plugged
+nvim/nvim/plugin
