@@ -1,1 +1,0 @@
-" VSCode-embedded configuration
