@@ -5,9 +5,6 @@
 
 PATH=$PATH:~/.local/bin
 
-export VISUAL="nvim"
-alias vim=nvim
-
 source /home/w0hrk/tools/alacritty/extra/completions/alacritty.bash
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
