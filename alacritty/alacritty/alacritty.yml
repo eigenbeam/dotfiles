@@ -19,19 +19,19 @@ colors:
     white:      '#828997' # mono-2
 font:
   normal:
-    family: Roboto Mono
+    family: Hack Nerd Font 
     style: Regular
 
   bold:
-    family: Roboto Mono
+    family: Hack Nerd Font
     style: Bold
 
   italic:
-    family: Roboto Mono
+    family: Hack Nerd Font
     style: Italic
 
   bold_italic:
-    family: Roboto Mono
+    family: Hack Nerd Font
     style: Bold Italic
 
-  size: 10
+  size: 12
