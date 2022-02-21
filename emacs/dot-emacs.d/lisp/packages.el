@@ -9,9 +9,14 @@
   (bind-key "M-o" 'ace-window)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-(use-package color-theme-sanityinc-tomorrow
+
+(use-package doom-themes
   :ensure t
-  :config (load-theme 'sanityinc-tomorrow-night))
+  :config
+  (load-theme 'doom-tomorrow-night t))
+
+
+
 
 ;; https://company-mode.github.io/
 ;; (use-package company
@@ -56,11 +61,6 @@
 ;;   (setq doom-modeline-github t)
 ;;   (setq doom-modeline-github-interval (* 15 30)))
 
-;; https://github.com/hlissner/emacs-doom-themes
-;; (use-package doom-themes
-;;   :ensure t
-;;   :config
-;;   (load-theme 'doom-tomorrow-night t))
 
 ;; http://www.flycheck.org/en/latest/
 ;; (use-package flycheck
