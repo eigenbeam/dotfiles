@@ -9,35 +9,39 @@
   (bind-key "M-o" 'ace-window)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
+;; https://github.com/emacs-dashboard/emacs-dashboard
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
 
+;; TODO
 (use-package doom-themes
   :ensure t
   :config
   (load-theme 'doom-tomorrow-night t))
 
-
-
-
 ;; https://company-mode.github.io/
-;; (use-package company
-;;   :ensure t
-;;   :pin melpa-stable
-;;   :init (add-hook 'after-init-hook 'global-company-mode)
-;;   :config
-;;   (setq company-tooltip-idle-delay 0)
-;;   (setq company-idle-delay 0)
-;;   (setq company-tooltip-align-annotations t)
-;;   (global-set-key (kbd "<C-tab>") 'company-complete))
+(use-package company
+  :ensure t
+  :pin melpa-stable
+  :init (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (setq company-tooltip-idle-delay 0)
+  (setq company-idle-delay 0)
+  (setq company-tooltip-align-annotations t)
+  (global-set-key (kbd "<C-tab>") 'company-complete))
 
-;; (use-package crux
-;;   :ensure t
-;;   :bind (("M-p" . crux-smart-open-line-above)
-;;          ("M-n" . crux-smart-open-line)))
+;; TODO
+(use-package crux
+  :ensure t
+  :bind (("M-p" . crux-smart-open-line-above)
+         ("M-n" . crux-smart-open-line)))
 
 ;; https://github.com/purcell/default-text-scale
-;; (use-package default-text-scale
-;;   :ensure t
-;;   :config (default-text-scale-mode))
+(use-package default-text-scale
+  :ensure t
+  :config (default-text-scale-mode))
 
 ;; https://github.com/Silex/docker.el
 ;; (use-package docker
@@ -63,13 +67,13 @@
 
 
 ;; http://www.flycheck.org/en/latest/
-;; (use-package flycheck
-;;   :ensure t)
+(use-package flycheck
+  :ensure t)
 
 ;; https://gitlab.com/pidu/git-timemachine
-;; (use-package git-timemachine
-;;   :ensure t
-;;   :pin melpa-stable)
+(use-package git-timemachine
+  :ensure t
+  :pin melpa-stable)
 
 ;; https://github.com/chrisbarrett/kubernetes-el
 ;; (use-package kubernetes
@@ -96,32 +100,32 @@
          ("C-c C-<" . 'mc/mark-all-like-this)))
 
 ;; https://github.com/jrblevin/markdown-mode
-;; (use-package markdown-mode
-;;   :ensure t
-;;   :pin melpa
-;;   :mode "\\.md\\'")
+(use-package markdown-mode
+  :ensure t
+  :pin melpa
+  :mode "\\.md\\'")
 
 ;; TODO: org, org-babel, org-restclient
 
 ;; https://github.com/bbatsov/projectile
-;; (use-package projectile
-;;   :ensure t
-;;   :pin melpa-stable
-;;   :config
-;;   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-;;   (projectile-mode +1))
+(use-package projectile
+  :ensure t
+  :pin melpa-stable
+  :config
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
 
 ;; https://github.com/pashky/restclient.el
 ;; (use-package restclient
 ;;   :ensure t)
 
 ;; https://github.com/Fuco1/smartparens
-;; (use-package smartparens
-;;   :ensure t
-;;   :pin melpa-stable
-;;   :config
-;;   (require 'smartparens-config)
-;;   (show-paren-mode t))
+(use-package smartparens
+  :ensure t
+  :pin melpa-stable
+  :config
+  (require 'smartparens-config)
+  (show-paren-mode t))
 
 ;; https://github.com/TxGVNN/terraform-doc
 ;; (use-package terraform-doc
@@ -148,8 +152,8 @@
 ;;   (which-key-setup-side-window-right))
 
 ;; https://github.com/yaml/yaml-mode
-;; (use-package yaml-mode
-;;   :ensure t)
+(use-package yaml-mode
+  :ensure t)
 
 (provide 'packages)
 
