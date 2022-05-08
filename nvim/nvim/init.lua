@@ -84,7 +84,7 @@ vim.opt.writebackup = false -- if a file is being edited by another program (or 
 vim.opt.shortmess:append "c"
 vim.g.netrw_banner = 0
 vim.g.netrw_liststyle = 3
-vim.g.python3_host_prog = "/home/kwb/.pyenv/versions/3.10.4/bin/python" 
+vim.g.python3_host_prog = "/home/kwb/.pyenv/versions/3.10.4/bin/python"
 vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
 
@@ -108,7 +108,10 @@ vim.cmd "colorscheme tokyonight"
 
 require('lualine').setup()
 
-require("nvim-lsp-installer").setup {}
+require("nvim-lsp-installer").setup ({
+  ensure_installed = { 'bashls', 'ccls', 'dockerls', 'fortls', 'jsonls', 'julials', 'remark_ls', 'pylsp', 'sumneko_lua', 'terraformls', 'tsserver', 'yamlls' },
+  automatic_installation = true,
+})
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -120,6 +123,7 @@ vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<C
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
+---@diagnostic disable-next-line: unused-local
 local on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -143,7 +147,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'asm_lsp', 'bashls', 'dockerls', 'fortls', 'jsonls', 'remark_ls', 'pylsp', 'sumneko_lua', 'terraformls', 'tsserver', 'yamlls' }
+local servers = { 'bashls', 'ccls', 'dockerls', 'fortls', 'jsonls', 'julials', 'remark_ls', 'pylsp', 'sumneko_lua', 'terraformls', 'tsserver', 'yamlls' }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,
@@ -163,7 +167,6 @@ end
 --   command_mode = "c",
 --
 opts = { noremap = true, silent = true }
-local term_opts = { silent = true }
 local keymap = vim.api.nvim_set_keymap
 
 -- Normal --
