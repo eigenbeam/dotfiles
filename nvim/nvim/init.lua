@@ -20,28 +20,39 @@ vim.api.nvim_create_autocmd(
 require('packer').startup(function(use)
   use "wbthomason/packer.nvim" -- Have packer manage itself
 
-  use 'christoomey/vim-tmux-navigator'
-  use 'glepnir/dashboard-nvim'
-  use 'nvim-treesitter/nvim-treesitter'
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { 'nvim-lua/plenary.nvim' }
+    requires = { {'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'} }
   }
   use {
-    "folke/which-key.nvim",
-    config = function()
-      require("which-key").setup {
-      }
-    end
-  }
-  use 'folke/tokyonight.nvim'
+    'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+  use 'christoomey/vim-tmux-navigator'
+
+  use 'NLKNguyen/papercolor-theme'
+
   use {
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
+  
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup()
+    end
+  }
   use 'hashivim/vim-terraform'
+
+  use 'hrsh7th/nvim-cmp'
   use 'neovim/nvim-lspconfig'
-  use 'williamboman/nvim-lsp-installer'
+  use 'williamboman/mason.nvim'
+  use 'williamboman/mason-lspconfig.nvim'
+  use 'mfussenegger/nvim-dap'
+
+  use {
+    "windwp/nvim-autopairs",
+    config = function() require("nvim-autopairs").setup {} end
+  }
 end)
 
 --
@@ -84,9 +95,11 @@ vim.opt.writebackup = false -- if a file is being edited by another program (or 
 vim.opt.shortmess:append "c"
 vim.g.netrw_banner = 0
 vim.g.netrw_liststyle = 3
-vim.g.python3_host_prog = "/home/kwb/.pyenv/versions/3.10.4/bin/python"
-vim.g.loaded_node_provider = 0
-vim.g.loaded_perl_provider = 0
+
+vim.opt.rtp:append "/opt/homebrew/opt/fzf"
+
+vim.cmd "set background=light"
+vim.cmd "colorscheme PaperColor"
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
@@ -95,21 +108,17 @@ vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-vim.g.dashboard_default_executive = 'telescope'
-
-require('telescope').setup {}
+require('telescope').setup() 
 vim.cmd "nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>"
 vim.cmd "nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>"
 vim.cmd "nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>"
 vim.cmd "nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>"
 
-vim.g.tokyonight_style = "night"
-vim.cmd "colorscheme tokyonight"
-
 require('lualine').setup()
 
-require("nvim-lsp-installer").setup ({
-  ensure_installed = { 'bashls', 'ccls', 'dockerls', 'fortls', 'jsonls', 'julials', 'remark_ls', 'pylsp', 'sumneko_lua', 'terraformls', 'tsserver', 'yamlls' },
+require("mason").setup()
+require("mason-lspconfig").setup({
+  ensure_installed = { 'bashls', 'dockerls', 'fortls', 'jsonls', 'remark_ls', 'pylsp', 'terraformls', 'tsserver', 'yamlls' },
   automatic_installation = true,
 })
 
@@ -123,7 +132,6 @@ vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<C
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
----@diagnostic disable-next-line: unused-local
 local on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -147,14 +155,11 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'bashls', 'ccls', 'dockerls', 'fortls', 'jsonls', 'julials', 'remark_ls', 'pylsp', 'sumneko_lua', 'terraformls', 'tsserver', 'yamlls' }
+local servers = { 'bashls', 'dockerls', 'fortls', 'jsonls', 'remark_ls', 'pylsp', 'terraformls', 'tsserver', 'yamlls' }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,
-    flags = {
-      -- This will be the default in neovim 0.7+
-      debounce_text_changes = 150,
-    }
+    flags = {}
   }
 end
 
@@ -167,6 +172,7 @@ end
 --   command_mode = "c",
 --
 opts = { noremap = true, silent = true }
+local term_opts = { silent = true }
 local keymap = vim.api.nvim_set_keymap
 
 -- Normal --

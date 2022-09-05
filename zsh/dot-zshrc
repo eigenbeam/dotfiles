@@ -1,0 +1,27 @@
+#if type brew &>/dev/null; then
+#  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+#
+#  autoload -Uz compinit
+#  compinit
+#fi
+
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_SPACE
+setopt APPEND_HISTORY
+
+function fh() {
+    eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
+}
+
+eval "$(starship init zsh)"
+
+bindkey -v
+
+#export HOMEBREW_NO_GITHUB_API=true
+
+fpath=(/home/kwb/tools/zsh-completions/src $fpath)
+source /home/kwb/tools/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+export NVM_DIR="$HOME/.nvm"
+#[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+#[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
