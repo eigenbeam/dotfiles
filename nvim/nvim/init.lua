@@ -28,7 +28,7 @@ require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use 'christoomey/vim-tmux-navigator'
 
-  use 'NLKNguyen/papercolor-theme'
+  use 'arcticicestudio/nord-vim'
 
   use {
     'nvim-lualine/lualine.nvim',
@@ -98,8 +98,7 @@ vim.g.netrw_liststyle = 3
 
 vim.opt.rtp:append "/opt/homebrew/opt/fzf"
 
-vim.cmd "set background=light"
-vim.cmd "colorscheme PaperColor"
+vim.cmd "colorscheme nord"
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
