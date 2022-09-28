@@ -88,6 +88,7 @@ vim.opt.swapfile = false -- creates a swapfile
 vim.opt.tabstop = 2 -- insert 2 spaces for a tab
 vim.opt.termguicolors = true -- set term gui colors (most terminals support this)
 vim.opt.timeoutlen = 100 -- time to wait for a mapped sequence to complete (in milliseconds)
+vim.opt.ttimeoutlen = 10 -- time to wait for a key code sequence to complete (in milliseconds)
 vim.opt.undofile = true -- enable persistent undo
 vim.opt.updatetime = 250 -- faster completion (4000ms default)
 vim.opt.wrap = false -- display lines as one long line
