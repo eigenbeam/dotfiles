@@ -1,3 +1,6 @@
+if vim.g.vscode then
+    -- VSCode extension
+else
 --
 -- Packer install & config
 --
@@ -13,6 +16,7 @@ vim.api.nvim_create_autocmd(
   group = packer_group,
   pattern = 'init.lua'
 })
+
 
 --
 -- Install packages
@@ -96,6 +100,8 @@ vim.opt.writebackup = false -- if a file is being edited by another program (or 
 vim.opt.shortmess:append "c"
 vim.g.netrw_banner = 0
 vim.g.netrw_liststyle = 3
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
 
 vim.opt.rtp:append "/opt/homebrew/opt/fzf"
 
@@ -209,3 +215,5 @@ keymap("x", "J", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
+
+end
