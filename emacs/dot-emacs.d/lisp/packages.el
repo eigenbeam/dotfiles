@@ -16,10 +16,10 @@
   (dashboard-setup-startup-hook))
 
 ;; TODO
-(use-package doom-themes
+(use-package nord-theme
   :ensure t
   :config
-  (load-theme 'doom-tomorrow-night t))
+  (load-theme 'nord t))
 
 ;; https://company-mode.github.io/
 (use-package company
@@ -72,8 +72,7 @@
 
 ;; https://gitlab.com/pidu/git-timemachine
 (use-package git-timemachine
-  :ensure t
-  :pin melpa-stable)
+  :ensure t)
 
 ;; https://github.com/chrisbarrett/kubernetes-el
 ;; (use-package kubernetes
