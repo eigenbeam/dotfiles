@@ -124,7 +124,7 @@ require('lualine').setup()
 
 require("mason").setup()
 require("mason-lspconfig").setup({
-  ensure_installed = { 'bashls', 'dockerls', 'fortls', 'jsonls', 'remark_ls', 'pylsp', 'terraformls', 'tsserver', 'yamlls' },
+  ensure_installed = { 'bashls', 'dockerls', 'fortls', 'jsonls', 'pylsp', 'terraformls', 'tsserver', 'yamlls' },
   automatic_installation = true,
 })
 
@@ -161,7 +161,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'bashls', 'dockerls', 'fortls', 'jsonls', 'remark_ls', 'pylsp', 'terraformls', 'tsserver', 'yamlls' }
+local servers = { 'bashls', 'dockerls', 'fortls', 'jsonls', 'pylsp', 'terraformls', 'tsserver', 'yamlls' }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,

@@ -4,11 +4,12 @@
 .vim
 kwb-x
 
-# MacOS
+# --- MacOS X Specific ---
 # General
 .DS_Store
 .AppleDouble
 .LSOverride
+__MACOSX/
 
 # Icon must end with two \r
 Icon
