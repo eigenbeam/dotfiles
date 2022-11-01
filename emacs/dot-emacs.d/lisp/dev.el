@@ -7,9 +7,9 @@
 ;; ----------------------------------------------------------
 (use-package lsp-mode
   :ensure t
+  :commands lsp
   :hook ((python-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp
   :config
   (setq
    read-process-output-max (* 1024 1024)

@@ -9,11 +9,6 @@
   (bind-key "M-o" 'ace-window)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-;; https://github.com/emacs-dashboard/emacs-dashboard
-(use-package dashboard
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook))
 
 ;; TODO
 (use-package nord-theme
@@ -24,7 +19,7 @@
 ;; https://company-mode.github.io/
 (use-package company
   :ensure t
-  :pin melpa-stable
+  :diminish company-mode
   :init (add-hook 'after-init-hook 'global-company-mode)
   :config
   (setq company-tooltip-idle-delay 0)
@@ -37,6 +32,12 @@
   :ensure t
   :bind (("M-p" . crux-smart-open-line-above)
          ("M-n" . crux-smart-open-line)))
+
+;; https://github.com/emacs-dashboard/emacs-dashboard
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
 
 ;; https://github.com/purcell/default-text-scale
 (use-package default-text-scale
@@ -65,10 +66,11 @@
 ;;   (setq doom-modeline-github t)
 ;;   (setq doom-modeline-github-interval (* 15 30)))
 
-
 ;; http://www.flycheck.org/en/latest/
 (use-package flycheck
-  :ensure t)
+  :ensure t
+  :diminish flycheck-mode
+  :init (add-hook 'after-init-hook 'global-flycheck-mode))
 
 ;; https://gitlab.com/pidu/git-timemachine
 (use-package git-timemachine
@@ -109,7 +111,7 @@
 ;; https://github.com/bbatsov/projectile
 (use-package projectile
   :ensure t
-  :pin melpa-stable
+  :diminish projectile-mode
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
@@ -121,9 +123,10 @@
 ;; https://github.com/Fuco1/smartparens
 (use-package smartparens
   :ensure t
-  :pin melpa-stable
+  :diminish smartparens-mode
   :config
   (require 'smartparens-config)
+  (smartparens-global-mode 1)
   (show-paren-mode t))
 
 ;; https://github.com/TxGVNN/terraform-doc
@@ -144,11 +147,12 @@
 ;; TODO: vterm-toggle
 
 ;; https://github.com/justbur/emacs-which-key/
-;; (use-package which-key
-;;   :ensure t
-;;   :config
-;;   (which-key-mode)
-;;   (which-key-setup-side-window-right))
+(use-package which-key
+  :ensure t
+  :diminish which-key-mode
+  :config
+  (which-key-mode +1)
+  (which-key-setup-side-window-right))
 
 ;; https://github.com/yaml/yaml-mode
 (use-package yaml-mode

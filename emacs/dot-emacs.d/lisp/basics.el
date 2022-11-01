@@ -2,36 +2,56 @@
 ;;; Commentary:
 ;;; Code:
 
+;; BUGFIX: Native compilation on MacOS throws warnings in 28.2
+;;         This will be fixed in 28.3+
+(when (eq system-type 'darwin) (customize-set-variable 'native-comp-driver-options '("-Wl,-w")))
+
 (require 'server)
 (if (not (server-running-p))
     (server-start))
 
 (setq inhibit-startup-message t)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+
 (blink-cursor-mode 1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+
 (setq blink-cursor-blinks 0)
 (column-number-mode t)
 (global-display-line-numbers-mode)
-(setq select-enable-clipboard t)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-(random t)
+(global-hl-line-mode +1)
+(size-indication-mode +1)
+
+(setq scroll-margin 0)
+(setq scroll-conservatively 1000)
+(setq scroll-preserve-screen-position +1)
 
 (if (display-graphic-p)
     (progn
       (set-frame-font "RobotoMono Nerd Font 14")
       (set-frame-size (selected-frame) 100 50)))
 
+(setq select-enable-clipboard t)
+
+;; (set-terminal-coding-system 'utf-8)
+;; (set-keyboard-coding-system 'utf-8)
+;; (prefer-coding-system 'utf-8)
+
+(random t)
+
+
 (setq uniquify-buffer-name-style 'forward)
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b"))))
+
 (set-default 'indent-tabs-mode nil)
+(setq-default tab-width 4)
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (global-auto-revert-mode t)
+
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (setq create-lockfiles nil)
@@ -59,6 +79,8 @@
 	    (add-hook 'before-save-hook 'delete-trailing-whitespace)))
 
 (use-package no-littering
+  :ensure t)
+(use-package diminish
   :ensure t)
 
 (provide 'basics)
