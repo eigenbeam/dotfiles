@@ -32,7 +32,7 @@ require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use 'christoomey/vim-tmux-navigator'
 
-  use 'arcticicestudio/nord-vim'
+  use 'folke/tokyonight.nvim'
 
   use {
     'nvim-lualine/lualine.nvim',
@@ -105,7 +105,7 @@ vim.g.loaded_perl_provider = 0
 
 vim.opt.rtp:append "/opt/homebrew/opt/fzf"
 
-vim.cmd "colorscheme nord"
+vim.cmd 'colorscheme tokyonight'
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
@@ -120,8 +120,12 @@ vim.cmd "nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<c
 vim.cmd "nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>"
 vim.cmd "nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>"
 
-require('lualine').setup()
-
+require('lualine').setup({
+  options = {
+    theme = 'tokyonight'
+  }    
+})
+   
 require("mason").setup()
 require("mason-lspconfig").setup({
   ensure_installed = { 'bashls', 'dockerls', 'fortls', 'jsonls', 'pylsp', 'terraformls', 'tsserver', 'yamlls' },
