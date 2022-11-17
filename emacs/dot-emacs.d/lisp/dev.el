@@ -8,7 +8,8 @@
 (use-package lsp-mode
   :ensure t
   :commands lsp
-  :hook ((python-mode . lsp)
+  :hook ((java-mode . lsp)
+         (python-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :config
   (setq
@@ -60,6 +61,12 @@
 ;; https://github.com/emacs-typescript/typescript.el
 (use-package typescript-mode
   :ensure t)
+
+;; ----------------------------------------------------------
+;; Java
+;; ----------------------------------------------------------
+(use-package lsp-java
+:ensure t)
 
 ;; ----------------------------------------------------------
 ;; Julia

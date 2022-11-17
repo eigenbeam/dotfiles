@@ -24,39 +24,46 @@ vim.api.nvim_create_autocmd(
 require('packer').startup(function(use)
   use "wbthomason/packer.nvim" -- Have packer manage itself
 
+  -- Colorschemes, navigation, status, etc
+  use 'shaunsingh/nord.nvim'
+  use 'christoomey/vim-tmux-navigator'
   use {
     'nvim-telescope/telescope.nvim',
     requires = { {'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'} }
   }
   use {
-    'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-  use 'christoomey/vim-tmux-navigator'
-
-  use 'folke/tokyonight.nvim'
-
-  use {
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
   
+  -- General development plugins
+  use {
+    'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'
+  }
   use {
     'numToStr/Comment.nvim',
     config = function()
       require('Comment').setup()
     end
   }
-  use 'hashivim/vim-terraform'
-
-  use 'hrsh7th/nvim-cmp'
-  use 'neovim/nvim-lspconfig'
-  use 'williamboman/mason.nvim'
-  use 'williamboman/mason-lspconfig.nvim'
-  use 'mfussenegger/nvim-dap'
-
   use {
     "windwp/nvim-autopairs",
     config = function() require("nvim-autopairs").setup {} end
   }
+
+  -- Language-specific plugins
+  use 'hashivim/vim-terraform'
+
+  -- LSP configuration
+  use 'neovim/nvim-lspconfig'
+  use 'williamboman/mason.nvim'
+  use 'williamboman/mason-lspconfig.nvim'
+
+  -- LSP completions
+  use 'hrsh7th/nvim-cmp'
+
+  -- DAP debugging
+  use 'mfussenegger/nvim-dap'
 end)
 
 --
@@ -83,7 +90,7 @@ vim.opt.shiftwidth = 2 -- the number of spaces inserted for each indentation
 vim.opt.showmode = false -- we don't need to see things like -- INSERT -- anymore
 vim.opt.showtabline = 2 -- always show tabs
 vim.opt.sidescrolloff = 8
-vim.opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time
+-- vim.opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time
 vim.opt.smartcase = true -- smart case
 vim.opt.smartindent = true -- make indenting smarter again
 vim.opt.splitbelow = true -- force all horizontal splits to go below current window
@@ -105,7 +112,7 @@ vim.g.loaded_perl_provider = 0
 
 vim.opt.rtp:append "/opt/homebrew/opt/fzf"
 
-vim.cmd 'colorscheme tokyonight'
+vim.cmd 'colorscheme nord'
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
@@ -122,16 +129,10 @@ vim.cmd "nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<c
 
 require('lualine').setup({
   options = {
-    theme = 'tokyonight'
+    theme = 'auto'
   }    
 })
    
-require("mason").setup()
-require("mason-lspconfig").setup({
-  ensure_installed = { 'bashls', 'dockerls', 'fortls', 'jsonls', 'pylsp', 'terraformls', 'tsserver', 'yamlls' },
-  automatic_installation = true,
-})
-
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap = true, silent = true }
@@ -163,10 +164,17 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>p', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
+-- LSP Setup
+local lsp_servers = { 'bashls', 'dockerls', 'fortls', 'jdtls', 'jsonls', 'pylsp', 'terraformls', 'tsserver', 'yamlls' }
+require("mason").setup()
+require("mason-lspconfig").setup({
+  ensure_installed = lsp_servers,
+  automatic_installation = true,
+})
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'bashls', 'dockerls', 'fortls', 'jsonls', 'pylsp', 'terraformls', 'tsserver', 'yamlls' }
-for _, lsp in pairs(servers) do
+for _, lsp in pairs(lsp_servers) do
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,
     flags = {}
