@@ -1,10 +1,13 @@
 .custom.el
+auto-save-list
+eln-cache
+elpa
+var
+
 .lsp-session*
 .mc-lists.el
 archive
-auto-save-list
 backups/*
-elpa*
 elpy
 eshell
 ido.last
@@ -12,4 +15,3 @@ mspyls
 projectile-bookmarks.eld
 transient
 url
-var

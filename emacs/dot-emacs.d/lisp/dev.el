@@ -3,10 +3,10 @@
 ;;; Code:
 
 ;; ----------------------------------------------------------
-;; LSP - lsp-mode
+;; LSP & DAP
 ;; ----------------------------------------------------------
+
 (use-package lsp-mode
-  :ensure t
   :commands lsp
   :hook ((java-mode . lsp)
          (python-mode . lsp)
@@ -23,7 +23,6 @@
 (setq lsp-keymap-prefix "C-c l")
 
 (use-package lsp-ui
-  :ensure t
   :commands lsp-ui-mode
   :config
   (setq
@@ -41,66 +40,66 @@
    lsp-ui-doc-position 'bottom
    ))
 
-;; (use-package dap-mode
-;;   :ensure t
-;;   :config
-;;   (dap-ui-mode 1)
-;;   (dap-tooltip-mode 1)
-;;   (setq dap-python-debugger 'debugpy)
-;;   (require 'dap-python))
+(use-package dap-mode
+  :config
+  (dap-ui-mode 1)
+  (dap-tooltip-mode 1)
+  (setq dap-python-debugger 'debugpy)
+  (require 'dap-python))
+
 
 ;; ----------------------------------------------------------
 ;; JavaScript & TypeScript
 ;; ----------------------------------------------------------
+
 ;; https://github.com/codesuki/add-node-modules-path
 (use-package add-node-modules-path
-  :ensure t
   :pin melpa-stable
   :hook (js-mode typescript-mode))
 
 ;; https://github.com/emacs-typescript/typescript.el
-(use-package typescript-mode
-  :ensure t)
+(use-package typescript-mode)
+
 
 ;; ----------------------------------------------------------
 ;; Java
 ;; ----------------------------------------------------------
-(use-package lsp-java
-:ensure t)
+
+(use-package lsp-java)
+
 
 ;; ----------------------------------------------------------
 ;; Julia
 ;; ----------------------------------------------------------
+
 ;; https://github.com/JuliaEditorSupport/julia-emacs
-(use-package julia-mode
-  :ensure t)
+(use-package julia-mode)
+
 
 ;; ----------------------------------------------------------
 ;; Python
 ;; ----------------------------------------------------------
+
 ;; Built-in python mode
 ;; (setq python-shell-interpreter "ipython"
 ;;       python-shell-interpreter-args "-i")
 
 ;; https://github.com/galaunay/poetry.el
-;; (use-package poetry
-;;   :ensure t)
+;; (use-package poetry)
 
 ;; https://github.com/jorgenschaefer/pyvenv
 (use-package pyvenv
-  :ensure t
   :config
   (pyvenv-mode 1))
 
 ;; https://github.com/wbolster/emacs-python-pytest
 ;; (use-package python-pytest
-;;   :ensure t
 ;;   :commands (python-pytest-dispatch)
 ;;   :bind ("C-c u" . python-pytest-dispatch))
 
 ;; https://github.com/nnicandro/emacs-jupyter
-;; (use-package jupyter
-;;   :ensure t)
+;; (use-package jupyter)
+
 
 (provide 'dev)
 
