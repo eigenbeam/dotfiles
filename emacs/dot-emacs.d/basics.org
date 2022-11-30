@@ -1,3 +1,8 @@
+#+STARTUP: overview
+* Interface Tweaks
+** Startup, general settings
+#+BEGIN_SRC emacs-lisp
+
 ;;; basics --- basic configuration
 ;;; Commentary:
 ;;; Code:
@@ -98,3 +103,5 @@
 (provide 'basics)
 
 ;;; basics.el ends here
+
+#+END_SRC

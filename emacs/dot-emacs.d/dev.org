@@ -1,3 +1,8 @@
+#+STARTUP: overview
+* Interface Tweaks
+** Startup, general settings
+#+BEGIN_SRC emacs-lisp
+
 ;;; dev-lsp --- Dev modes setup -- lsp
 ;;; Commentary:
 ;;; Code:
@@ -104,3 +109,5 @@
 (provide 'dev)
 
 ;;; dev-lsp.el ends here
+
+#+END_SRC

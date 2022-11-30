@@ -25,9 +25,11 @@
   (require 'use-package))
 (setq use-package-always-ensure t)
 
+(use-package org)
+
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-(require 'basics)
-(require 'packages)
-(require 'dev)
+(org-babel-load-file "/Users/kwb/.emacs.d/basics.org")
+(org-babel-load-file "/Users/kwb/.emacs.d/packages.org")
+(org-babel-load-file "/Users/kwb/.emacs.d/dev.org")
 
 ;;; init.el ends here
