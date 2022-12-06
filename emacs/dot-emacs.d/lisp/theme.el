@@ -6,6 +6,7 @@
 (setq nano-font-size 12)
 
 (require 'nano-layout)
+(require 'nano-theme-dark)
 (require 'nano-faces)
 (nano-faces)
 (require 'nano-theme)
