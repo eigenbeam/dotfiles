@@ -1,25 +1,15 @@
-#+STARTUP: overview
-* Interface Tweaks
-** Startup, general settings
-#+BEGIN_SRC emacs-lisp
-
 ;;; packages --- basic set of packages
 ;;; Commentary:
 ;;; Code:
 
 ;; ----------------------------------------------------------
-;; Theme and navigation enhancements
+;; Navigation enhancements
 ;; ----------------------------------------------------------
-
-;; https://github.com/cadadr/elisp
-(use-package paper-theme
-  :config
-  (load-theme 'paper t))
 
 ;; https://github.com/emacs-dashboard/emacs-dashboard
 (use-package dashboard
   :config
-    (setq dashboard-set-footer nil)
+  (setq dashboard-set-footer nil)
   (setq dashboard-projects-backend 'projectile)
   (add-to-list 'dashboard-items '(projects . 5))
   (setq projectile-switch-project-action 'projectile-dired)
@@ -154,5 +144,3 @@
 (provide 'packages)
 
 ;;; packages.el ends here
-
-#+END_SRC

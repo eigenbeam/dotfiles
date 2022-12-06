@@ -1,8 +1,3 @@
-#+STARTUP: overview
-* Interface Tweaks
-** Startup, general settings
-#+BEGIN_SRC emacs-lisp
-
 ;;; basics --- basic configuration
 ;;; Commentary:
 ;;; Code:
@@ -21,15 +16,15 @@
 ;; Sane defaults
 ;; ----------------------------------------------------------
 
-(if (display-graphic-p)
-    (progn
-      (set-frame-font "RobotoMono Nerd Font 14")
-      (set-frame-size (selected-frame) 100 50)))
-(setq inhibit-startup-screen t)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(setq initial-scratch-message "")
+;; (if (display-graphic-p)
+;;     (progn
+;;       (set-frame-font "RobotoMono Nerd Font 14")
+;;       (set-frame-size (selected-frame) 100 50)))
+;; (setq inhibit-startup-screen t)
+;; (menu-bar-mode -1)
+;; (scroll-bar-mode -1)
+;; (tool-bar-mode -1)
+;; (setq initial-scratch-message "")
 (blink-cursor-mode 1)
 (setq blink-cursor-blinks 0)
 (setq ring-bell-function 'ignore)
@@ -40,17 +35,17 @@
 (setq scroll-conservatively 1000)
 (setq scroll-preserve-screen-position +1)
 (setq select-enable-clipboard t)
-(setq uniquify-buffer-name-style 'forward)
-(when window-system
-  (setq frame-title-format '(buffer-file-name "%f" ("%b"))))
+;; (setq uniquify-buffer-name-style 'forward)
+;; (when window-system
+;;   (setq frame-title-format '(buffer-file-name "%f" ("%b"))))
 (set-default 'indent-tabs-mode nil)
 (setq-default tab-width 4)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode t)
 (setq custom-file (locate-user-emacs-file ".custom.el"))
 (load custom-file t t)
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier nil)
+;; (setq mac-command-modifier 'meta)
+;; (setq mac-option-modifier nil)
 (setq dired-use-ls-dired nil)
 
 
@@ -103,5 +98,3 @@
 (provide 'basics)
 
 ;;; basics.el ends here
-
-#+END_SRC
