@@ -3,7 +3,7 @@
 ;;; Code:
 
 (setq nano-font-family-monospaced "RobotoMono Nerd Font")
-(setq nano-font-size 12)
+(setq nano-font-size 14)
 
 (require 'nano-layout)
 (require 'nano-theme-dark)
