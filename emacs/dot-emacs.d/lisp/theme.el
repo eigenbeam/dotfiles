@@ -6,7 +6,7 @@
 (setq nano-font-size 14)
 
 (require 'nano-layout)
-(require 'nano-theme-dark)
+(require 'nano-theme-light)
 (require 'nano-faces)
 (nano-faces)
 (require 'nano-theme)
@@ -15,6 +15,19 @@
 (require 'nano-session)
 (require 'nano-modeline)
 (require 'nano-bindings)
+(require 'nano-splash)
+
+;; nano-agenda
+;; nano-base-colors
+;; nano-colors
+;; nano-command
+;; nano-compact
+;; nano-counsel
+;; nano-help
+;; nano-minibuffer
+;; nano-mu4e
+;; nano-splash
+;; nano-writer
 
 (let ((inhibit-message t))
   (message "Welcome to GNU Emacs / N Λ N O edition")
