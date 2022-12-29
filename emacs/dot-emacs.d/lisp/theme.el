@@ -2,39 +2,24 @@
 ;;; Commentary:
 ;;; Code:
 
-(setq nano-font-family-monospaced "RobotoMono Nerd Font")
-(setq nano-font-size 14)
+(if (display-graphic-p)
+    (progn
+      (set-frame-font "RobotoMono Nerd Font 14")
+      (set-frame-size (selected-frame) 100 50)))
 
-(require 'nano-layout)
-(require 'nano-theme-light)
-(require 'nano-faces)
-(nano-faces)
-(require 'nano-theme)
-(nano-theme)
-(require 'nano-defaults)
-(require 'nano-session)
-(require 'nano-modeline)
-(require 'nano-bindings)
-(require 'nano-splash)
+(use-package modus-themes
+  :init
+  (setq modus-themes-italic-constructs nil
+        modus-themes-bold-constructs nil
+        modus-themes-region '(bg-only))
+  (modus-themes-load-themes)
+  :config
+  (modus-themes-load-operandi)
+  :bind
+  ("<f5>" . modus-themes-toggle))
 
-;; nano-agenda
-;; nano-base-colors
-;; nano-colors
-;; nano-command
-;; nano-compact
-;; nano-counsel
-;; nano-help
-;; nano-minibuffer
-;; nano-mu4e
-;; nano-splash
-;; nano-writer
-
-(let ((inhibit-message t))
-  (message "Welcome to GNU Emacs / N Λ N O edition")
-  (message (format "Initialization time: %s" (emacs-init-time))))
-
-(require 'nano-splash)
-(require 'nano-help)
+(use-package doom-modeline
+  :init (doom-modeline-mode 1))
 
 (provide 'theme)
 

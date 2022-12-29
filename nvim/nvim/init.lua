@@ -25,7 +25,8 @@ require('packer').startup(function(use)
   use "wbthomason/packer.nvim" -- Have packer manage itself
 
   -- Colorschemes, navigation, status, etc
-  use 'shaunsingh/nord.nvim'
+  use 'ishan9299/modus-theme-vim'
+
   use 'christoomey/vim-tmux-navigator'
   use {
     'nvim-telescope/telescope.nvim',
@@ -121,7 +122,7 @@ vim.g.loaded_perl_provider = 0
 
 vim.opt.rtp:append "/opt/homebrew/opt/fzf"
 
-vim.cmd 'colorscheme nord'
+vim.cmd 'colorscheme modus-operandi'
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
