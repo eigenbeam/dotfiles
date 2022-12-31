@@ -27,6 +27,8 @@
 (setq blink-cursor-blinks 0)
 (column-number-mode t)
 (global-display-line-numbers-mode)
+(dolist (mode '(org-mode-hook vterm-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ; ESC will quit like C-g
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -65,10 +67,18 @@
 (setq ido-enable-flex-matching t)
 (setq ido-use-filename-at-point 'guess)
 (setq ido-create-new-buffer 'always)
-(setq ido-everywhere t)
 (setq ido-max-directory-size 100000)
-(ido-mode t)
+(ido-mode 1)
+(ido-everywhere 1)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+; Enhance IDO mode
+; TODO: add config to use-package form
+(use-package ido-completing-read+)
+(ido-ubiquitous-mode 1)
+(use-package ido-vertical-mode)
+(ido-vertical-mode 1)
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
 
 
 ;; ----------------------------------------------------------

@@ -45,5 +45,6 @@
 (require 'basics)
 (require 'theme)
 (require 'packages)
+(require 'dev)
 
 ;;; init.el ends here

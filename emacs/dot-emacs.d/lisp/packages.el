@@ -12,7 +12,6 @@
   (setq dashboard-set-footer nil)
   (setq dashboard-projects-backend 'projectile)
   (add-to-list 'dashboard-items '(projects . 5))
-  (setq projectile-switch-project-action 'projectile-dired)
   (dashboard-setup-startup-hook))
 
 ;; https://github.com/bbatsov/crux
@@ -55,7 +54,8 @@
   :diminish which-key-mode
   :config
   (which-key-mode +1)
-  (which-key-setup-side-window-right))
+  (which-key-setup-side-window-right)
+  (setq which-key-idle-delay 0.5))
 
 
 ;; ----------------------------------------------------------
@@ -91,6 +91,9 @@
   (setq magit-last-seen-setup-instructions "1.4.0")
   (setq magit-push-always-verify nil))
 
+(use-package forge
+  :after magit)
+
 ;; https://gitlab.com/pidu/git-timemachine
 (use-package git-timemachine)
 
@@ -99,6 +102,7 @@
   :diminish projectile-mode
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (setq projectile-switch-project-action 'projectile-dired)
   (projectile-mode +1))
 
 
