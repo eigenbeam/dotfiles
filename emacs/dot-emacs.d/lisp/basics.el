@@ -11,41 +11,53 @@
 (when (eq system-type 'darwin) (customize-set-variable 'native-comp-driver-options '("-Wl,-w")))
 (setq native-comp-async-report-warnings-errors 'silent)
 
-
 ;; ----------------------------------------------------------
 ;; Sane defaults
 ;; ----------------------------------------------------------
 
-(if (display-graphic-p)
-    (progn
-      (set-frame-font "RobotoMono Nerd Font 14")
-      (set-frame-size (selected-frame) 100 50)))
+; Minimalistic UI settings
 (setq inhibit-startup-screen t)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(setq initial-scratch-message "")
+(tooltip-mode -1)
+(set-fringe-mode 20)
+(setq ring-bell-function 'ignore)
 (blink-cursor-mode 1)
 (setq blink-cursor-blinks 0)
-(setq ring-bell-function 'ignore)
 (column-number-mode t)
 (global-display-line-numbers-mode)
-(size-indication-mode +1)
+(dolist (mode '(org-mode-hook vterm-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+; ESC will quit like C-g
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+; Nicer scrolling behavior
 (setq scroll-margin 0)
 (setq scroll-conservatively 1000)
 (setq scroll-preserve-screen-position +1)
+
 (setq select-enable-clipboard t)
+
 (setq uniquify-buffer-name-style 'forward)
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b"))))
+
 (set-default 'indent-tabs-mode nil)
 (setq-default tab-width 4)
+
 (defalias 'yes-or-no-p 'y-or-n-p)
+
 (global-auto-revert-mode t)
+
 (setq custom-file (locate-user-emacs-file ".custom.el"))
 (load custom-file t t)
+
+; Mac-specific settings
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
+(setq mac-right-option-modifier 'control)
 (setq dired-use-ls-dired nil)
 
 
@@ -55,10 +67,18 @@
 (setq ido-enable-flex-matching t)
 (setq ido-use-filename-at-point 'guess)
 (setq ido-create-new-buffer 'always)
-(setq ido-everywhere t)
 (setq ido-max-directory-size 100000)
-(ido-mode t)
+(ido-mode 1)
+(ido-everywhere 1)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+; Enhance IDO mode
+; TODO: add config to use-package form
+(use-package ido-completing-read+)
+(ido-ubiquitous-mode 1)
+(use-package ido-vertical-mode)
+(ido-vertical-mode 1)
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
 
 
 ;; ----------------------------------------------------------
@@ -82,6 +102,8 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (use-package no-littering)
+(setq auto-save-file-name-transforms
+	  `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 
 ;; ----------------------------------------------------------

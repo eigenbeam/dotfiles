@@ -1,44 +1,21 @@
-;;; dev-lsp --- Dev modes setup -- lsp
 ;;; Commentary:
 ;;; Code:
 
 ;; ----------------------------------------------------------
-;; LSP & DAP
+;; LSP
 ;; ----------------------------------------------------------
 
-(use-package lsp-mode
-  :commands lsp
-  :hook ((java-mode . lsp)
-         (python-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
-  :config
-  (setq
-   read-process-output-max (* 1024 1024)
-   lsp-idle-delay 0.500
-   lsp-pyls-plugins-pydocstyle-enabled t
-   lsp-pyls-plugins-yapf-enabled t
-   lsp-pyls-plugins-flake8-enabled t
-   lsp-pyls-plugins-pycodestyle-enabled nil
-   lsp-pyls-plugins-pyflakes-enabled nil))
-(setq lsp-keymap-prefix "C-c l")
+(use-package eglot
+  :hook ((c++-mode . eglot-ensure)
+         (java-mode . eglot-ensure)
+         (fortran-mode . eglot-ensure)
+         (f90-mode . eglot-ensure)
+         (python-mode . eglot-ensure)))
 
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :config
-  (setq
-   lsp-ui-sideline-enable t
-   lsp-ui-sideline-show-diagnostics t
-   lsp-ui-sideline-show-hover t
-   lsp-ui-sideline-show-code-actions t
-   ;; ----------------------------------------
-   lsp-ui-peek-enable t
-   lsp-ui-peek-list-width 60
-   lsp-ui-peek-peek-height 25
-   ;; ----------------------------------------
-   lsp-ui-doc-enable t
-   lsp-ui-doc-use-childframe t
-   lsp-ui-doc-position 'bottom
-   ))
+
+;; ----------------------------------------------------------
+;; DAP
+;; ----------------------------------------------------------
 
 (use-package dap-mode
   :config
@@ -47,6 +24,10 @@
   (setq dap-python-debugger 'debugpy)
   (require 'dap-python))
 
+
+;; ----------------------------------------------------------
+;; C & C++
+;; ----------------------------------------------------------
 
 ;; ----------------------------------------------------------
 ;; JavaScript & TypeScript
@@ -99,6 +80,7 @@
 
 ;; https://github.com/nnicandro/emacs-jupyter
 ;; (use-package jupyter)
+
 
 
 (provide 'dev)
