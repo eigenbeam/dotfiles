@@ -2,6 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 
+;; Packages to investigate
+;;   vterm-toggle
+;;   org, org-babel, org-restclient, ...
+
 ;; ----------------------------------------------------------
 ;; Navigation enhancements
 ;; ----------------------------------------------------------
@@ -46,8 +50,6 @@
   :bind ("C-c t" . vterm)
   :config
   (setq vterm-max-scrollback (* 32 1024)))
-
-;; TODO: vterm-toggle
 
 ;; https://github.com/justbur/emacs-which-key/
 (use-package which-key
@@ -123,8 +125,6 @@
 
 ;; https://github.com/yaml/yaml-mode
 (use-package yaml-mode)
-
-;; TODO: org, org-babel, org-restclient
 
 
 ;; ----------------------------------------------------------

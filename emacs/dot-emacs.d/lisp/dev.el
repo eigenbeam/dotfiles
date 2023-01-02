@@ -65,9 +65,6 @@
 ;; (setq python-shell-interpreter "ipython"
 ;;       python-shell-interpreter-args "-i")
 
-;; https://github.com/galaunay/poetry.el
-;; (use-package poetry)
-
 ;; https://github.com/jorgenschaefer/pyvenv
 (use-package pyvenv
   :config

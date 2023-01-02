@@ -1,6 +1,6 @@
 -- Install plugins
 require('packer').startup(function(use)
-  use "wbthomason/packer.nvim"
+   use "wbthomason/packer.nvim"
 
   use 'ishan9299/modus-theme-vim'
   use 'christoomey/vim-tmux-navigator'
@@ -14,6 +14,13 @@ require('packer').startup(function(use)
     'nvim-telescope/telescope.nvim',
     requires = { {'nvim-lua/plenary.nvim'} }
   }
+
+  -- managing & installing lsp servers, linters & formatters
+  use("williamboman/mason.nvim") -- in charge of managing lsp servers, linters & formatters
+  use("williamboman/mason-lspconfig.nvim") -- bridges gap b/w mason & lspconfig
+
+  -- configuring lsp servers
+  use("neovim/nvim-lspconfig") -- easily configure language servers
 end)
 
 -- comment

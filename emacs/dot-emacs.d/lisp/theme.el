@@ -7,6 +7,7 @@
       (set-frame-font "RobotoMono Nerd Font 14")
       (set-frame-size (selected-frame) 100 50)))
 
+;; https://protesilaos.com/emacs/modus-themes
 (use-package modus-themes
   :init
   (setq modus-themes-italic-constructs nil
