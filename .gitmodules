@@ -1,3 +1,0 @@
-[submodule "emacs/dot-emacs.d/nano-emacs"]
-	path = emacs/dot-emacs.d/nano-emacs
-	url = https://github.com/rougier/nano-emacs.git
