@@ -14,6 +14,7 @@ else
   require("kwb.treesitter")
 
   require("kwb.lsp")
+  require("kwb.dap")
 
   vim.cmd 'colorscheme modus-operandi'
 end
