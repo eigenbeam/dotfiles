@@ -13,6 +13,7 @@ require('packer').startup(function(use)
   use 'nvim-lualine/lualine.nvim'
   use 'windwp/nvim-autopairs'
   use 'akinsho/toggleterm.nvim'
+  use 'tpope/vim-sleuth'
 
   -- Maybe
   -- use 'ahmedkhalf/project.nvim'
@@ -42,20 +43,3 @@ require('packer').startup(function(use)
   use 'rcarriga/nvim-dap-ui'
   use 'ravenxrz/DAPInstall.nvim'
 end)
-
--- autopairs
-require("nvim-autopairs").setup()
-
--- comment
-require('Comment').setup()
-
--- nvim-tree
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-require("nvim-tree").setup()
-
--- lualine
-require('lualine').setup()
-
--- telescope
-require('telescope').setup()
