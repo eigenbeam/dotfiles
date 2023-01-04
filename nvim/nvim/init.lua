@@ -5,8 +5,15 @@ else
   require("kwb.bootstrap")
   require("kwb.plugins")
   require("kwb.keymaps")
-  require("kwb.mason")
-  require("kwb.lspcfg")
+
+  require("kwb.autocmds")
+  require("kwb.cmp")
+
+  require("kwb.toggleterm")
+  require("kwb.telescope")
+  require("kwb.treesitter")
+
+  require("kwb.lsp")
 
   vim.cmd 'colorscheme modus-operandi'
 end
