@@ -1,5 +1,6 @@
 if vim.g.vscode then
-  -- VSCode extension is running, do not customize
+  -- VSCode extension is running, do not use plugins
+  require("kwb.options")
 else
   require("kwb.options")
   require("kwb.bootstrap")

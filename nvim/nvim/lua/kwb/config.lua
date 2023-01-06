@@ -4,34 +4,24 @@
 vim.cmd 'colorscheme modus-operandi'
 
 -- ---------------------------
--- Keymaps
+-- Key mappings
 -- ---------------------------
 vim.g.mapleader = " "
 
 vim.keymap.set("n", "<leader>x", ":nohl<CR>")
-
-vim.keymap.set("n", "<leader>sv", "<C-w>v") -- split window vertically
-vim.keymap.set("n", "<leader>sh", "<C-w>s") -- split window horizontally
-vim.keymap.set("n", "<leader>se", "<C-w>=") -- make split windows equal width & height
-vim.keymap.set("n", "<leader>sx", ":close<CR>") -- close current split window
-vim.keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>") -- toggle split window maximization
-
-vim.keymap.set("n", "<leader>t", ":NvimTreeToggle<CR>")
-
-vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>") -- find files within current working directory, respects .gitignore
-vim.keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>") -- find string in current working directory as you type
-vim.keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>") -- find string under cursor in current working directory
-vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>") -- list open buffers in current neovim instance
-vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
+vim.keymap.set("n", "<leader>sv", "<C-w>v")
+vim.keymap.set("n", "<leader>sh", "<C-w>s")
+vim.keymap.set("n", "<leader>se", "<C-w>=")
+vim.keymap.set("n", "<leader>sx", ":close<CR>")
 
 -- ---------------------------
 -- Auto-commands
 -- ---------------------------
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-	pattern = { "*.java" },
-	callback = function()
-		vim.lsp.codelens.refresh()
-	end,
+  pattern = { "*.java" },
+  callback = function()
+    vim.lsp.codelens.refresh()
+  end,
 })
 
 -- ---------------------------
@@ -39,7 +29,7 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 -- ---------------------------
 local cmp_status_ok, cmp = pcall(require, "cmp")
 if not cmp_status_ok then
-	return
+  return
 end
 
 cmp.setup({
@@ -86,11 +76,17 @@ require("nvim-autopairs").setup()
 require('Comment').setup()
 
 -- ---------------------------
+-- Maximizer
+-- ---------------------------
+vim.keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>") -- toggle split window maximization
+
+-- ---------------------------
 -- nvim-tree
 -- ---------------------------
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 require("nvim-tree").setup()
+vim.keymap.set("n", "<leader>t", ":NvimTreeToggle<CR>")
 
 -- ---------------------------
 -- lualine
@@ -100,45 +96,45 @@ require('lualine').setup()
 -- ---------------------------
 -- Toggle terminal
 -- ---------------------------
-local status_ok, toggleterm = pcall(require, "toggleterm")
-if not status_ok then
-	return
-end
+-- local status_ok, toggleterm = pcall(require, "toggleterm")
+-- if not status_ok then
+-- 	return
+-- end
 
-toggleterm.setup({
-	size = 20,
-	open_mapping = [[<c-\>]],
-	hide_numbers = true,
-	shade_terminals = true,
-	shading_factor = 2,
-	start_in_insert = true,
-	insert_mappings = true,
-	persist_size = true,
-	direction = "float",
-	close_on_exit = true,
-	shell = vim.o.shell,
-	float_opts = {
-		border = "curved",
-	},
-})
+-- toggleterm.setup({
+-- 	size = 20,
+-- 	open_mapping = [[<c-\>]],
+-- 	hide_numbers = true,
+-- 	shade_terminals = true,
+-- 	shading_factor = 2,
+-- 	start_in_insert = true,
+-- 	insert_mappings = true,
+-- 	persist_size = true,
+-- 	direction = "float",
+-- 	close_on_exit = true,
+-- 	shell = vim.o.shell,
+-- 	float_opts = {
+-- 		border = "curved",
+-- 	},
+-- })
 
-function _G.set_terminal_keymaps()
-  local opts = {noremap = true}
-  -- vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
-  vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
-  vim.api.nvim_buf_set_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
-  vim.api.nvim_buf_set_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
-  vim.api.nvim_buf_set_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
-end
+-- function _G.set_terminal_keymaps()
+--   local opts = {noremap = true}
+--   -- vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
+--   vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
+--   vim.api.nvim_buf_set_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
+--   vim.api.nvim_buf_set_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
+--   vim.api.nvim_buf_set_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
+-- end
 
-vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+-- vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
-local Terminal = require("toggleterm.terminal").Terminal
-local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
+-- local Terminal = require("toggleterm.terminal").Terminal
+-- local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
-function _LAZYGIT_TOGGLE()
-	lazygit:toggle()
-end
+-- function _LAZYGIT_TOGGLE()
+-- 	lazygit:toggle()
+-- end
 
 
 -- ---------------------------
@@ -167,27 +163,33 @@ telescope.setup {
   },
 }
 
+vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
+vim.keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>")
+vim.keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>")
+vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
+vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
+
 -- ---------------------------
 -- Treesitter
 -- ---------------------------
 local status_ok, treesitter = pcall(require, "nvim-treesitter")
 if not status_ok then
-	return
+  return
 end
 
-local status_ok, configs = pcall(require, "nvim-treesitter.configs")
+local status_ok, tsconfigs = pcall(require, "nvim-treesitter.configs")
 if not status_ok then
-	return
+  return
 end
 
-configs.setup({
+tsconfigs.setup({
   ensure_installed = { "markdown", "markdown_inline", "bash", "java", "javascript", "python" },
   ensure_installed = "all",
-	ignore_install = { "" },
-	sync_install = false,
-	autopairs = {
-		enable = true,
-	},
+  ignore_install = { "" },
+  sync_install = false,
+  autopairs = {
+    enable = true,
+  },
 })
 
 -- ---------------------------
@@ -199,23 +201,23 @@ if not status_ok then
 end
 
 local servers = {
-	"bashls",
+  "bashls",
   "jdtls",
-	"jsonls",
-	"pyright",
-	"tsserver",
-	"yamlls",
+  "jsonls",
+  "pyright",
+  "tsserver",
+  "yamlls",
 }
 
 require("mason").setup()
 require("mason-lspconfig").setup({
-	ensure_installed = servers,
-	automatic_installation = true,
+  ensure_installed = servers,
+  automatic_installation = true,
 })
 
 local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
 if not lspconfig_status_ok then
-	return
+  return
 end
 
 local opts = {}
@@ -339,17 +341,17 @@ null_ls.setup {
 -- ---------------------------
 local dap_status_ok, dap = pcall(require, "dap")
 if not dap_status_ok then
-	return
+  return
 end
 
 local dap_ui_status_ok, dapui = pcall(require, "dapui")
 if not dap_ui_status_ok then
-	return
+  return
 end
 
 local dap_install_status_ok, dap_install = pcall(require, "dap-install")
 if not dap_install_status_ok then
-	return
+  return
 end
 
 dap_install.setup({})
@@ -402,13 +404,13 @@ dapui.setup({
 vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticSignError", linehl = "", numhl = "" })
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
-	dapui.open()
+  dapui.open()
 end
 
 dap.listeners.before.event_terminated["dapui_config"] = function()
-	dapui.close()
+  dapui.close()
 end
 
 dap.listeners.before.event_exited["dapui_config"] = function()
-	dapui.close()
+  dapui.close()
 end

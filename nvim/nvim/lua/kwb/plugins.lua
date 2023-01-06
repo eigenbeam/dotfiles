@@ -6,16 +6,16 @@ require('packer').startup(function(use)
 
   use 'ishan9299/modus-theme-vim'
   use 'christoomey/vim-tmux-navigator'
-  use 'szw/vim-maximizer'
-  use 'tpope/vim-surround'
   use 'numToStr/Comment.nvim'
   use 'nvim-tree/nvim-tree.lua'
   use 'nvim-lualine/lualine.nvim'
   use 'windwp/nvim-autopairs'
-  use 'akinsho/toggleterm.nvim'
   use 'tpope/vim-sleuth'
 
   -- Maybe
+  -- use 'akinsho/toggleterm.nvim'
+  -- use 'tpope/vim-surround'
+  -- use 'szw/vim-maximizer'
   -- use 'ahmedkhalf/project.nvim'
   -- use 'goolord/alpha-nvim'
 
