@@ -1,4 +1,6 @@
--- Install packer
+-- ---------------------------
+-- Install Packer
+-- ---------------------------
 local ensure_packer = function()
   local fn = vim.fn
   local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
@@ -9,9 +11,11 @@ local ensure_packer = function()
   end
   return false
 end
-local packer_bootstrap = ensure_packer() -- true if packer was just installed
+local packer_bootstrap = ensure_packer()
 
--- Reload neovim to update plugins when file is saved
+-- ---------------------------
+-- Reload if plugins changed
+-- ---------------------------
 vim.cmd([[ 
   augroup packer_user_config
     autocmd!
