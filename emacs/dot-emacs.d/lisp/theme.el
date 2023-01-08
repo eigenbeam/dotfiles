@@ -10,12 +10,14 @@
 ;; https://protesilaos.com/emacs/modus-themes
 (use-package modus-themes
   :init
+  (setq modus-themes-common-palette-overrides
+      '((border-mode-line-active unspecified)
+        (border-mode-line-inactive unspecified)))
+
   (setq modus-themes-italic-constructs nil
-        modus-themes-bold-constructs nil
-        modus-themes-region '(bg-only))
-  (modus-themes-load-themes)
+        modus-themes-bold-constructs nil)
   :config
-  (modus-themes-load-operandi)
+  (load-theme 'modus-operandi)
   :bind
   ("<f5>" . modus-themes-toggle))
 
