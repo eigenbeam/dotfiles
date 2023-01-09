@@ -27,7 +27,7 @@ brew "htop"
 brew "libraw"
 brew "imagemagick"
 brew "jq"
-brew "julia", link: false
+brew "julia"
 brew "openjdk"
 brew "leiningen"
 brew "lf"

@@ -1084,9 +1084,6 @@
               "sha256": "3b875cffce265ca443eb2f3a0695e168530f7ee32717fad90500969f1c848cf1"
             }
           }
-        },
-        "options": {
-          "link": false
         }
       },
       "openjdk": {
