@@ -11,6 +11,7 @@ require('packer').startup(function(use)
   use 'nvim-lualine/lualine.nvim'
   use 'windwp/nvim-autopairs'
   use 'tpope/vim-sleuth'
+  use 'folke/which-key.nvim'
 
   -- Maybe
   -- use 'akinsho/toggleterm.nvim'
@@ -20,7 +21,6 @@ require('packer').startup(function(use)
   -- use 'goolord/alpha-nvim'
 
   -- Telescope
-  -- use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
   use 'nvim-telescope/telescope.nvim'
 
   -- Treesitter
