@@ -41,7 +41,7 @@ export NVM_DIR="$HOME/.nvm"
 # ------------------
 # Java
 # ------------------
-PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 
 # ------------------
 # Rust
