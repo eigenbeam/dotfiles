@@ -1,7 +1,7 @@
 -- ---------------------------
 -- Colorscheme
 -- ---------------------------
-vim.cmd 'colorscheme modus-operandi'
+vim.cmd[[colorscheme nord]]
 
 -- ---------------------------
 -- Key mappings

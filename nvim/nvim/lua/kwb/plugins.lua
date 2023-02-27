@@ -4,7 +4,7 @@ require('packer').startup(function(use)
 
   use "nvim-lua/plenary.nvim"
 
-  use 'ishan9299/modus-theme-vim'
+  use 'shaunsingh/nord.nvim'
   use 'christoomey/vim-tmux-navigator'
   use 'numToStr/Comment.nvim'
   use 'nvim-tree/nvim-tree.lua'

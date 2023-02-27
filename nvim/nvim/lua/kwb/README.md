@@ -1,7 +1,8 @@
 ## Plugins to consider
 
-  -- use 'akinsho/toggleterm.nvim'
-  -- use 'tpope/vim-surround'
-  -- use 'szw/vim-maximizer'
+  -- use 'glepnir/lspsaga.nvim'
   -- use 'ahmedkhalf/project.nvim'
+  -- use 'akinsho/toggleterm.nvim'
+  -- use 'szw/vim-maximizer'
   -- use 'goolord/alpha-nvim'
+  -- use 'tpope/vim-surround'

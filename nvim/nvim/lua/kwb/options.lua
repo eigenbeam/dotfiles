@@ -1,6 +1,6 @@
 -- Basic UI tweaks
 vim.opt.termguicolors = true
-vim.opt.background = "light"
+vim.opt.background = "dark"
 vim.opt.wrap = false
 
 -- Line numbers
