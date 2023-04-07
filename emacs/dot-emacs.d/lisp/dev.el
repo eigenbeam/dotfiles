@@ -5,18 +5,9 @@
 ;; LSP
 ;; ----------------------------------------------------------
 
-;; (use-package eglot
-;;   :hook ((c++-mode . eglot-ensure)
-;;          (java-mode . eglot-ensure)
-;;          (fortran-mode . eglot-ensure)
-;;          (f90-mode . eglot-ensure)
-;;          (python-mode . eglot-ensure)))
-
 (use-package lsp-mode
   :hook
-  ((lsp-mode . lsp-enable-which-key-integration))
-  :config
-  (setq lsp-completion-enable-additional-text-edit nil))
+  ((lsp-mode . lsp-enable-which-key-integration)))
 
 (use-package lsp-ui)
 
@@ -29,8 +20,7 @@
   :after lsp-mode
   :config
   (dap-auto-configure-mode)
-  (dap-ui-mode 1)
-  (dap-tooltip-mode 1)
+  (require 'dap-java)
   (setq dap-python-debugger 'debugpy)
   (require 'dap-python))
 
@@ -56,11 +46,16 @@
 ;; Java
 ;; ----------------------------------------------------------
 
-(use-package lsp-java
+;; JSP
+(use-package web-mode
   :config
-  (add-hook 'java-mode-hook 'lsp))
+  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode)))
 
-(use-package dap-java)
+(use-package lsp-java
+  :config (add-hook 'java-mode-hook 'lsp))
+
+(use-package dap-java
+  :ensure nil)
 
 
 ;; ----------------------------------------------------------
