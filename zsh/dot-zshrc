@@ -2,9 +2,6 @@ autoload -U colors && colors
 
 eval "$(starship init zsh)"
 
-alias vi=nvim
-alias vim=nvim
-
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.cache/zsh/history
@@ -41,12 +38,7 @@ export NVM_DIR="$HOME/.nvm"
 # ------------------
 # Java
 # ------------------
-PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
-
-# ------------------
-# Rust
-# ------------------
-. "$HOME/.cargo/env"
+PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 
 PATH="$HOME/.local/bin:$PATH"
 

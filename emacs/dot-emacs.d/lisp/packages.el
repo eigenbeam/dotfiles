@@ -6,6 +6,13 @@
 ;;   vterm-toggle
 ;;   org, org-babel, org-restclient, ...
 
+
+;; https://github.com/purcell/exec-path-from-shell
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
+
+
 ;; ----------------------------------------------------------
 ;; Navigation enhancements
 ;; ----------------------------------------------------------
@@ -31,7 +38,6 @@
 
 ;; https://github.com/magnars/multiple-cursors.el
 (use-package multiple-cursors
-  :pin melpa-stable
   :bind (("C-S-c C-S-c" . 'mc/edit-lines)
          ("C->" . 'mc/mark-next-like-this)
          ("C-<" . 'mc/mark-previous-like-this)
@@ -86,7 +92,6 @@
 ;;
 ;; https://magit.vc/
 (use-package magit
-  :pin melpa-stable
   :bind
   ("C-c g" . magit-status)
   :config

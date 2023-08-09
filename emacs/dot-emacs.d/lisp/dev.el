@@ -35,8 +35,8 @@
 
 ;; https://github.com/codesuki/add-node-modules-path
 (use-package add-node-modules-path
-  :pin melpa-stable
-  :hook (js-mode typescript-mode))
+  :config
+  (add-hook 'js-mode-hook 'typescript-mode-hook 'add-node-modules-path))
 
 ;; https://github.com/emacs-typescript/typescript.el
 (use-package typescript-mode)
@@ -56,14 +56,6 @@
 
 (use-package dap-java
   :ensure nil)
-
-
-;; ----------------------------------------------------------
-;; Julia
-;; ----------------------------------------------------------
-
-;; https://github.com/JuliaEditorSupport/julia-emacs
-(use-package julia-mode)
 
 
 ;; ----------------------------------------------------------
@@ -87,6 +79,18 @@
 ;; https://github.com/nnicandro/emacs-jupyter
 ;; (use-package jupyter)
 
+
+;; ----------------------------------------------------------
+;; Miscellaneous
+;; ----------------------------------------------------------
+
+;; Fix escape codes so they show up as color
+(add-hook 'compilation-filter-hook
+          (lambda () (ansi-color-apply-on-region (point-min) (point-max))))
+
+(defun kwb-dev-mode-hook ()
+  (subword-mode))
+(add-hook 'dev-mode-hook 'kwb-dev-mode-hook)
 
 
 (provide 'dev)
