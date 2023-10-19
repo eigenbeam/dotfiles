@@ -5,6 +5,7 @@ eval "$(starship init zsh)"
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.cache/zsh/history
+setopt correct
 
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
@@ -38,7 +39,19 @@ export NVM_DIR="$HOME/.nvm"
 # ------------------
 # Java
 # ------------------
+#PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
+
+# ------------------
+# PostgreSQL
+# ------------------
+PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
+
+# ------------------
+# Rust
+# ------------------
+. "$HOME/.cargo/env"
 
 PATH="$HOME/.local/bin:$PATH"
 
