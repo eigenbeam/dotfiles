@@ -13,6 +13,8 @@ require('packer').startup(function(use)
   use 'tpope/vim-sleuth'
   use 'folke/which-key.nvim'
 
+  use 'hashivim/vim-terraform'
+
   -- Maybe
   -- use 'akinsho/toggleterm.nvim'
   -- use 'tpope/vim-surround'
@@ -25,6 +27,9 @@ require('packer').startup(function(use)
 
   -- Treesitter
   use 'nvim-treesitter/nvim-treesitter'
+
+  -- Clojure
+  -- use 'Olical/conjure'
 
   -- LSP
   use {
