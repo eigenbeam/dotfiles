@@ -53,6 +53,11 @@ PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 # ------------------
 . "$HOME/.cargo/env"
 
+# ------------------
+# Haskell
+# ------------------
+[ -f "/Users/kwb/.ghcup/env" ] && source "/Users/kwb/.ghcup/env" # ghcup-env
+
 PATH="$HOME/.local/bin:$PATH"
 
 export PATH
