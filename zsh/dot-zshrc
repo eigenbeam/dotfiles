@@ -7,8 +7,9 @@ HISTFILE=~/.cache/zsh/history
 setopt correct
 
 autoload -U promptinit; promptinit
-zstyle :prompt:pure:git:stash show yes
-prompt pure
+# zstyle :prompt:pure:git:stash show yes
+# prompt pure
+eval "$(starship init zsh)"
 
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
@@ -23,6 +24,14 @@ _comp_options+=(globdots)		# Include hidden files.
 alias vi=nvim
 alias vim=nvim
 
+# export EDITOR=vi
+
+# ------------------
+# Tmux
+# ------------------
+# PATH=$PATH:$HOME/.tmux/plugins/tmuxifier/bin
+# eval "$(tmuxifier init -)"
+
 # ------------------
 # Python
 # ------------------
@@ -32,10 +41,10 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # This makes the shell slow
-# if which pyenv-virtualenv-init > /dev/null;
-# then
-#   eval "$(pyenv virtualenv-init -)"
-# fi
+if which pyenv-virtualenv-init > /dev/null;
+then
+  eval "$(pyenv virtualenv-init -)"
+fi
 
 # ------------------
 # JavaScript
@@ -67,4 +76,4 @@ export PATH
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# source ~/zsh-prompt-benchmark/zsh-prompt-benchmark.plugin.zsh
+source ~/tools/zsh-prompt-benchmark/zsh-prompt-benchmark.plugin.zsh
