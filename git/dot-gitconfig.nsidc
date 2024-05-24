@@ -30,7 +30,7 @@
 	allowed = AKIAIOSFODNN7EXAMPLE
 	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 [github]
-	user = kbeamnsidc
+	user = eigenbeam
 [bitbucket "api.bitbucket.org/2.0"]
 	user = kbeamnsidc
 [merge]
