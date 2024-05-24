@@ -1,6 +1,6 @@
 [user]
-	name = Kevin Beam
-        email = 14251936+kbeamnsidc@users.noreply.github.com
+	name = Kevin W. Beam
+	email = kevin.beam@colorado.edu
 [color]
 	ui = auto
 [apply]
@@ -8,27 +8,20 @@
 [core]
 	autocrlf = input
 	safecrlf = false
-	excludesfile = /Users/kbeam/.gitignore
 [alias]
-        l = log --name-only --oneline --graph
         st = status
         sts = status --short
         hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 [push]
-	default = current
-	followTags = true
+	default = upstream
+        followTags = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 [credential]
-	helper = store
-[init]
-	defaultBranch = main
-	templateDir = /home/kbeam/.git-templates/git-secrets
-[secrets]
-	providers = git secrets --aws-provider
-	patterns = (A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}
-	patterns = (\"|')?(AWS|aws|Aws)?_?(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)(\"|')?\\s*(:|=>|=)\\s*(\"|')?[A-Za-z0-9/\\+=]{40}(\"|')?
-	patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
-	allowed = AKIAIOSFODNN7EXAMPLE
-	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+	helper = osxkeychain
 [github]
 	user = eigenbeam
 [bitbucket "api.bitbucket.org/2.0"]
