@@ -7,14 +7,8 @@ all:
 	stow --dotfiles -t $(HOME) tmux
 	stow --dotfiles -t $(HOME) zsh
 
-homebrew-kwb:
-	brew bundle install --file=homebrew-kwb/Brewfile
+homebrew:
+	brew bundle install --file=homebrew/Brewfile
 
-brewfile-kwb:
-	brew bundle dump --file=homebrew-kwb/Brewfile
-
-homebrew-nsidc:
-	brew bundle install --file=homebrew-nsidc/Brewfile
-
-brewfile-nsidc:
-	brew bundle dump --file=homebrew-nsidc/Brewfile
+brewfile:
+	brew bundle dump --file=homebrew/Brewfile
