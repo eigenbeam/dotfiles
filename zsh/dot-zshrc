@@ -50,6 +50,10 @@ then
   eval "$(pyenv virtualenv-init -)"
 fi
 
+# Poetry autocompletion
+#fpath+=~/.zfunc
+#autoload -Uz compinit && compinit
+
 # ------------------
 # JavaScript
 # ------------------
