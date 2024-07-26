@@ -10,7 +10,7 @@ return {
     config = function()
       require("mason-lspconfig").setup({
         -- TODO: markdown, python, xml
-        ensure_installed = { "autotools_ls", "bashls", "clangd", "cmake", "cssls", "clojure_lsp", "dockerls", "fortls", "html", "jsonls", "jdtls", "lua_ls", "tsserver" }
+        ensure_installed = { "autotools_ls", "bashls", "clangd", "cmake", "cssls", "clojure_lsp", "dockerls", "fortls", "html", "jsonls", "jdtls", "lua_ls", "ruff", "tsserver" }
       })
     end
   },
