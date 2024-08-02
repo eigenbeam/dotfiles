@@ -3,15 +3,6 @@
 ;;; Code:
 
 ;; ----------------------------------------------------------
-;; Temporary
-;; ----------------------------------------------------------
-
-;; BUGFIX: Native compilation on MacOS throws warnings in 28.2
-;;         This will be fixed in 28.3+
-(when (eq system-type 'darwin) (customize-set-variable 'native-comp-driver-options '("-Wl,-w")))
-(setq native-comp-async-report-warnings-errors 'silent)
-
-;; ----------------------------------------------------------
 ;; Sane defaults
 ;; ----------------------------------------------------------
 

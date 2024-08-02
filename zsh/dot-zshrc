@@ -20,28 +20,14 @@ if type brew &>/dev/null; then
 fi
 _comp_options+=(globdots)		# Include hidden files.
 
-alias vi=nvim
-alias vim=nvim
-
-# export EDITOR=vi
-
 # ------------------
 # FZF
 # ------------------
 source <(fzf --zsh)
 
 # ------------------
-# Tmux
-# ------------------
-# PATH=$PATH:$HOME/.tmux/plugins/tmuxifier/bin
-# eval "$(tmuxifier init -)"
-
-# ------------------
 # Python
 # ------------------
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # This makes the shell slow
@@ -50,35 +36,15 @@ then
   eval "$(pyenv virtualenv-init -)"
 fi
 
-# Poetry autocompletion
-#fpath+=~/.zfunc
-#autoload -Uz compinit && compinit
-
 # ------------------
 # JavaScript
 # ------------------
-export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-# ------------------
-# Java
-# ------------------
-#PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
-PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
-export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
-
-# ------------------
-# PostgreSQL
-# ------------------
-PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 
 # ------------------
 # Rust
 # ------------------
 . "$HOME/.cargo/env"
 
-PATH="$HOME/.local/bin:$PATH"
-
 export PATH
-

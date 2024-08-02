@@ -9,6 +9,8 @@
 
 ;; https://github.com/purcell/exec-path-from-shell
 (use-package exec-path-from-shell
+  :init
+  (setq exec-path-from-shell-arguments nil)
   :config
   (exec-path-from-shell-initialize))
 
