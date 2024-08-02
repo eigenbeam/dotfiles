@@ -67,14 +67,19 @@
 ;; Python
 ;; ----------------------------------------------------------
 
-;; Built-in python mode
-;; (setq python-shell-interpreter "ipython"
-;;       python-shell-interpreter-args "-i")
-
 ;; https://github.com/jorgenschaefer/pyvenv
 (use-package pyvenv
   :config
   (pyvenv-mode 1))
+
+(use-package poetry
+  :ensure t
+  :config
+  (setq poetry-tracking-strategy 'projectile))
+
+;; Built-in python mode
+;; (setq python-shell-interpreter "ipython"
+;;       python-shell-interpreter-args "-i")
 
 ;; https://github.com/wbolster/emacs-python-pytest
 ;; (use-package python-pytest
