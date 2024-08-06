@@ -26,6 +26,9 @@
 
 (use-package dap-mode
   :after lsp-mode
+  :bind (("C-c d t m" . dap-java-run-test-method)
+         ("C-c d t c" . dap-java-run-test-class)
+         ("C-c d t l" . dap-java-run-last-test))
   :config
   (dap-auto-configure-mode)
   (require 'dap-java)
