@@ -14,6 +14,8 @@
    (js-mode . lsp)
    (python-mode . lsp)
    (lsp-mode . lsp-enable-which-key-integration))
+  :config
+  (setq read-process-output-max (* 1024 1024))
   :commands lsp)
 
 (use-package lsp-ui
