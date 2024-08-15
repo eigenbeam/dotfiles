@@ -53,6 +53,8 @@ else
 	vim.opt.rtp:prepend(lazypath)
 
 	require("lazy").setup({
+		{ "andreypopp/vim-colors-plain", priority = 1000 },
+
 		{ "echasnovski/mini.nvim", version = "*" },
 
 		{
@@ -101,33 +103,7 @@ else
 				},
 			},
 		},
-
-		{
-			"nvim-treesitter/nvim-treesitter",
-			build = ":TSUpdate",
-			config = function()
-				local configs = require("nvim-treesitter.configs")
-
-				configs.setup({
-					auto_install = true,
-					ensure_installed = {
-						"bash",
-						"c",
-						"html",
-						"java",
-						"javascript",
-						"lua",
-						"luadoc",
-						"markdown",
-						"python",
-						"vim",
-						"vimdoc",
-					},
-					sync_install = false,
-					highlight = { enable = true },
-					indent = { enable = true },
-				})
-			end,
-		},
 	})
+
+	vim.cmd [[colorscheme plain]]
 end
