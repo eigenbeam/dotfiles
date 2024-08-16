@@ -25,6 +25,9 @@ else
 	vim.opt.cursorline = true
 	vim.opt.scrolloff = 2
 	vim.opt.hlsearch = true
+	vim.opt.shiftwidth = 4
+	vim.opt.smarttab = true
+	vim.opt.expandtab = true
 
 	vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
