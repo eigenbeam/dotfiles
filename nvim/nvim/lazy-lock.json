@@ -1,8 +1,10 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "e30b7f2008e52442154b66f7c519bfd2f1e32acb" },
-  "conform.nvim": { "branch": "master", "commit": "667102f26106709cddd2dff1f699610df5b94d7f" },
+  "conform.nvim": { "branch": "master", "commit": "d31323db3fa4a33d203dcb05150d98bd0153c42c" },
   "lazy.nvim": { "branch": "main", "commit": "077102c5bfc578693f12377846d427f49bc50076" },
   "mini.nvim": { "branch": "main", "commit": "19e1584124cda35388d4fdb911eab7124014e541" },
+  "plenary.nvim": { "branch": "master", "commit": "a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683" },
+  "telescope.nvim": { "branch": "master", "commit": "a0bbec21143c7bc5f8bb02e0005fa0b982edc026" },
   "vim-colors-plain": { "branch": "master", "commit": "908ed31ad398c18b47a3f4f71c97313754484ff8" },
   "vim-tmux-navigator": { "branch": "master", "commit": "5b3c701686fb4e6629c100ed32e827edf8dad01e" }
 }
