@@ -2,10 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-;; Packages to investigate
-;;   vterm-toggle
-;;   org, org-babel, org-restclient, ...
-
 
 ;; https://github.com/purcell/exec-path-from-shell
 (use-package exec-path-from-shell

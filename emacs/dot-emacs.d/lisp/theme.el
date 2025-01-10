@@ -5,12 +5,12 @@
 (if (display-graphic-p)
     (progn
       (set-frame-font "RobotoMono Nerd Font 14")
-      (set-frame-size (selected-frame) 100 50)))
+      (set-frame-size (selected-frame) 120 60)))
 
 (use-package nerd-icons)
 
-(use-package nord-theme
-  :init (load-theme 'nord t))
+(use-package modus-themes
+  :init (load-theme 'modus-operandi t))
 
 (use-package doom-modeline
   :ensure t
