@@ -3,6 +3,7 @@
 # ------------------
 alias vi=nvim
 alias vim=nvim
+alias bc='bc -l'
 
 # ------------------
 # General Config
