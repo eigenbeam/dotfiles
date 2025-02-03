@@ -52,5 +52,4 @@ export PATH
 # ------------------
 # Benchmark zsh
 # ------------------
-echo 'source ~/zsh-prompt-benchmark/zsh-prompt-benchmark.plugin.zsh' >>! ~/.zshrc
 source ~/zsh-prompt-benchmark/zsh-prompt-benchmark.plugin.zsh
