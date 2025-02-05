@@ -14,8 +14,8 @@ PATH="$HOME/.local/bin:$PATH"
 # ------------------
 # Java
 # ------------------
-PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
-export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
+PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
+export JAVA_HOME="/opt/homebrew/opt/openjdk@21"
 
 # ------------------
 # JavaScript
