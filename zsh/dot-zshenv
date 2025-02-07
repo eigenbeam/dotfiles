@@ -11,6 +11,10 @@ alias bc='bc -l'
 # export EDITOR=vi
 PATH="$HOME/.local/bin:$PATH"
 
+
+# --- Rust
+. "$HOME/.cargo/env"
+
 # ------------------
 # Java
 # ------------------

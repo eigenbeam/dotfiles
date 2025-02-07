@@ -7,8 +7,7 @@ HISTFILE=~/.cache/zsh/history
 setopt correct
 
 autoload -U promptinit; promptinit
-zstyle :prompt:pure:git:stash show yes
-prompt pure
+eval "$(starship init zsh)"
 
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
@@ -52,4 +51,4 @@ export PATH
 # ------------------
 # Benchmark zsh
 # ------------------
-source ~/zsh-prompt-benchmark/zsh-prompt-benchmark.plugin.zsh
+# source ~/zsh-prompt-benchmark/zsh-prompt-benchmark.plugin.zsh
