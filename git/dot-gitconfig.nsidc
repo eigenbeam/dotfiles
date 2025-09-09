@@ -21,8 +21,6 @@
 	user = eigenbeam
 [bitbucket "api.bitbucket.org/2.0"]
 	user = kbeamnsidc
-[merge]
-    conflictstyle = diff3
 [diff]
     colorMoved = default
 [init]
