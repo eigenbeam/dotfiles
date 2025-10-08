@@ -1,19 +1,12 @@
 # ------------------
-# Aliases
-# ------------------
-alias vi=nvim
-alias vim=nvim
-alias bc='bc -l'
-
-# ------------------
 # General Config
 # ------------------
 # export EDITOR=vi
 PATH="$HOME/.local/bin:$PATH"
 
-
-# --- Rust
-. "$HOME/.cargo/env"
+# ------------------
+# GitHub CLI / CoPilot
+# ------------------
 
 # ------------------
 # Java
