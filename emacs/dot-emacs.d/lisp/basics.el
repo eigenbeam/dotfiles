@@ -6,6 +6,11 @@
 ;; Sane defaults
 ;; ----------------------------------------------------------
 
+;; Suppress annoying compilation buffers
+(setq native-comp-async-report-warnings-errors nil)  ; Native comp warnings
+(setq byte-compile-warnings '(not obsolete))          ; Reduce byte-compile warnings
+(setq warning-minimum-level :error)                   ; Only show errors, not warnings
+
 ; Minimalistic UI settings
 (setq inhibit-startup-screen t)
 (menu-bar-mode -1)
@@ -134,6 +139,17 @@
 (require 'server)
 (if (not (server-running-p))
     (server-start))
+
+;; Hide compilation buffers automatically
+(add-to-list 'display-buffer-alist
+             '("\\*Compile-Log\\*"
+               (display-buffer-no-window)
+               (allow-no-window . t)))
+
+(add-to-list 'display-buffer-alist
+             '("\\*Warnings\\*"
+               (display-buffer-no-window)
+               (allow-no-window . t)))
 
 
 (provide 'basics)
