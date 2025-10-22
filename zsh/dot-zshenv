@@ -1,7 +1,7 @@
 # ------------------
 # General Config
 # ------------------
-# export EDITOR=vi
+export EDITOR=nvim
 PATH="$HOME/.local/bin:$PATH"
 
 # ------------------
@@ -22,7 +22,7 @@ export NVM_DIR="$HOME/.nvm"
 # ------------------
 # PostgreSQL
 # ------------------
-PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
+PATH="/opt/homebrew/opt/postgresql@14/bin:$PATH"
 
 # ------------------
 # Python

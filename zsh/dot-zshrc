@@ -17,7 +17,7 @@ autoload -U promptinit; promptinit
 eval "$(starship init zsh)"
 
 if type brew &>/dev/null; then
-  FPATH=/opt/homebrew/share/zsh-completions:$FPATH
+  fpath+=(/opt/homebrew/share/zsh-completions)
 
   autoload -Uz compinit
   zstyle ':completion:*' menu select
