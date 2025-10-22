@@ -8,8 +8,8 @@
 ;; https://github.com/purcell/exec-path-from-shell
 (use-package exec-path-from-shell
   :defer 0.1
-  :init
-  (setq exec-path-from-shell-arguments nil)
+  :custom
+  (exec-path-from-shell-arguments '("-l"))  ; Load shell init files (.zshrc, .bash_profile)
   :config
   (exec-path-from-shell-initialize))
 
@@ -18,31 +18,26 @@
 ;; Navigation enhancements
 ;; ----------------------------------------------------------
 
-;; https://github.com/emacs-dashboard/emacs-dashboard
-(use-package dashboard
-  :config
-  (setq dashboard-set-footer nil)
-  (setq dashboard-projects-backend 'projectile)
-  (add-to-list 'dashboard-items '(projects . 5))
-  (dashboard-setup-startup-hook))
-
 ;; https://github.com/bbatsov/crux
 (use-package crux
+  :defer t
   :bind (("M-p" . crux-smart-open-line-above)
          ("M-n" . crux-smart-open-line)))
 
 ;; https://github.com/abo-abo/ace-window
 (use-package ace-window
-  :init
-  (bind-key "M-o" 'ace-window)
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+  :defer t
+  :bind ("M-o" . ace-window)
+  :custom
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 ;; https://github.com/magnars/multiple-cursors.el
 (use-package multiple-cursors
-  :bind (("C-S-c C-S-c" . 'mc/edit-lines)
-         ("C->" . 'mc/mark-next-like-this)
-         ("C-<" . 'mc/mark-previous-like-this)
-         ("C-c C-<" . 'mc/mark-all-like-this)))
+  :defer t
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)))
 
 ;; https://github.com/Fuco1/smartparens
 (use-package smartparens
@@ -106,17 +101,17 @@
 ;; https://company-mode.github.io/
 (use-package company
   :diminish company-mode
-  :init (add-hook 'after-init-hook 'global-company-mode)
-  :config
-  (setq company-tooltip-idle-delay 0.2)
-  (setq company-idle-delay 0.2)
-  (setq company-tooltip-align-annotations t)
-  (global-set-key (kbd "<C-tab>") 'company-complete))
+  :hook (after-init . global-company-mode)
+  :bind ("<C-tab>" . company-complete)
+  :custom
+  (company-tooltip-idle-delay 0.2)
+  (company-idle-delay 0.2)
+  (company-tooltip-align-annotations t))
 
 ;; http://www.flycheck.org/en/latest/
 (use-package flycheck
   :diminish flycheck-mode
-  :init (add-hook 'after-init-hook 'global-flycheck-mode))
+  :hook (after-init . global-flycheck-mode))
 
 
 ;; ----------------------------------------------------------
@@ -136,8 +131,9 @@
 (use-package forge
   :after magit)
 
-;; https://gitlab.com/pidu/git-timemachine
-(use-package git-timemachine)
+;; https://github.com/emacsmirror/git-timemachine
+(use-package git-timemachine
+  :defer t)
 
 ;; https://github.com/bbatsov/projectile
 (use-package projectile
@@ -158,13 +154,16 @@
   :mode "\\.md\\'")
 
 ;; https://github.com/pashky/restclient.el
-(use-package restclient)
+(use-package restclient
+  :defer t)
 
 ;; https://github.com/emacsorphanage/terraform-mode
-(use-package terraform-mode)
+(use-package terraform-mode
+  :defer t)
 
 ;; https://github.com/yaml/yaml-mode
-(use-package yaml-mode)
+(use-package yaml-mode
+  :defer t)
 
 
 ;; ----------------------------------------------------------
