@@ -64,12 +64,17 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ; Enhance IDO mode
-; TODO: add config to use-package form
-(use-package ido-completing-read+)
-(ido-ubiquitous-mode 1)
-(use-package ido-vertical-mode)
-(ido-vertical-mode 1)
-(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+(use-package ido-completing-read+
+  :after ido
+  :config
+  (ido-ubiquitous-mode 1))
+
+(use-package ido-vertical-mode
+  :after ido
+  :custom
+  (ido-vertical-define-keys 'C-n-and-C-p-only)
+  :config
+  (ido-vertical-mode 1))
 
 
 ;; ----------------------------------------------------------

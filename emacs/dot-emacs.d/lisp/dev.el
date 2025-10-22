@@ -65,9 +65,6 @@
 (use-package lsp-java
   :config (add-hook 'java-mode-hook 'lsp))
 
-(use-package dap-java
-  :ensure nil)
-
 
 ;; ----------------------------------------------------------
 ;; Python
@@ -82,18 +79,6 @@
   :ensure t
   :config
   (setq poetry-tracking-strategy 'projectile))
-
-;; Built-in python mode
-;; (setq python-shell-interpreter "ipython"
-;;       python-shell-interpreter-args "-i")
-
-;; https://github.com/wbolster/emacs-python-pytest
-;; (use-package python-pytest
-;;   :commands (python-pytest-dispatch)
-;;   :bind ("C-c u" . python-pytest-dispatch))
-
-;; https://github.com/nnicandro/emacs-jupyter
-;; (use-package jupyter)
 
 
 ;; ----------------------------------------------------------

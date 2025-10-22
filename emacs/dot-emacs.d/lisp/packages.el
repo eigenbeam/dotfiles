@@ -7,6 +7,7 @@
 
 ;; https://github.com/purcell/exec-path-from-shell
 (use-package exec-path-from-shell
+  :defer 0.1
   :init
   (setq exec-path-from-shell-arguments nil)
   :config
@@ -45,6 +46,7 @@
 
 ;; https://github.com/Fuco1/smartparens
 (use-package smartparens
+  :defer 2
   :diminish smartparens-mode
   :config
   (require 'smartparens-config)
@@ -59,11 +61,13 @@
 
 ;; https://github.com/justbur/emacs-which-key/
 (use-package which-key
+  :defer 1
   :diminish which-key-mode
+  :custom
+  (which-key-idle-delay 0.5)
   :config
   (which-key-mode +1)
-  (which-key-setup-side-window-right)
-  (setq which-key-idle-delay 0.5))
+  (which-key-setup-side-window-right))
 
 
 ;; ----------------------------------------------------------
@@ -127,24 +131,6 @@
 
 ;; https://github.com/yaml/yaml-mode
 (use-package yaml-mode)
-
-
-;; ----------------------------------------------------------
-;; Docker and Kubernetes
-;; ----------------------------------------------------------
-;;
-;; https://github.com/Silex/docker.el
-;; (use-package docker)
-
-;; https://github.com/spotify/dockerfile-mode
-;; (use-package dockerfile-mode)
-
-;; https://github.com/meqif/docker-compose-mode
-;; (use-package docker-compose-mode)
-
-;; https://github.com/chrisbarrett/kubernetes-el
-;; (use-package kubernetes
-;;   :commands (kubernetes-overview))
 
 
 (provide 'packages)
