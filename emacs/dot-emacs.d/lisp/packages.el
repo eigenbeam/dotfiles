@@ -69,6 +69,35 @@
   (which-key-mode +1)
   (which-key-setup-side-window-right))
 
+;; https://github.com/emacsorphanage/anzu
+(use-package anzu
+  :diminish anzu-mode
+  :bind (("M-%" . anzu-query-replace)
+         ("C-M-%" . anzu-query-replace-regexp))
+  :config
+  (global-anzu-mode +1))
+
+;; https://gitlab.com/tsc25/undo-tree
+(use-package undo-tree
+  :diminish undo-tree-mode
+  :custom
+  (undo-tree-auto-save-history t)
+  (undo-tree-history-directory-alist
+   `(("." . ,(no-littering-expand-var-file-name "undo-tree-hist/"))))
+  :config
+  (global-undo-tree-mode))
+
+;; https://github.com/Fanael/rainbow-delimiters
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+;; https://github.com/Fuco1/dired-hacks
+(use-package dired-subtree
+  :after dired
+  :bind (:map dired-mode-map
+         ("<tab>" . dired-subtree-toggle)
+         ("<backtab>" . dired-subtree-remove)))
+
 
 ;; ----------------------------------------------------------
 ;; Completions & Syntax Checking
@@ -98,6 +127,11 @@
 (use-package magit
   :bind
   ("C-c g" . magit-status))
+
+;; https://github.com/dandavison/magit-delta
+(use-package magit-delta
+  :after magit
+  :hook (magit-mode . magit-delta-mode))
 
 (use-package forge
   :after magit)
@@ -131,6 +165,19 @@
 
 ;; https://github.com/yaml/yaml-mode
 (use-package yaml-mode)
+
+
+;; ----------------------------------------------------------
+;; Tree-sitter (Emacs 29+)
+;; ----------------------------------------------------------
+;;
+;; https://github.com/renzmann/treesit-auto
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
 
 (provide 'packages)

@@ -53,28 +53,39 @@
 
 
 ;; ----------------------------------------------------------
-;; IDO mode
+;; Vertico - Modern completion UI
 ;; ----------------------------------------------------------
-(setq ido-enable-flex-matching t)
-(setq ido-use-filename-at-point 'guess)
-(setq ido-create-new-buffer 'always)
-(setq ido-max-directory-size 100000)
-(ido-mode 1)
-(ido-everywhere 1)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
-; Enhance IDO mode
-(use-package ido-completing-read+
-  :after ido
-  :config
-  (ido-ubiquitous-mode 1))
-
-(use-package ido-vertical-mode
-  :after ido
+;; https://github.com/minad/vertico
+(use-package vertico
   :custom
-  (ido-vertical-define-keys 'C-n-and-C-p-only)
-  :config
-  (ido-vertical-mode 1))
+  (vertico-cycle t)
+  :init
+  (vertico-mode))
+
+;; https://github.com/oantolin/orderless
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
+;; https://github.com/minad/marginalia
+(use-package marginalia
+  :init
+  (marginalia-mode))
+
+;; https://github.com/minad/consult
+(use-package consult
+  :bind (("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x r b" . consult-bookmark)
+         ("C-x p b" . consult-project-buffer)
+         ("M-g g" . consult-goto-line)
+         ("M-g i" . consult-imenu)
+         ("M-s g" . consult-grep)
+         ("M-s r" . consult-ripgrep)))
+
+;; Keep ibuffer for buffer management
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 
 ;; ----------------------------------------------------------

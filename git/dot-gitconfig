@@ -8,6 +8,7 @@
 [core]
 	autocrlf = input
 	safecrlf = false
+	pager = delta
 [alias]
         st = status
         sts = status --short
@@ -24,3 +25,9 @@
 	helper = osxkeychain
 [github]
 	user = eigenbeam
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+[merge]
+	conflictStyle = zdiff3
