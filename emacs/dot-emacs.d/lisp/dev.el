@@ -106,9 +106,9 @@
 
 (defun kwb-dev-mode-hook ()
   (subword-mode))
-(add-hook 'dev-mode-hook 'kwb-dev-mode-hook)
+(add-hook 'prog-mode-hook 'kwb-dev-mode-hook)
 
 
 (provide 'dev)
 
-;;; dev-lsp.el ends here
+;;; dev.el ends here

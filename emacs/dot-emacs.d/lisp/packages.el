@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+;; Required for :diminish keyword in use-package
+(use-package diminish)
 
 ;; https://github.com/purcell/exec-path-from-shell
 (use-package exec-path-from-shell
@@ -73,8 +75,8 @@
   :diminish company-mode
   :init (add-hook 'after-init-hook 'global-company-mode)
   :config
-  (setq company-tooltip-idle-delay 0)
-  (setq company-idle-delay 0)
+  (setq company-tooltip-idle-delay 0.2)
+  (setq company-idle-delay 0.2)
   (setq company-tooltip-align-annotations t)
   (global-set-key (kbd "<C-tab>") 'company-complete))
 
