@@ -89,10 +89,22 @@
 ;; Tidy up files
 ;; ----------------------------------------------------------
 
-(setq create-lockfiles nil)
-(setq make-backup-files nil)
-(setq auto-save-default nil)
 (use-package no-littering)
+
+(setq create-lockfiles nil)
+
+;; Enable backups with version control in no-littering directory
+(setq make-backup-files t)
+(setq backup-by-copying t)
+(setq version-control t)
+(setq delete-old-versions t)
+(setq kept-new-versions 6)
+(setq kept-old-versions 2)
+(setq backup-directory-alist
+      `(("." . ,(no-littering-expand-var-file-name "backup/"))))
+
+;; Enable auto-save in no-littering directory
+(setq auto-save-default t)
 (setq auto-save-file-name-transforms
 	  `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 

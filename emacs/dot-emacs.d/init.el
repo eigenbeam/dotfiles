@@ -35,6 +35,7 @@
   (require 'use-package))
 
 (setq use-package-always-ensure t)
+(setq use-package-compute-statistics t)
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 

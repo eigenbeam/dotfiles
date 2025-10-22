@@ -93,10 +93,7 @@
 ;; https://magit.vc/
 (use-package magit
   :bind
-  ("C-c g" . magit-status)
-  :config
-  (setq magit-last-seen-setup-instructions "1.4.0")
-  (setq magit-push-always-verify nil))
+  ("C-c g" . magit-status))
 
 (use-package forge
   :after magit)
