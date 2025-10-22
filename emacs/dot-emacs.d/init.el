@@ -46,5 +46,6 @@
 (require 'theme)
 (require 'packages)
 (require 'dev)
+(require 'org-config)
 
 ;;; init.el ends here
