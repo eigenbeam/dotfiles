@@ -2,13 +2,74 @@
 -- Minimal Neovim Configuration
 -- ============================================================================
 -- Zero dependencies, maximum portability
--- Perfect for: SSH sessions, remote systems, quick edits
+-- Perfect for: SSH sessions, remote systems, quick edits, VSCode Neovim
 -- Target: Sysadmin/NetAdmin work with bash, C, Python, config files
 -- Requirements: Neovim 0.8+ only
 -- ============================================================================
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+
+-- ============================================================================
+-- VSCode Neovim Extension Support
+-- ============================================================================
+
+if vim.g.vscode then
+  -- Running inside VSCode - minimal config focused on keybindings
+
+  -- Editor Behavior (VSCode-compatible)
+  vim.opt.clipboard = "unnamedplus"       -- System clipboard integration
+  vim.opt.ignorecase = true               -- Case-insensitive search
+  vim.opt.smartcase = true                -- Unless search has uppercase
+  vim.opt.hlsearch = true                 -- Highlight search matches
+  vim.opt.incsearch = true                -- Incremental search
+
+  local keymap = vim.keymap.set
+
+  -- Navigation
+  keymap("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
+  keymap("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" })
+  keymap("n", "n", "nzzzv", { desc = "Next search result (centered)" })
+  keymap("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
+
+  -- Better indenting (stay in visual mode)
+  keymap("v", "<", "<gv", { desc = "Indent left" })
+  keymap("v", ">", ">gv", { desc = "Indent right" })
+
+  -- Move lines up/down
+  keymap("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+  keymap("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+
+  -- Clear search highlighting
+  keymap("n", "<Esc>", ":nohlsearch<CR>", { desc = "Clear search highlight" })
+
+  -- Better paste (don't yank replaced text)
+  keymap("x", "<leader>p", '"_dP', { desc = "Paste without yanking" })
+
+  -- VSCode commands (call VSCode's native functionality)
+  keymap("n", "<leader>w", "<Cmd>call VSCodeNotify('workbench.action.files.save')<CR>", { desc = "Save file" })
+  keymap("n", "<leader>q", "<Cmd>call VSCodeNotify('workbench.action.closeActiveEditor')<CR>", { desc = "Close editor" })
+  keymap("n", "<leader>e", "<Cmd>call VSCodeNotify('workbench.view.explorer')<CR>", { desc = "Toggle explorer" })
+  keymap("n", "<leader>f", "<Cmd>call VSCodeNotify('workbench.action.quickOpen')<CR>", { desc = "Quick open file" })
+  keymap("n", "<leader>b", "<Cmd>call VSCodeNotify('workbench.action.showAllEditors')<CR>", { desc = "Show all editors" })
+  keymap("n", "<leader>g", "<Cmd>call VSCodeNotify('workbench.action.findInFiles')<CR>", { desc = "Find in files" })
+  keymap("n", "<leader>sv", "<Cmd>call VSCodeNotify('workbench.action.splitEditorRight')<CR>", { desc = "Split right" })
+  keymap("n", "<leader>sh", "<Cmd>call VSCodeNotify('workbench.action.splitEditorDown')<CR>", { desc = "Split down" })
+  keymap("n", "gd", "<Cmd>call VSCodeNotify('editor.action.revealDefinition')<CR>", { desc = "Go to definition" })
+  keymap("n", "gr", "<Cmd>call VSCodeNotify('editor.action.goToReferences')<CR>", { desc = "Go to references" })
+  keymap("n", "K", "<Cmd>call VSCodeNotify('editor.action.showHover')<CR>", { desc = "Show hover" })
+  keymap("n", "<leader>rn", "<Cmd>call VSCodeNotify('editor.action.rename')<CR>", { desc = "Rename" })
+  keymap("n", "<leader>ca", "<Cmd>call VSCodeNotify('editor.action.quickFix')<CR>", { desc = "Code action" })
+
+  -- Highlight on yank
+  vim.api.nvim_create_autocmd("TextYankPost", {
+    callback = function()
+      vim.highlight.on_yank({ timeout = 200 })
+    end,
+  })
+
+else
+  -- Running in regular Neovim - full configuration
 
 -- ============================================================================
 -- Core Settings
@@ -349,9 +410,18 @@ vim.api.nvim_set_hl(0, "LineNr", { fg = "#5f5f5f" })
 vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#d7d700", bold = true })
 vim.api.nvim_set_hl(0, "StatusLine", { bg = "#3a3a3a", fg = "#d0d0d0" })
 
+end -- End of non-VSCode configuration
+
 -- ============================================================================
--- Usage Tips (View with :help local-additions)
+-- Usage Tips
 -- ============================================================================
+--
+-- VSCode Mode:
+--   Automatically detected when using VSCode Neovim extension
+--   Uses VSCode's native UI and LSP
+--   Keeps Vim keybindings and motions
+--
+-- Regular Neovim Mode:
 --
 -- File Navigation:
 --   <leader>e       - File explorer (netrw)
