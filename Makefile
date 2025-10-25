@@ -20,3 +20,6 @@ homebrew:
 
 brewfile:
 	brew bundle dump --force --file=homebrew/Brewfile
+
+mac:
+	defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
