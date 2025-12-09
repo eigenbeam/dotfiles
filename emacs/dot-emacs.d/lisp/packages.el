@@ -50,9 +50,39 @@
 
 ;; https://github.com/akermu/emacs-libvterm
 (use-package vterm
-  :bind ("C-c t" . vterm)
+  :bind (("C-c t" . vterm)
+         ("C-c C" . my-claude-code)
+         ("C-c >" . my-send-region-to-claude))
   :config
-  (setq vterm-max-scrollback (* 32 1024)))
+  (setq vterm-max-scrollback (* 32 1024))
+
+  ;; Quick access to Claude Code in dedicated vterm
+  (defun my-claude-code ()
+    "Jump to or create Claude Code vterm buffer and start claude."
+    (interactive)
+    (let ((claude-buffer "*vterm-claude*"))
+      (if (get-buffer claude-buffer)
+          (pop-to-buffer claude-buffer)
+        (progn
+          (vterm claude-buffer)
+          ;; Wait for vterm to initialize, then start claude
+          (run-with-timer 0.5 nil
+                          (lambda ()
+                            (when (get-buffer "*vterm-claude*")
+                              (with-current-buffer "*vterm-claude*"
+                                (vterm-send-string "claude")
+                                (vterm-send-return)))))))))
+
+  ;; Send selected region to Claude Code
+  (defun my-send-region-to-claude ()
+    "Send selected region to Claude Code vterm for analysis."
+    (interactive)
+    (if (use-region-p)
+        (let ((text (buffer-substring-no-properties (region-beginning) (region-end))))
+          (my-claude-code)
+          (vterm-send-string text)
+          (vterm-send-return))
+      (message "No region selected"))))
 
 ;; https://github.com/justbur/emacs-which-key/
 (use-package which-key

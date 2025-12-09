@@ -46,6 +46,12 @@ if vim.g.vscode then
   -- Better paste (don't yank replaced text)
   keymap("x", "<leader>p", '"_dP', { desc = "Paste without yanking" })
 
+  -- Explicit clipboard operations (force y, Y, p, P to use system clipboard)
+  keymap({ "n", "v" }, "y", '"+y', { desc = "Yank to clipboard" })
+  keymap("n", "Y", '"+Y', { desc = "Yank line to clipboard" })
+  keymap({ "n", "v" }, "p", '"+p', { desc = "Paste from clipboard" })
+  keymap({ "n", "v" }, "P", '"+P', { desc = "Paste before from clipboard" })
+
   -- VSCode commands (call VSCode's native functionality)
   keymap("n", "<leader>w", "<Cmd>call VSCodeNotify('workbench.action.files.save')<CR>", { desc = "Save file" })
   keymap("n", "<leader>q", "<Cmd>call VSCodeNotify('workbench.action.closeActiveEditor')<CR>", { desc = "Close editor" })
@@ -93,6 +99,7 @@ vim.opt.timeoutlen = 300               -- Faster key sequence timeout
 
 -- Editor Behavior
 vim.opt.mouse = "a"                     -- Enable mouse support
+vim.opt.mousefocus = true               -- Focus window on mouse hover
 vim.opt.clipboard = "unnamedplus"       -- System clipboard integration
 vim.opt.undofile = true                 -- Persistent undo
 vim.opt.backup = false                  -- No backup files
@@ -231,6 +238,13 @@ keymap("n", "<Esc>", ":nohlsearch<CR>", { desc = "Clear search highlight" })
 -- Better paste (don't yank replaced text)
 keymap("x", "<leader>p", '"_dP', { desc = "Paste without yanking" })
 
+-- Explicit clipboard operations (force y, Y, p, P to use system clipboard)
+-- This ensures clipboard works even if provider isn't properly configured
+keymap({ "n", "v" }, "y", '"+y', { desc = "Yank to clipboard" })
+keymap("n", "Y", '"+Y', { desc = "Yank line to clipboard" })
+keymap({ "n", "v" }, "p", '"+p', { desc = "Paste from clipboard" })
+keymap({ "n", "v" }, "P", '"+P', { desc = "Paste before from clipboard" })
+
 -- Quick save/quit
 keymap("n", "<leader>w", ":write<CR>", { desc = "Save file" })
 keymap("n", "<leader>q", ":quit<CR>", { desc = "Quit" })
@@ -350,6 +364,21 @@ if lsp_ok then
 end
 
 -- ============================================================================
+-- Clipboard & Mouse Configuration
+-- ============================================================================
+
+-- Check clipboard provider on startup (diagnostic)
+vim.api.nvim_create_autocmd("VimEnter", {
+  once = true,
+  callback = function()
+    local clipboard_ok = vim.fn.has("clipboard")
+    if clipboard_ok == 0 then
+      vim.notify("Warning: Clipboard provider not available. Install xclip/xsel (Linux) or check pbcopy/pbpaste (macOS)", vim.log.levels.WARN)
+    end
+  end,
+})
+
+-- ============================================================================
 -- Quality of Life Improvements
 -- ============================================================================
 
@@ -415,6 +444,17 @@ end -- End of non-VSCode configuration
 -- ============================================================================
 -- Usage Tips
 -- ============================================================================
+--
+-- Clipboard:
+--   All yank (y, Y) and paste (p, P) operations use the system clipboard
+--   If clipboard doesn't work, check :checkhealth provider
+--   macOS: Requires pbcopy/pbpaste (built-in)
+--   Linux: Requires xclip or xsel
+--
+-- Mouse Selection:
+--   Use mouse to select text in neovim (won't include line numbers)
+--   For terminal selection (includes line numbers), hold Shift while selecting
+--   Or use Option/Alt on some terminal emulators
 --
 -- VSCode Mode:
 --   Automatically detected when using VSCode Neovim extension
