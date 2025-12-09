@@ -34,7 +34,7 @@ source <(fzf --zsh)
 # ------------------
 # GitHub Copilot
 # ------------------
-eval "$(gh copilot alias -- zsh)"
+#eval "$(gh copilot alias -- zsh)"
 
 # ------------------
 # Python
