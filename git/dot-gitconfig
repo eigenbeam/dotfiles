@@ -10,12 +10,12 @@
 	safecrlf = false
 	pager = delta
 [alias]
-        st = status
-        sts = status --short
-        hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	st = status
+	sts = status --short
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 [push]
 	default = upstream
-        followTags = true
+	followTags = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -29,7 +29,17 @@
 	diffFilter = delta --color-only
 [delta]
 	navigate = true
+[diff]
+	colorMoved = default
 [merge]
 	conflictStyle = zdiff3
 [init]
 	defaultBranch = main
+
+# Machine-specific overrides (e.g., work email, git-secrets)
+[include]
+	path = ~/.gitconfig-local
+
+# Directory-based overrides (uncomment and adjust for per-repo-directory config)
+# [includeIf "gitdir:~/work/"]
+#	path = ~/.gitconfig-work

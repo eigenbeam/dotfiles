@@ -8,6 +8,8 @@ check:
 all: check
 	@mkdir -p $(HOME)/.cache/zsh
 	@mkdir -p $(HOME)/.config
+	@touch $(HOME)/.gitconfig-local
+	stow --dotfiles -t $(HOME) bash
 	stow --dotfiles -t $(HOME) emacs
 	stow --dotfiles -t $(HOME) git
 	stow --dotfiles -t $(HOME)/.config nvim

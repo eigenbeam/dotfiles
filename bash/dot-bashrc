@@ -1,3 +1,6 @@
+# Return if not interactive
+[[ $- != *i* ]] && return
+
 # ------------------
 # Aliases
 # ------------------
@@ -9,38 +12,28 @@ alias bc='bc -l'
 # History
 # ------------------
 HISTSIZE=8192
-SAVEHIST=8192
-HISTFILE=~/.cache/zsh/history
-setopt correct
-
-# ------------------
-# Completions
-# ------------------
-autoload -U colors && colors
-
-if type brew &>/dev/null; then
-  fpath+=("/opt/homebrew/share/zsh/site-functions")
-  fpath+=(/opt/homebrew/share/zsh-completions)
-
-  autoload -Uz compinit
-  zstyle ':completion:*' menu select
-  zmodload zsh/complist
-  compinit
-fi
-_comp_options+=(globdots)		# Include hidden files.
+HISTFILESIZE=8192
+HISTCONTROL=ignoreboth
 
 # ------------------
 # Prompt
 # ------------------
-autoload -U promptinit; promptinit
-eval "$(starship init zsh)"
+eval "$(starship init bash)"
+
+# ------------------
+# Completions
+# ------------------
+if type brew &>/dev/null; then
+  BREW_PREFIX="$(brew --prefix)"
+  [[ -r "${BREW_PREFIX}/etc/profile.d/bash_completion.sh" ]] && . "${BREW_PREFIX}/etc/profile.d/bash_completion.sh"
+fi
 
 # ------------------
 # FZF
 # ------------------
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-source <(fzf --zsh)
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # ------------------
 # JavaScript
