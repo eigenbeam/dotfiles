@@ -1,0 +1,11 @@
+#!/bin/bash
+# Sample global pre-commit hook
+# To enable: remove .sample suffix and uncomment core.hooksPath in git config
+#
+# Runs shellcheck on staged .sh files
+
+staged_sh=$(git diff --cached --name-only --diff-filter=ACM -- '*.sh')
+
+if [ -n "$staged_sh" ] && command -v shellcheck >/dev/null 2>&1; then
+  echo "$staged_sh" | xargs shellcheck || exit 1
+fi

@@ -6,10 +6,12 @@
 (use-package diminish)
 
 ;; https://github.com/purcell/exec-path-from-shell
+;; Needed for GUI-launched Emacs (Dock, Spotlight) which doesn't inherit shell env vars
 (use-package exec-path-from-shell
+  :if (display-graphic-p)
   :defer 0.1
   :custom
-  (exec-path-from-shell-arguments '("-l"))  ; Load shell init files (.zshrc, .bash_profile)
+  (exec-path-from-shell-arguments '("-l"))
   :config
   (exec-path-from-shell-initialize))
 

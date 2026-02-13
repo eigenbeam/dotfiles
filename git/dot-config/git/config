@@ -9,6 +9,9 @@
 	autocrlf = input
 	safecrlf = false
 	pager = delta
+	excludesFile = ~/.config/git/ignore
+	# Uncomment to use global hooks (overrides per-repo hooks):
+	# hooksPath = ~/.config/git/hooks
 [alias]
 	st = status
 	sts = status --short

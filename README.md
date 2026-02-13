@@ -19,6 +19,16 @@ $ make homebrew   # Install core Homebrew packages
 $ make bootstrap  # Full setup from scratch (installs Homebrew + Stow + configs)
 ```
 
+## Reproducibility
+
+To pin exact Homebrew package versions:
+
+```
+$ brew bundle lock --file=homebrew/Brewfile
+```
+
+This generates `Brewfile.lock.json` for deterministic installs.
+
 ## CLI Tools
 
 * [bat](https://github.com/sharkdp/bat)

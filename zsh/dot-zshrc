@@ -72,8 +72,10 @@ npm() { _lazy_load_nvm; npm "$@"; }
 npx() { _lazy_load_nvm; npx "$@"; }
 
 # ------------------
-# Syntax highlighting (must be last)
+# Plugins (autosuggestions before syntax-highlighting, which must be last)
 # ------------------
+[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
+  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 

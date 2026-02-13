@@ -1,0 +1,14 @@
+# Enforce LF line endings
+* text=auto eol=lf
+
+# Diff drivers
+*.el diff=elisp
+*.lua diff=lua
+*.py diff=python
+
+# Binary files
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.itermcolors binary
