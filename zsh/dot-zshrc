@@ -1,9 +1,13 @@
+# Uncomment to profile startup: `time zsh -i -c exit`
+# zmodload zsh/zprof
+
 # ------------------
 # Aliases
 # ------------------
 alias vi=nvim
 alias vim=nvim
 alias bc='bc -l'
+alias cat='bat --paging=never'
 
 # ------------------
 # History
@@ -11,6 +15,13 @@ alias bc='bc -l'
 HISTSIZE=8192
 SAVEHIST=8192
 HISTFILE=~/.cache/zsh/history
+setopt HIST_IGNORE_DUPS
+setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
+
+# ------------------
+# Options
+# ------------------
 setopt correct
 
 # ------------------
@@ -21,12 +32,17 @@ autoload -U colors && colors
 if type brew &>/dev/null; then
   fpath+=("/opt/homebrew/share/zsh/site-functions")
   fpath+=(/opt/homebrew/share/zsh-completions)
-
-  autoload -Uz compinit
-  zstyle ':completion:*' menu select
-  zmodload zsh/complist
-  compinit
 fi
+
+autoload -Uz compinit
+if [[ -n ~/.cache/zsh/zcompdump(#qN.mh+24) ]]; then
+  compinit -d ~/.cache/zsh/zcompdump
+else
+  compinit -C -d ~/.cache/zsh/zcompdump
+fi
+
+zstyle ':completion:*' menu select
+zmodload zsh/complist
 _comp_options+=(globdots)		# Include hidden files.
 
 # ------------------
@@ -43,7 +59,23 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source <(fzf --zsh)
 
 # ------------------
-# JavaScript
+# JavaScript (lazy-loaded)
 # ------------------
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+_lazy_load_nvm() {
+  unset -f nvm node npm npx
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+}
+nvm() { _lazy_load_nvm; nvm "$@"; }
+node() { _lazy_load_nvm; node "$@"; }
+npm() { _lazy_load_nvm; npm "$@"; }
+npx() { _lazy_load_nvm; npx "$@"; }
+
+# ------------------
+# Syntax highlighting (must be last)
+# ------------------
+[ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
+  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Uncomment to finish profiling
+# zprof

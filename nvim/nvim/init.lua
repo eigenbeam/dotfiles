@@ -133,7 +133,6 @@ vim.opt.wildmenu = true
 vim.opt.wildignore = { "*.o", "*.obj", "*.pyc", "*.swp", "*~", ".git/*", "node_modules/*" }
 
 -- Performance
-vim.opt.lazyredraw = true               -- Don't redraw during macros
 vim.opt.synmaxcol = 300                 -- Only syntax highlight first 300 cols
 
 -- ============================================================================
@@ -347,8 +346,13 @@ if lsp_ok then
       keymap("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "Rename symbol" }))
       keymap("n", "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { desc = "Code action" }))
       keymap("n", "<leader>d", vim.diagnostic.open_float, vim.tbl_extend("force", opts, { desc = "Show diagnostics" }))
-      keymap("n", "[d", vim.diagnostic.goto_prev, vim.tbl_extend("force", opts, { desc = "Previous diagnostic" }))
-      keymap("n", "]d", vim.diagnostic.goto_next, vim.tbl_extend("force", opts, { desc = "Next diagnostic" }))
+      if vim.fn.has("nvim-0.11") == 1 then
+        keymap("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, vim.tbl_extend("force", opts, { desc = "Previous diagnostic" }))
+        keymap("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, vim.tbl_extend("force", opts, { desc = "Next diagnostic" }))
+      else
+        keymap("n", "[d", vim.diagnostic.goto_prev, vim.tbl_extend("force", opts, { desc = "Previous diagnostic" }))
+        keymap("n", "]d", vim.diagnostic.goto_next, vim.tbl_extend("force", opts, { desc = "Next diagnostic" }))
+      end
     end,
   })
 

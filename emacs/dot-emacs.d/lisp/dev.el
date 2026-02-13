@@ -123,7 +123,7 @@
 
 ;; Fix escape codes so they show up as color
 (add-hook 'compilation-filter-hook
-          (lambda () (ansi-color-apply-on-region (point-min) (point-max))))
+          (lambda () (ansi-color-apply-on-region compilation-filter-start (point))))
 
 (defun kwb-dev-mode-hook ()
   (subword-mode))
