@@ -1,0 +1,20 @@
+Host *
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    AddKeysToAgent yes
+    IdentitiesOnly yes
+    ControlMaster auto
+    ControlPath ~/.ssh/sockets/%r@%h-%p
+    ControlPersist 600
+
+# --- EC2 host patterns (uncomment and customize) ---
+# Host ec2-*
+#     User ec2-user
+#     IdentityFile ~/.ssh/your-key.pem
+#     # ProxyJump bastion  # uncomment for bastion host
+
+# --- SSM proxy template (uncomment and customize) ---
+# Host ssm-*
+#     ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
+#     User ec2-user
+#     IdentityFile ~/.ssh/your-key.pem

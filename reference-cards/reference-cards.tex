@@ -1,0 +1,972 @@
+% Reference Cards — US Letter landscape, two cards per sheet
+% Print double-sided (short-edge flip), cut in half for index cards
+% Page pattern: fronts (L-to-R), backs (R-to-L) so cards align after cutting
+\documentclass[8pt]{extarticle}
+\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
+            top=0.25in,bottom=0.2in,left=0.3in,right=0.3in]{geometry}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{helvet}
+\usepackage[scaled=0.82]{beramono}
+\renewcommand{\familydefault}{\sfdefault}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.15in}
+\setlength{\tabcolsep}{0pt}
+
+% Card face width (each half of the page)
+\newlength{\cardwidth}
+\setlength{\cardwidth}{0.484\textwidth}
+
+% Card title with thin rule
+\newcommand{\cardtitle}[2]{%
+  {\normalsize\bfseries #1}\hfill{\footnotesize\itshape #2}\\[-2pt]
+  \rule{\linewidth}{0.3pt}\par\vspace{2pt}%
+}
+
+% Section header
+\newcommand{\sect}[1]{\vspace{3pt}{\footnotesize\bfseries\scshape #1}\par\vspace{1pt}}
+
+% Key-action table: left col auto-width monospace, right col fills remaining
+\newenvironment{keys}[1][1in]{%
+  \tabularx{\linewidth}{@{}l@{\enspace}Y@{}}%
+}{%
+  \endtabularx\par%
+}
+
+% Command-description pair (full width)
+\newcommand{\cm}[2]{\texttt{#1}\hfill{\itshape #2}\\}
+
+\begin{document}\small
+
+% ====================================================================
+% SHEET 1 FRONTS — CARD 1 (tmux) + CARD 2 (nvim core)
+% ====================================================================
+\noindent
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{tmux}{front}
+\begin{multicols}{2}
+
+\sect{Sessions}
+\begin{keys}
+\texttt{tmux new -s \textit{name}}  & New session \\
+\texttt{tmux ls}                     & List sessions \\
+\texttt{tmux attach -t \textit{n}}   & Attach \\
+\texttt{tmux kill-session -t \textit{n}} & Kill \\
+\texttt{C-a d}   & Detach \\
+\texttt{C-a s}   & Session picker \\
+\texttt{C-a \$}  & Rename session \\
+\end{keys}
+
+\sect{Windows}
+\begin{keys}
+\texttt{C-a c}       & New window \\
+\texttt{C-a ,}       & Rename window \\
+\texttt{C-a \&}      & Kill window \\
+\texttt{C-a p / n}   & Prev / next window \\
+\texttt{C-a 1\,--\,9}  & Jump to window N \\
+\texttt{C-a w}       & Window picker \\
+\end{keys}
+
+\columnbreak
+
+\sect{Panes}
+\begin{keys}
+\texttt{C-a |}       & Split vertical \\
+\texttt{C-a -}       & Split horizontal \\
+\texttt{C-a x}       & Kill pane \\
+\texttt{C-h/j/k/l}  & Navigate (crosses nvim) \\
+\texttt{M-h/j/k/l}  & Resize \\
+\texttt{C-a z}       & Zoom / unzoom \\
+\texttt{C-a \{ / \}} & Swap pane left / right \\
+\texttt{C-a q}       & Show pane numbers \\
+\end{keys}
+
+\sect{Copy Mode (vi)}
+\begin{keys}
+\texttt{C-a [}    & Enter copy mode \\
+\texttt{v}        & Begin selection \\
+\texttt{y}        & Yank to system clipboard \\
+\texttt{q / Esc}  & Exit copy mode \\
+\texttt{/ \,?\,}  & Search forward / backward \\
+\end{keys}
+
+\vfill
+{\scriptsize Prefix: \texttt{C-a} \enspace vi mode \enspace mouse on \enspace base index 1}
+
+\end{multicols}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{nvim: core editing}{front}
+\begin{multicols}{2}
+
+\sect{Motion}
+\begin{keys}
+\texttt{h j k l}      & Left, down, up, right \\
+\texttt{w / b}         & Next / prev word start \\
+\texttt{e / ge}        & Next / prev word end \\
+\texttt{0 / \$}        & Line start / end \\
+\texttt{\^{}}          & First non-blank \\
+\texttt{gg / G}        & File start / end \\
+\texttt{\{ / \}}       & Paragraph up / down \\
+\texttt{\%}            & Matching bracket \\
+\texttt{f\textit{c} / F\textit{c}} & Find char fwd / back \\
+\texttt{C-d / C-u}    & Half-page down / up \\
+\end{keys}
+
+\sect{Editing}
+\begin{keys}
+\texttt{i / a}    & Insert before / after \\
+\texttt{I / A}    & Insert at line start / end \\
+\texttt{o / O}    & New line below / above \\
+\texttt{x}        & Delete char \\
+\texttt{dd / cc}  & Delete / change line \\
+\texttt{dw / cw}  & Delete / change word \\
+\texttt{D / C}    & Delete / change to EOL \\
+\texttt{r\textit{c}}  & Replace char \\
+\texttt{\~{}}     & Toggle case \\
+\texttt{.}        & Repeat last change \\
+\texttt{u / C-r}  & Undo / redo \\
+\end{keys}
+
+\columnbreak
+
+\sect{Visual Mode}
+\begin{keys}
+\texttt{v / V / C-v}  & Char / line / block \\
+\texttt{< / >}        & Indent (stays in visual) \\
+\texttt{J / K}        & Move selection down / up \\
+\texttt{SPC p}        & Paste without yanking \\
+\end{keys}
+
+\sect{Text Objects \normalfont(\texttt{d/c/y} + object)}
+\begin{tabularx}{\linewidth}{@{}l@{\;}l@{\quad}l@{\;}Y@{}}
+\texttt{iw/aw} & word      & \texttt{i"/a"} & double-quoted \\
+\texttt{ip/ap} & paragraph & \texttt{i(/a(} & parentheses \\
+\texttt{it/at} & HTML tag  & \texttt{i\{/a\{} & braces \\
+\end{tabularx}\par
+
+\sect{mini.surround}
+\begin{keys}
+\texttt{sa\textit{motion}\textit{char}} & Add surround \\
+\texttt{sd\textit{char}}   & Delete surround \\
+\texttt{sr\textit{old}\textit{new}} & Replace surround \\
+\end{keys}
+{\scriptsize Example: \texttt{saiw"} surrounds word with \texttt{"}}
+
+\vfill
+{\scriptsize Leader: \texttt{Space} \enspace relative lines \enspace scrolloff 8 \enspace system clipboard}
+
+\end{multicols}
+\end{minipage}
+\newpage
+
+% ====================================================================
+% SHEET 1 BACKS — CARD 2 (nvim core) + CARD 1 (tmux)  [reversed]
+% ====================================================================
+\noindent
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{nvim: core editing}{back}
+\begin{multicols}{2}
+
+\sect{Registers \& Macros}
+\begin{keys}
+\texttt{"ay / "ap}    & Yank / paste register \texttt{a} \\
+\texttt{"+y / "+p}    & System clipboard \\
+\texttt{:reg}         & Show all registers \\
+\texttt{qa}           & Record macro into \texttt{a} \\
+\texttt{q}            & Stop recording \\
+\texttt{@a}           & Play macro \texttt{a} \\
+\texttt{@@}           & Repeat last macro \\
+\texttt{10@a}         & Play macro 10 times \\
+\end{keys}
+
+\sect{Marks}
+\begin{keys}
+\texttt{ma}        & Set mark \texttt{a} \\
+\texttt{`a}        & Jump to exact position \\
+\texttt{'a}        & Jump to line \\
+\texttt{`.}        & Last edit position \\
+\texttt{``}        & Previous jump position \\
+\end{keys}
+
+\sect{Command Mode}
+\begin{keys}
+\texttt{:s/old/new/g}     & Substitute in line \\
+\texttt{:\%s/old/new/gc}  & Substitute in file \\
+\texttt{:g/pattern/d}     & Delete matching lines \\
+\texttt{:r !cmd}          & Insert command output \\
+\texttt{:!cmd}            & Run shell command \\
+\texttt{:norm @a}         & Macro on visual sel. \\
+\end{keys}
+
+\columnbreak
+
+\sect{Splits \& Buffers}
+\begin{keys}
+\texttt{SPC sv}      & Vertical split \\
+\texttt{SPC sh}      & Horizontal split \\
+\texttt{SPC se}      & Equalize splits \\
+\texttt{SPC sx}      & Close split \\
+\texttt{C-h/j/k/l}  & Navigate (crosses tmux) \\
+\texttt{A-h/j/k/l}  & Resize splits \\
+\texttt{S-h / S-l}  & Prev / next buffer \\
+\texttt{SPC bd}      & Delete buffer \\
+\end{keys}
+
+\sect{Save \& Quit}
+\begin{keys}
+\texttt{SPC w}   & Save \\
+\texttt{SPC q}   & Quit \\
+\texttt{SPC Q}   & Force quit all \\
+\end{keys}
+
+\sect{File Explorer (netrw)}
+\begin{keys}
+\texttt{SPC e / E}   & Open explorer \\
+\texttt{<CR>}        & Open file / dir \\
+\texttt{-}           & Go up \\
+\texttt{\%}          & New file \\
+\texttt{d}           & New directory \\
+\texttt{D}           & Delete \\
+\texttt{R}           & Rename \\
+\end{keys}
+
+\end{multicols}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{tmux}{back}
+\begin{multicols}{2}
+
+\sect{Plugins}
+\begin{keys}
+\texttt{C-a C-s / C-r}    & Save / restore sessions \\
+\texttt{C-a /}             & Regex search (copycat) \\
+\texttt{C-a C-f}           & File search (copycat) \\
+\texttt{C-a C-u}           & URL search (copycat) \\
+\texttt{o} {\scriptsize(copy mode)}  & Open selection (open) \\
+\texttt{S} {\scriptsize(copy mode)}  & DuckDuckGo search (open) \\
+\texttt{C-a P}             & Toggle pane logging \\
+\texttt{C-a M-p}           & Screen capture to file \\
+\end{keys}
+
+{\scriptsize continuum: auto-saves/restores on tmux start}
+
+\sect{Command Mode}
+\begin{keys}
+\texttt{C-a :}                    & Enter command mode \\
+\texttt{:resize-pane -D 10}      & Resize down 10 rows \\
+\texttt{:swap-window -t 3}       & Move window to pos 3 \\
+\texttt{:move-pane -t \textit{sess}:} & Move pane to session \\
+\texttt{:set synchronize-panes}  & Type in all panes \\
+\texttt{:capture-pane -S -100}   & Capture last 100 lines \\
+\end{keys}
+
+\columnbreak
+
+\sect{Session Workflow}
+\begin{keys}
+\texttt{C-a ( / )}   & Prev / next session \\
+\texttt{C-a L}       & Last session (toggle) \\
+\end{keys}
+
+\sect{Troubleshooting}
+\begin{keys}
+\texttt{tmux source \~{}/.tmux.conf}     & Reload config \\
+\texttt{C-a I}                            & Install TPM plugins \\
+\texttt{tmux kill-server}                 & Nuclear reset \\
+\texttt{tmux list-keys | grep \textit{k}} & Find binding \\
+\end{keys}
+
+\sect{pain-control Splits}
+\begin{keys}
+\texttt{C-a |}       & Vertical split \\
+\texttt{C-a -}       & Horizontal split \\
+\texttt{C-a <{} >{}} & Resize pane \\
+\end{keys}
+
+\end{multicols}
+\end{minipage}
+\newpage
+
+% ====================================================================
+% SHEET 2 FRONTS — CARD 3 (nvim LSP) + CARD 4 (CLI tools)
+% ====================================================================
+\noindent
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{nvim: lsp, search \& git}{front}
+\begin{multicols}{2}
+
+\sect{LSP}
+\begin{keys}
+\texttt{gd}        & Go to definition \\
+\texttt{gD}        & Go to declaration \\
+\texttt{gr}        & References \\
+\texttt{gi}        & Go to implementation \\
+\texttt{K}         & Hover docs \\
+\texttt{SPC rn}    & Rename symbol \\
+\texttt{SPC ca}    & Code action \\
+\texttt{SPC d}     & Diagnostics float \\
+\texttt{[d / ]d}   & Prev / next diagnostic \\
+\texttt{SPC th}    & Toggle inlay hints \\
+\texttt{SPC f}     & Format buffer \\
+\end{keys}
+
+\sect{Completion (blink.cmp)}
+\begin{keys}
+\texttt{C-Space}   & Trigger completion \\
+\texttt{C-n / C-p} & Next / prev item \\
+\texttt{C-y}       & Accept \\
+\texttt{C-e}       & Cancel \\
+\texttt{C-f / C-b} & Scroll docs \\
+\end{keys}
+
+\columnbreak
+
+\sect{Telescope Search}
+\begin{keys}
+\texttt{SPC sf}    & Find files \\
+\texttt{SPC sg}    & Live grep \\
+\texttt{SPC sw}    & Grep current word \\
+\texttt{SPC sb}    & Buffers \\
+\texttt{SPC s.}    & Recent files \\
+\texttt{SPC s?}    & Help tags \\
+\texttt{SPC sk}    & Keymaps \\
+\texttt{SPC sd}    & Diagnostics \\
+\texttt{SPC sr}    & Resume last search \\
+\texttt{SPC sn}    & Nvim config files \\
+\texttt{SPC /}     & Fuzzy find in buffer \\
+\end{keys}
+
+{\scriptsize Inside: \texttt{C-n/p} navigate, \texttt{CR} select,
+  \texttt{Esc} close, \texttt{C-x} split, \texttt{C-v} vsplit}
+
+\sect{Git via Telescope}
+\begin{keys}
+\texttt{SPC gc}    & Git commits \\
+\texttt{SPC gf}    & Git file history \\
+\texttt{SPC gs}    & Git status \\
+\end{keys}
+
+\vfill
+{\scriptsize LSP: bashls, pyright, lua\_ls, yamlls, ts\_ls, terraformls, dockerls, taplo, julials, jdtls}
+
+\end{multicols}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{cli tools}{front}
+\begin{multicols}{2}
+
+\sect{bat \normalfont(cat replacement)}
+\begin{keys}
+\texttt{bat file.py}        & Syntax + line numbers \\
+\texttt{bat -l json}        & Force language \\
+\texttt{bat -p file}        & Plain output \\
+\texttt{bat -A file}        & Show non-printable \\
+\texttt{bat --diff file}    & Git diff inline \\
+\texttt{bat -r 10:20 file}  & Lines 10--20 only \\
+\end{keys}
+{\scriptsize Also: \texttt{MANPAGER} (man pages with highlighting)}
+
+\sect{eza \normalfont(ls replacement)}
+\begin{keys}
+\texttt{ls}                     & eza (aliased) \\
+\texttt{ll}                     & \texttt{-la --git --icons} \\
+\texttt{lt}                     & \texttt{--tree --level=2} \\
+\texttt{eza -la --sort=modified} & Sort by time \\
+\texttt{eza -la --sort=size}    & Sort by size \\
+\texttt{eza --git-ignore}       & Respect .gitignore \\
+\end{keys}
+
+\sect{fzf \normalfont(fuzzy finder)}
+\begin{keys}
+\texttt{C-t}               & File picker (insert) \\
+\texttt{C-r}               & History search \\
+\texttt{M-c}               & cd into directory \\
+\texttt{vim \$(fzf)}       & Open file in nvim \\
+\texttt{rg pat | fzf}      & Filter grep results \\
+\end{keys}
+{\scriptsize Backend: \texttt{rg} for files, \texttt{fd} for dirs}
+
+\columnbreak
+
+\sect{fd \normalfont(find replacement)}
+\begin{keys}
+\texttt{fd pattern}             & Find files \\
+\texttt{fd -e py}               & By extension \\
+\texttt{fd -t d / -t f}        & Dirs / files only \\
+\texttt{fd -H}                  & Include hidden \\
+\texttt{fd -I}                  & Ignore .gitignore \\
+\texttt{fd pat --exec cmd \{\}} & Exec on each \\
+\texttt{fd -e log --changed-within 1d} & Recent \\
+\end{keys}
+
+\sect{ripgrep / rg \normalfont(grep replacement)}
+\begin{keys}
+\texttt{rg pattern}             & Search recursively \\
+\texttt{rg pattern -t py}      & Python files only \\
+\texttt{rg pattern -g '*.yaml'} & Glob filter \\
+\texttt{rg -i pattern}         & Case insensitive \\
+\texttt{rg -w pattern}         & Whole word \\
+\texttt{rg -l pattern}         & File names only \\
+\texttt{rg -c pattern}         & Count per file \\
+\texttt{rg -C 3 pattern}      & 3 lines context \\
+\texttt{rg --no-ignore pat}    & Include gitignored \\
+\texttt{rg -F 'literal'}      & Fixed string \\
+\end{keys}
+
+\end{multicols}
+\end{minipage}
+\newpage
+
+% ====================================================================
+% SHEET 2 BACKS — CARD 4 (CLI tools) + CARD 3 (nvim LSP)  [reversed]
+% ====================================================================
+\noindent
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{cli tools}{back}
+\begin{multicols}{2}
+
+\sect{jq \normalfont(JSON processor)}
+\begin{keys}
+\texttt{jq '.'}                 & Pretty-print \\
+\texttt{jq '.key'}             & Extract key \\
+\texttt{jq '.items[0]'}       & First element \\
+\texttt{jq '.items[] | .name'} & Map over array \\
+\texttt{jq 'select(.age > 30)'} & Filter \\
+\texttt{jq -r '.name'}        & Raw (no quotes) \\
+\texttt{jq -c '.'}            & Compact output \\
+\texttt{jq 'keys'}            & Get all keys \\
+\texttt{jq 'length'}          & Count items \\
+\end{keys}
+
+\sect{xh \normalfont(curl alternative)}
+\begin{keys}
+\texttt{xh url}                  & GET (default) \\
+\texttt{xh POST url k=v}        & POST JSON \\
+\texttt{xh POST url k:=123}     & Non-string value \\
+\texttt{xh -f POST url k=v}     & Form POST \\
+\texttt{xh url Header:val}      & Custom header \\
+\texttt{xh -d url}              & Download file \\
+\texttt{xh --offline POST url}  & Preview request \\
+\end{keys}
+
+\columnbreak
+
+\sect{zoxide \normalfont(cd replacement)}
+\begin{keys}
+\texttt{z dotfiles}  & Jump to best match \\
+\texttt{z dot}       & Partial match works \\
+\texttt{zi}          & Interactive (fzf) \\
+\texttt{z -}         & Previous directory \\
+\end{keys}
+
+\sect{direnv \normalfont(per-project env)}
+\begin{keys}
+\texttt{direnv allow}  & Trust .envrc \\
+\texttt{direnv deny}   & Revoke trust \\
+\end{keys}
+{\scriptsize Create \texttt{.envrc} in project root. Auto-loads on \texttt{cd}.}
+
+\sect{tldr \normalfont(simplified man pages)}
+\begin{keys}
+\texttt{tldr tar}         & Quick examples \\
+\texttt{tldr --update}    & Update cache \\
+\end{keys}
+
+\sect{make \normalfont(dotfiles)}
+\begin{keys}
+\texttt{make}             & Stow all configs \\
+\texttt{make homebrew}    & Install core packages \\
+\texttt{make tools}       & npm + uv tool installs \\
+\texttt{make ssh}         & Deploy SSH config \\
+\end{keys}
+
+\sect{Alias Table}
+
+\begin{tabularx}{\linewidth}{@{}l@{~\textrightarrow~}Y@{}}
+\texttt{cat}         & \texttt{bat --paging=never} \\
+\texttt{ls}          & \texttt{eza} \\
+\texttt{vi / vim}    & \texttt{nvim} \\
+\texttt{man}         & via \texttt{bat} \\
+\end{tabularx}\par
+
+\end{multicols}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{nvim: lsp, search \& git}{back}
+\begin{multicols}{2}
+
+\sect{Gitsigns (hunks)}
+\begin{keys}
+\texttt{]h / [h}   & Next / prev hunk \\
+\texttt{SPC hs}    & Stage hunk \\
+\texttt{SPC hr}    & Reset hunk \\
+\texttt{SPC hb}    & Blame line \\
+\texttt{SPC hd}    & Diff against index \\
+\texttt{SPC hD}    & Diff against last commit \\
+\end{keys}
+
+\sect{Lint (nvim-lint)}
+\begin{keys}
+\texttt{SPC ll}    & Lint current file \\
+\end{keys}
+{\scriptsize Auto-lints on save. Linters: ruff (python),
+eslint (js/ts), tflint (terraform).}
+
+\sect{Debug (nvim-dap)}
+\begin{keys}
+\texttt{SPC Db}    & Toggle breakpoint \\
+\texttt{SPC Dc}    & Continue \\
+\texttt{SPC Do}    & Step over \\
+\texttt{SPC Di}    & Step into \\
+\texttt{SPC Du}    & Toggle DAP UI \\
+\end{keys}
+
+\columnbreak
+
+\sect{Toggles}
+\begin{keys}
+\texttt{SPC tz}    & Zen mode \\
+\texttt{SPC tt}    & Terminal (split) \\
+\end{keys}
+
+\sect{which-key}
+{\scriptsize Press \texttt{SPC} and wait to see all bindings by group.}
+
+\sect{Plugin Management}
+\begin{keys}
+\texttt{:Lazy}          & Plugin manager UI \\
+\texttt{:Lazy sync}     & Update all plugins \\
+\texttt{:Lazy health}   & Check plugin health \\
+\texttt{:checkhealth}   & Nvim diagnostics \\
+\end{keys}
+
+\sect{Treesitter}
+
+{\scriptsize Installed: bash, c, cpp, css, diff, dockerfile,
+hcl, html, java, javascript, json, julia, lua, markdown,
+python, sql, terraform, toml, tsx, typescript, vim, yaml.
+Context headers (3 lines max) show enclosing function/class.}
+
+\sect{Formatting (conform.nvim)}
+
+{\scriptsize Formats on save. lua: stylua, python: ruff,
+js/ts/json/yaml/md: prettier, terraform: terraform\_fmt,
+toml: taplo. \texttt{SPC f} to format manually.}
+
+\end{multicols}
+\end{minipage}
+\newpage
+
+% ====================================================================
+% SHEET 3 FRONTS — CARD 5 (git) + CARD 6 (TUI tools)
+% ====================================================================
+\noindent
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{git}{front}
+\begin{multicols}{2}
+
+\sect{Your Aliases}
+\begin{tabularx}{\linewidth}{@{}l@{~}l@{\quad}l@{~}Y@{}}
+\texttt{st}      & status         & \texttt{br}      & branch \\
+\texttt{sts}     & status --short & \texttt{ci}      & commit \\
+\texttt{co}      & checkout       & \texttt{prev}    & last branch \\
+\texttt{hist}    & log graph      & \texttt{unstage} & restore --staged \\
+\texttt{amend}   & amend commit   & \texttt{undo}    & soft reset HEAD\~{}1 \\
+\end{tabularx}\par
+
+\sect{Basics}
+\begin{keys}
+\texttt{git init}                & New repo \\
+\texttt{git clone url}          & Clone \\
+\texttt{git add file}           & Stage file \\
+\texttt{git add -p}             & Stage by hunk \\
+\texttt{git ci -m "msg"}        & Commit \\
+\texttt{git push -u origin br}  & Push new branch \\
+\texttt{git pull}               & Pull + rebase \\
+\end{keys}
+
+\sect{Branching}
+\begin{keys}
+\texttt{git br}              & List branches \\
+\texttt{git co -b feat}      & New branch \\
+\texttt{git switch main}     & Switch to main \\
+\texttt{git prev}            & Toggle last branch \\
+\texttt{git br -d br}        & Delete merged \\
+\texttt{git br -D br}        & Force delete \\
+\end{keys}
+
+\columnbreak
+
+\sect{Inspecting}
+\begin{keys}
+\texttt{git st}                  & Status \\
+\texttt{git diff}                & Unstaged (delta) \\
+\texttt{git diff --staged}       & Staged changes \\
+\texttt{git hist}                & Pretty log graph \\
+\texttt{git log --oneline -20}   & Last 20 commits \\
+\texttt{git show abc123}         & Show a commit \\
+\texttt{git blame file}          & Line authorship \\
+\texttt{git log -p -- file}      & File history \\
+\end{keys}
+
+\sect{Stashing}
+\begin{keys}
+\texttt{git stash}            & Stash changes \\
+\texttt{git stash pop}        & Restore + remove \\
+\texttt{git stash list}       & List stashes \\
+\texttt{git stash show -p}    & Show contents \\
+\texttt{git stash drop}       & Delete top stash \\
+\end{keys}
+
+\vfill
+{\scriptsize Pager: delta (side-by-side) \enspace Pull: rebase \enspace Conflicts: zdiff3}
+
+\end{multicols}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{tui tools}{front}
+\begin{multicols}{2}
+
+\sect{lazygit \normalfont(\texttt{SPC gg} from nvim)}
+{\scriptsize Panels: 1\,Status \enspace 2\,Files \enspace 3\,Branches \enspace 4\,Commits \enspace 5\,Stash}
+
+\begin{keys}
+\texttt{Space}     & Stage / unstage \\
+\texttt{a}         & Stage all \\
+\texttt{c / C}     & Commit / with editor \\
+\texttt{P / p}     & Push / pull \\
+\texttt{Enter}     & Expand / view diff \\
+\texttt{d}         & Discard (file panel) \\
+\texttt{s}         & Squash (commits) \\
+\texttt{r}         & Reword commit \\
+\texttt{R}         & Rebase \\
+\texttt{M}         & Merge \\
+\texttt{+ / -}     & More / less context \\
+\texttt{/}         & Filter \\
+\texttt{?}         & Help \\
+\texttt{q}         & Quit \\
+\end{keys}
+
+\columnbreak
+
+\sect{yazi \normalfont(file manager, vim-like)}
+{\scriptsize \texttt{yazi} to launch \enspace \texttt{yazi \textit{path}} to open at path}
+
+\begin{keys}
+\texttt{h / l}     & Parent / enter dir \\
+\texttt{j / k}     & Down / up \\
+\texttt{Enter}     & Open file \\
+\texttt{Space}     & Select item \\
+\texttt{/}         & Search \\
+\texttt{n / N}     & Next / prev match \\
+\texttt{o}         & Open with default app \\
+\texttt{y / p}     & Yank / paste \\
+\texttt{d / x}     & Delete / cut \\
+\texttt{a}         & Create file \\
+\texttt{r}         & Rename \\
+\texttt{.}         & Toggle hidden \\
+\texttt{z}         & Jump (zoxide) \\
+\texttt{\~{}}      & Home \\
+\texttt{Tab}       & Switch pane \\
+\texttt{q}         & Quit \\
+\end{keys}
+
+\end{multicols}
+\end{minipage}
+\newpage
+
+% ====================================================================
+% SHEET 3 BACKS — CARD 6 (TUI tools) + CARD 5 (git)  [reversed]
+% ====================================================================
+\noindent
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{tui tools}{back}
+\begin{multicols}{2}
+
+\sect{bottom / btm \normalfont(system monitor)}
+\begin{keys}
+\texttt{e}           & Expand widget \\
+\texttt{h/j/k/l}    & Navigate \\
+\texttt{/}           & Process search \\
+\texttt{Tab}         & Cycle widgets \\
+\texttt{dd}          & Kill process \\
+\texttt{c / m / p}   & Sort: CPU / mem / PID \\
+\texttt{t}           & Tree view \\
+\texttt{?}           & Help \\
+\texttt{q}           & Quit \\
+\end{keys}
+{\scriptsize Flags: \texttt{--battery} \enspace \texttt{-b} basic mode}
+
+\sect{glow \normalfont(markdown renderer)}
+\begin{keys}
+\texttt{glow file.md}       & Render file \\
+\texttt{glow}               & Browse markdowns \\
+\texttt{glow -p file.md}    & Pager mode \\
+\texttt{glow -w 80 file.md} & Set width \\
+\end{keys}
+
+\columnbreak
+
+\sect{lazydocker \normalfont(Docker TUI)}
+\begin{keys}
+\texttt{e}         & Exec shell into container \\
+\texttt{d}         & Remove container \\
+\texttt{s}         & Stop container \\
+\texttt{r}         & Restart container \\
+\texttt{a}         & Attach to container \\
+\texttt{[}         & Previous tab \\
+\texttt{]}         & Next tab \\
+\texttt{/}         & Filter \\
+\texttt{q}         & Quit \\
+\end{keys}
+
+\sect{shellcheck \normalfont(shell linter)}
+\begin{keys}
+\texttt{shellcheck script.sh}   & Lint script \\
+\texttt{shellcheck -e SC2086}   & Exclude rule \\
+\texttt{shellcheck -f diff}     & Auto-fixable diff \\
+\texttt{shellcheck -s bash}     & Force dialect \\
+\end{keys}
+{\scriptsize Common: SC2086 unquoted var, SC2046 unquoted sub, SC2155 declare+assign}
+
+\sect{delta \normalfont(diff pager, auto-configured)}
+{\scriptsize Your git uses delta with side-by-side + line numbers.}
+\begin{keys}
+\texttt{delta f1 f2}   & Diff two files \\
+\texttt{n / N}         & Next / prev file \\
+\texttt{/}             & Search \\
+\texttt{q}             & Quit \\
+\end{keys}
+
+\end{multicols}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{git}{back}
+\begin{multicols}{2}
+
+\sect{Rebase}
+\begin{keys}
+\texttt{git rebase main}         & Rebase onto main \\
+\texttt{git rebase --continue}   & After resolving \\
+\texttt{git rebase --abort}      & Cancel rebase \\
+\end{keys}
+{\scriptsize Auto-stash enabled: dirty worktree OK.}
+
+\sect{Undoing}
+\begin{keys}
+\texttt{git unstage file}        & Unstage (alias) \\
+\texttt{git undo}                & Undo commit (alias) \\
+\texttt{git amend}               & Amend (alias) \\
+\texttt{git checkout -- file}    & Discard changes \\
+\texttt{git revert abc}          & Revert commit \\
+\texttt{git reset --soft HEAD\~{}3}  & Undo 3, keep staged \\
+\texttt{git reset --mixed HEAD\~{}1} & Undo + unstage \\
+\end{keys}
+
+\sect{Merge Conflicts (zdiff3)}
+{\scriptsize Shows original text between both versions:}
+
+\begin{keys}
+\texttt{<<<<<<< HEAD}    & Your changes \\
+\texttt{|||||||}          & Original (zdiff3) \\
+\texttt{=======}          & Their changes \\
+\texttt{>>>>>>> branch}   & End marker \\
+\end{keys}
+
+\columnbreak
+
+\sect{GitHub CLI (gh)}
+\begin{keys}
+\texttt{gh pr create}           & Create PR \\
+\texttt{gh pr view}             & View current PR \\
+\texttt{gh pr list}             & List open PRs \\
+\texttt{gh pr checkout 123}     & Check out PR \\
+\texttt{gh issue list}          & List issues \\
+\texttt{gh issue create}        & Create issue \\
+\texttt{gh repo clone u/r}      & Clone repo \\
+\texttt{gh browse}              & Open in browser \\
+\end{keys}
+
+\sect{Cherry-Pick \& Bisect}
+\begin{keys}
+\texttt{git cherry-pick abc}     & Apply commit here \\
+\texttt{git bisect start}       & Binary search for bug \\
+\texttt{git bisect bad}         & Mark current bad \\
+\texttt{git bisect good abc}    & Mark commit good \\
+\texttt{git bisect reset}       & Done bisecting \\
+\end{keys}
+
+\sect{Useful Patterns}
+\begin{keys}
+\texttt{git log --all --oneline --graph} & Topology \\
+\texttt{git diff main...HEAD}   & Branch diff \\
+\texttt{git log main..HEAD}     & Branch commits \\
+\texttt{git reflog}             & Lost commits \\
+\end{keys}
+
+\end{multicols}
+\end{minipage}
+\newpage
+
+% ====================================================================
+% SHEET 4 FRONTS — CARD 7 (zsh) + [blank]
+% ====================================================================
+\noindent
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{zsh \& shell}{front}
+\begin{multicols}{2}
+
+\sect{Line Editing}
+\begin{keys}
+\texttt{C-a / C-e}    & Line start / end \\
+\texttt{M-b / M-f}    & Word back / forward \\
+\texttt{C-w}          & Delete word backward \\
+\texttt{M-d}          & Delete word forward \\
+\texttt{C-u}          & Delete to line start \\
+\texttt{C-k}          & Delete to line end \\
+\texttt{C-y}          & Paste deleted text \\
+\texttt{C-r}          & History search (fzf) \\
+\texttt{C-t}          & File picker (fzf) \\
+\texttt{M-c}          & Fuzzy cd (fzf + fd) \\
+\texttt{Tab}          & Complete (menu) \\
+\texttt{\textrightarrow}  & Accept suggestion \\
+\texttt{M-\textrightarrow} & Accept next word \\
+\end{keys}
+
+\sect{History \normalfont(8192, shared sessions)}
+\begin{keys}
+\texttt{!!}                & Repeat last command \\
+\texttt{!\$}               & Last argument \\
+\texttt{!abc}              & Last cmd starting \texttt{abc} \\
+\texttt{!abc:p}            & Print don't execute \\
+\texttt{history | rg pat}  & Search history \\
+\end{keys}
+
+\columnbreak
+
+\sect{Job Control}
+\begin{keys}
+\texttt{C-z}       & Suspend foreground \\
+\texttt{bg}        & Resume in background \\
+\texttt{fg}        & Resume in foreground \\
+\texttt{jobs}      & List background jobs \\
+\texttt{kill \%1}  & Kill job 1 \\
+\end{keys}
+
+\sect{Redirection \& Piping}
+\begin{keys}
+\texttt{cmd \&}          & Run in background \\
+\texttt{c1 \&\& c2}     & Run c2 if c1 succeeds \\
+\texttt{c1 || c2}       & Run c2 if c1 fails \\
+\texttt{c1 | c2}        & Pipe stdout \\
+\texttt{c1 |\& c2}      & Pipe stdout+stderr \\
+\texttt{cmd > file}      & Redirect stdout \\
+\texttt{cmd 2>\&1}       & Stderr to stdout \\
+\texttt{cmd \&> file}    & Redirect all \\
+\texttt{cmd >> file}     & Append \\
+\end{keys}
+
+\vfill
+{\scriptsize Shell: zsh \enspace Prompt: starship \enspace
+Plugins: autosuggestions, syntax-highlighting}
+
+\end{multicols}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{\cardwidth}
+\mbox{} % blank — odd card count
+\end{minipage}
+\newpage
+
+% ====================================================================
+% SHEET 4 BACKS — [blank] + CARD 7 (zsh)  [reversed]
+% ====================================================================
+\noindent
+\begin{minipage}[t]{\cardwidth}
+\mbox{} % blank — matches empty right side of fronts page
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{\cardwidth}
+\cardtitle{zsh \& shell}{back}
+\begin{multicols}{2}
+
+\sect{Zsh Globbing}
+\begin{keys}
+\texttt{**/*.py}       & Recursive glob \\
+\texttt{*.txt\~{}R*}   & Exclude pattern \\
+\texttt{*(.)}          & Regular files only \\
+\texttt{*(/)}          & Directories only \\
+\texttt{*(om[1,5])}    & 5 most recent \\
+\texttt{*(Lk+100)}     & Files > 100KB \\
+\texttt{*(@)}          & Symlinks only \\
+\end{keys}
+
+\sect{Parameter Expansion}
+\begin{keys}
+\texttt{\$\{v:-default\}} & Default if unset \\
+\texttt{\$\{v:=default\}} & Assign if unset \\
+\texttt{\$\{v\#pat\}}     & Remove shortest prefix \\
+\texttt{\$\{v\#\#pat\}}   & Remove longest prefix \\
+\texttt{\$\{v\%pat\}}     & Remove shortest suffix \\
+\texttt{\$\{v\%\%pat\}}   & Remove longest suffix \\
+\texttt{\$\{v/old/new\}}  & Replace first \\
+\texttt{\$\{v//old/new\}} & Replace all \\
+\texttt{\$\{v:u\} / \$\{v:l\}} & Upper / lower \\
+\texttt{\$\{\#v\}}        & Length \\
+\end{keys}
+
+\columnbreak
+
+\sect{Builtins}
+\begin{keys}
+\texttt{type cmd}      & What is this? \\
+\texttt{which cmd}     & Path to command \\
+\texttt{where cmd}     & All locations \\
+\texttt{whence -v cmd} & Verbose type \\
+\texttt{command cmd}   & Bypass aliases \\
+\texttt{source file}   & Run in current shell \\
+\texttt{exec cmd}      & Replace shell \\
+\end{keys}
+
+\sect{Environment}
+\begin{keys}
+\texttt{env}            & Show all vars \\
+\texttt{export K=v}     & Set env var \\
+\texttt{unset K}        & Remove var \\
+\texttt{printenv K}     & Print one var \\
+\end{keys}
+
+\sect{Quick Reference}
+
+\begin{tabularx}{\linewidth}{@{}l@{~\textrightarrow~}Y@{}}
+\texttt{cat}     & \texttt{bat --paging=never} \\
+\texttt{ls}      & \texttt{eza} \\
+\texttt{ll}      & \texttt{eza -la --git --icons} \\
+\texttt{lt}      & \texttt{eza --tree --level=2} \\
+\texttt{vi/vim}  & \texttt{nvim} \\
+\texttt{man}     & via \texttt{bat} \\
+\texttt{cd}      & \texttt{z} (zoxide) \\
+\texttt{grep}    & \texttt{rg} \\
+\texttt{find}    & \texttt{fd} \\
+\end{tabularx}\par
+
+\vfill
+{\scriptsize Right Option remapped to Control via hidutil}
+
+\end{multicols}
+\end{minipage}
+
+\end{document}

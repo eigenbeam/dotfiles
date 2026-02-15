@@ -1,4 +1,4 @@
-.PHONY: all check bootstrap homebrew homebrew-extras brewfile brewfile-extras uninstall lint mac
+.PHONY: all check bootstrap homebrew homebrew-extras brewfile brewfile-extras uninstall lint mac cards tools ssh
 
 check:
 	@command -v stow >/dev/null 2>&1 || (echo "Error: GNU Stow not found. Please install it first." && exit 1)
@@ -44,6 +44,24 @@ brewfile-extras:
 
 lint:
 	shellcheck bash/dot-bashrc bash/dot-bash_profile bash/dot-profile
+
+cards:
+	pdflatex -interaction=nonstopmode -output-directory=reference-cards reference-cards/reference-cards.tex
+	@rm -f reference-cards/reference-cards.aux reference-cards/reference-cards.log
+	@echo "✓ reference-cards/reference-cards.pdf built"
+
+tools:
+	@command -v node >/dev/null 2>&1 || (echo "Error: node not found. Run 'nvm install --lts' first." && exit 1)
+	npm install -g typescript typescript-language-server dockerfile-language-server-nodejs prettier
+	uv tool install ipython
+	uv tool install marimo
+	@echo "✓ Tools installed"
+
+ssh:
+	@mkdir -p $(HOME)/.ssh/sockets
+	stow --dotfiles -t $(HOME) ssh
+	@chmod 600 ssh/dot-ssh/config
+	@echo "✓ SSH config installed"
 
 mac:
 	defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false

@@ -1,3 +1,5 @@
+tap "hashicorp/tap"
+
 # Core tools
 brew "bat"
 brew "curl"
@@ -35,6 +37,10 @@ brew "zoxide"
 brew "bash-language-server"
 brew "lua-language-server"
 brew "pyright"
+brew "yaml-language-server"
+brew "taplo"
+brew "hashicorp/tap/terraform-ls"
+brew "jdtls"
 
 brew "tmux"
 brew "tpm"
@@ -43,11 +49,29 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 brew "zsh-syntax-highlighting"
 
+# Data & DevOps
+brew "duckdb"
+brew "visidata"
+brew "lazydocker"
+brew "mosh"
+brew "tflint"
+
+# Language toolchains
+brew "juliaup"
+brew "ruff"
+brew "typst"
+
+# General CLI
+brew "hyperfine"
+brew "dust"
+
 # Casks
 cask "bitwarden"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-intone-mono-nerd-font"
 cask "ghostty"
+cask "quarto"
 cask "rectangle"
+cask "session-manager-plugin"
 cask "temurin@21"
 cask "zotero"

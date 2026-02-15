@@ -37,13 +37,13 @@ Only needed if not using `make bootstrap`:
 | `keyboard` | `~/`                 | macOS keyboard remapping via `hidutil` (right-option → control) |
 | `tmux`     | `~/`                 | Prefix `C-a`, vi keys, TPM plugins, session persistence      |
 | `starship` | `~/`                 | `~/.config/starship.toml` prompt config                      |
+| `ssh`      | `~/`                 | `~/.ssh/config` (connection multiplexing, keepalive)         |
 
 Not stowed (reference/install scripts):
 
 | Directory  | Purpose                                                       |
 |------------|---------------------------------------------------------------|
 | `homebrew` | `Brewfile` (core) and `Brewfile.extras` (niche/optional)      |
-| `aws`      | AWS Session Manager plugin install script                     |
 
 ## Make Targets
 
@@ -54,6 +54,8 @@ Not stowed (reference/install scripts):
 | `make uninstall`   | Remove all stow symlinks                               |
 | `make homebrew`    | Install core packages from `Brewfile`                  |
 | `make homebrew-extras` | Install optional packages from `Brewfile.extras`   |
+| `make tools`       | Install npm globals (LSPs, prettier) and uv tools      |
+| `make ssh`         | Deploy SSH config (manual — not in `make all`)         |
 | `make lint`        | Run shellcheck on all shell config files               |
 | `make mac`         | Set macOS-specific defaults (VSCode key repeat)        |
 | `make brewfile`    | Dump current Homebrew state to `Brewfile`              |

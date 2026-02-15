@@ -2,10 +2,11 @@
 -- Neovim Configuration
 -- ============================================================================
 -- Kickstart-inspired single-file config with lazy.nvim plugin management
--- Features: Telescope, LSP, Treesitter, blink.cmp, gitsigns
+-- Features: Telescope, LSP, Treesitter, blink.cmp, gitsigns, nvim-lint,
+--           nvim-dap, nvim-jdtls, quarto-nvim, conform.nvim
 -- Theme: Base2Tone EveningDark (DuoTone)
 -- VSCode Neovim extension supported (auto-detected)
--- Requirements: Neovim 0.8+, git
+-- Requirements: Neovim 0.11+, git
 -- ============================================================================
 
 vim.g.mapleader = " "
@@ -173,7 +174,26 @@ require("lazy").setup({
         },
       })
 
-      vim.lsp.enable({ 'bashls', 'pyright', 'lua_ls' })
+      vim.lsp.config('yamlls', {
+        settings = {
+          yaml = {
+            schemaStore = { enable = true, url = 'https://www.schemastore.org/api/json/catalog.json' },
+            validate = true,
+            format = { enable = false }, -- use prettier via conform
+          },
+        },
+      })
+
+      vim.lsp.config('ts_ls', {})
+      vim.lsp.config('terraformls', {})
+      vim.lsp.config('dockerls', {})
+      vim.lsp.config('taplo', {})
+      vim.lsp.config('julials', {})
+
+      vim.lsp.enable({
+        'bashls', 'pyright', 'lua_ls',
+        'yamlls', 'ts_ls', 'terraformls', 'dockerls', 'taplo', 'julials',
+      })
     end,
   },
 
@@ -231,8 +251,85 @@ require("lazy").setup({
       end,
       formatters_by_ft = {
         lua = { "stylua" },
+        python = { "ruff_format" },
+        javascript = { "prettier" },
+        typescript = { "prettier" },
+        json = { "prettier" },
+        yaml = { "prettier" },
+        markdown = { "prettier" },
+        terraform = { "terraform_fmt" },
+        toml = { "taplo" },
       },
     },
+  },
+
+  -- ── Linting ────────────────────────────────────────────────────────
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufWritePost", "BufReadPost", "InsertLeave" },
+    config = function()
+      local lint = require("lint")
+      lint.linters_by_ft = {
+        python = { "ruff" },
+        javascript = { "eslint" },
+        typescript = { "eslint" },
+        terraform = { "tflint" },
+      }
+      vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+        group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+      vim.keymap.set("n", "<leader>ll", function()
+        lint.try_lint()
+      end, { desc = "Lint current file" })
+    end,
+  },
+
+  -- ── Debug Adapter Protocol ────────────────────────────────────────
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      { "rcarriga/nvim-dap-ui", dependencies = { "nvim-neotest/nvim-nio" } },
+    },
+    keys = {
+      { "<leader>Db", function() require("dap").toggle_breakpoint() end, desc = "Toggle breakpoint" },
+      { "<leader>Dc", function() require("dap").continue() end, desc = "Continue" },
+      { "<leader>Do", function() require("dap").step_over() end, desc = "Step over" },
+      { "<leader>Di", function() require("dap").step_into() end, desc = "Step into" },
+      { "<leader>Du", function() require("dapui").toggle() end, desc = "Toggle DAP UI" },
+    },
+    config = function()
+      local dap = require("dap")
+      local dapui = require("dapui")
+      dapui.setup()
+      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+      dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
+      dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
+    end,
+  },
+
+  -- ── Java (nvim-jdtls) ────────────────────────────────────────────
+  {
+    "mfussenegger/nvim-jdtls",
+    ft = "java",
+    config = function()
+      if vim.fn.executable("jdtls") == 0 then return end
+      local config = {
+        cmd = { "jdtls" },
+        root_dir = vim.fs.root(0, { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
+      }
+      require("jdtls").start_or_attach(config)
+    end,
+  },
+
+  -- ── Quarto ────────────────────────────────────────────────────────
+  {
+    "quarto-dev/quarto-nvim",
+    ft = { "quarto" },
+    dependencies = { "jmbuhr/otter.nvim" },
+    opts = {},
   },
 
   -- ── Treesitter ───────────────────────────────────────────────────────
@@ -241,8 +338,10 @@ require("lazy").setup({
     build = ":TSUpdate",
     config = function()
       local filetypes = {
-        "bash", "c", "cpp", "diff", "html", "lua", "luadoc",
-        "markdown", "markdown_inline", "python", "query",
+        "bash", "c", "cpp", "css", "diff", "dockerfile", "hcl",
+        "html", "java", "javascript", "json", "julia", "lua", "luadoc",
+        "markdown", "markdown_inline", "python", "query", "sql",
+        "terraform", "toml", "tsx", "typescript",
         "vim", "vimdoc", "yaml",
       }
       require("nvim-treesitter").install(filetypes)
@@ -358,8 +457,10 @@ require("lazy").setup({
         { "<leader>g", group = "Git" },
         { "<leader>h", group = "Git hunk", mode = { "n", "v" } },
         { "<leader>r", group = "Rename" },
+        { "<leader>l", group = "Lint" },
         { "<leader>s", group = "Search", mode = { "n", "v" } },
         { "<leader>t", group = "Toggle" },
+        { "<leader>D", group = "Debug" },
       },
     },
   },
@@ -538,6 +639,15 @@ vim.filetype.add({
     socket = "systemd",
     mount = "systemd",
     automount = "systemd",
+    tf = "terraform",
+    tfvars = "terraform",
+    hcl = "hcl",
+    jl = "julia",
+    wl = "mma",
+    wls = "mma",
+    qmd = "quarto",
+    toml = "toml",
+    typ = "typst",
   },
   filename = {
     ["Dockerfile"] = "dockerfile",
@@ -773,6 +883,16 @@ end -- End of non-VSCode configuration
 --   <leader>d       - Show diagnostics
 --   [d / ]d         - Navigate diagnostics
 --   <leader>th      - Toggle inlay hints
+--
+-- Lint:
+--   <leader>ll      - Lint current file
+--
+-- Debug (nvim-dap):
+--   <leader>Db      - Toggle breakpoint
+--   <leader>Dc      - Continue
+--   <leader>Do      - Step over
+--   <leader>Di      - Step into
+--   <leader>Du      - Toggle DAP UI
 --
 -- Text Objects (mini.ai + treesitter):
 --   af / if         - Around/inside function
