@@ -28,6 +28,11 @@ brew "shellcheck"
 brew "starship"
 brew "stow"
 brew "stylua"
+
+# LSP servers (for Neovim)
+brew "bash-language-server"
+brew "lua-language-server"
+brew "pyright"
 brew "tmux"
 brew "tree"
 brew "uv"

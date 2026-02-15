@@ -92,8 +92,6 @@ require("lazy").setup({
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
       { "j-hui/fidget.nvim", opts = {} },
       "saghen/blink.cmp",
     },
@@ -164,10 +162,6 @@ require("lazy").setup({
             completion = { callSnippet = 'Replace' },
           },
         },
-      })
-
-      require("mason-tool-installer").setup({
-        ensure_installed = { "bash-language-server", "clangd", "pyright", "lua-language-server", "stylua" },
       })
 
       vim.lsp.enable({ 'bashls', 'clangd', 'pyright', 'lua_ls' })
