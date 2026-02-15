@@ -41,6 +41,7 @@ brew "lua-language-server"
 brew "pyright"
 
 brew "tmux"
+brew "tpm"
 brew "tree"
 brew "uv"
 brew "wget"
