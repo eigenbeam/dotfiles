@@ -1,4 +1,4 @@
-.PHONY: all check bootstrap homebrew homebrew-extras brewfile brewfile-extras uninstall lint iterm mac
+.PHONY: all check bootstrap homebrew homebrew-extras brewfile brewfile-extras uninstall lint mac
 
 check:
 	@command -v stow >/dev/null 2>&1 || (echo "Error: GNU Stow not found. Please install it first." && exit 1)
@@ -13,15 +13,14 @@ all: check
 	stow --dotfiles -t $(HOME) ghostty
 	stow --dotfiles -t $(HOME) keyboard
 	stow --dotfiles -t $(HOME) git
-	stow --dotfiles -t $(HOME)/.config nvim
+	stow --dotfiles -t $(HOME) nvim
 	stow --dotfiles -t $(HOME) starship
 	stow --dotfiles -t $(HOME) tmux
 	stow --dotfiles -t $(HOME) zsh
 	@echo "✓ Dotfiles installed successfully"
 
 uninstall:
-	stow --dotfiles -D -t $(HOME) bash ghostty keyboard git starship tmux zsh
-	stow --dotfiles -D -t $(HOME)/.config nvim
+	stow --dotfiles -D -t $(HOME) bash ghostty keyboard git nvim starship tmux zsh
 	@echo "✓ Dotfiles uninstalled"
 
 bootstrap:
@@ -45,11 +44,6 @@ brewfile-extras:
 
 lint:
 	shellcheck bash/dot-bashrc bash/dot-bash_profile bash/dot-profile
-
-iterm:
-	@mkdir -p "$(HOME)/Library/Application Support/iTerm2/DynamicProfiles"
-	cp iterm2/KWB.json "$(HOME)/Library/Application Support/iTerm2/DynamicProfiles/"
-	@echo "✓ iTerm2 profile installed (restart iTerm2 to load)"
 
 mac:
 	defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false

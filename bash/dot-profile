@@ -13,7 +13,6 @@ fi
 # PATH
 # ------------------
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.elan/bin:$PATH"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 # ------------------
@@ -22,20 +21,9 @@ export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/b
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # ------------------
-# Java
-# ------------------
-export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
-export JAVA_HOME="/opt/homebrew/opt/openjdk@21"
-
-# ------------------
 # JavaScript
 # ------------------
 export NVM_DIR="$HOME/.nvm"
-
-# ------------------
-# PostgreSQL
-# ------------------
-export PATH="/opt/homebrew/opt/postgresql@14/bin:$PATH"
 
 # ------------------
 # bat

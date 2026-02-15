@@ -32,8 +32,9 @@ Only needed if not using `make bootstrap`:
 | `bash`     | `~/`                 | `.bashrc`, `.bash_profile`, `.profile` (shared with zsh)     |
 | `zsh`      | `~/`                 | `.zshrc`, `.zprofile`, `.zshenv`                             |
 | `git`      | `~/`                 | `~/.config/git/config`, `ignore`, `hooks/` (XDG layout)     |
-| `nvim`     | `~/.config/`         | Minimal zero-dependency `init.lua` (works in VSCode too)     |
+| `nvim`     | `~/`                 | Minimal zero-dependency `init.lua` (works in VSCode too)     |
 | `ghostty`  | `~/`                 | Terminal config: JetBrains Mono, Base2Tone EveningDark colors |
+| `keyboard` | `~/`                 | macOS keyboard remapping via `hidutil` (right-option → control) |
 | `tmux`     | `~/`                 | Prefix `C-a`, vi keys, TPM plugins, session persistence      |
 | `starship` | `~/`                 | `~/.config/starship.toml` prompt config                      |
 
@@ -42,7 +43,6 @@ Not stowed (reference/install scripts):
 | Directory  | Purpose                                                       |
 |------------|---------------------------------------------------------------|
 | `homebrew` | `Brewfile` (core) and `Brewfile.extras` (niche/optional)      |
-| `iterm2`   | iTerm2 profile and color scheme (`make iterm` to install)     |
 | `aws`      | AWS Session Manager plugin install script                     |
 
 ## Make Targets
@@ -55,14 +55,13 @@ Not stowed (reference/install scripts):
 | `make homebrew`    | Install core packages from `Brewfile`                  |
 | `make homebrew-extras` | Install optional packages from `Brewfile.extras`   |
 | `make lint`        | Run shellcheck on all shell config files               |
-| `make iterm`       | Install iTerm2 profile to DynamicProfiles              |
 | `make mac`         | Set macOS-specific defaults (VSCode key repeat)        |
 | `make brewfile`    | Dump current Homebrew state to `Brewfile`              |
 
 ## Shell Setup
 
 Both bash and zsh share a common `~/.profile` for login environment
-(PATH, Homebrew, Rust, Java, NVM). Interactive features (aliases,
+(PATH, Homebrew, Rust, NVM). Interactive features (aliases,
 completions, FZF, prompt) are in the respective rc files.
 
 Key features:
