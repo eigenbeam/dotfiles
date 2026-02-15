@@ -446,14 +446,10 @@ vim.opt.wildmode = { "longest:full", "full" }
 vim.opt.wildmenu = true
 vim.opt.wildignore = { "*.o", "*.obj", "*.pyc", "*.swp", "*~", ".git/*", "node_modules/*" }
 
--- Performance
-vim.opt.synmaxcol = 300                 -- Only syntax highlight first 300 cols
-
 -- ============================================================================
 -- File Type & Syntax
 -- ============================================================================
 
-vim.cmd("syntax on")
 vim.cmd("filetype plugin indent on")
 
 -- Language-specific indentation
@@ -567,13 +563,6 @@ keymap("n", "<leader>Q", ":qall!<CR>", { desc = "Quit all (force)" })
 keymap("n", "<leader>e", ":Explore<CR>", { desc = "File explorer" })
 keymap("n", "<leader>E", ":Vexplore<CR>", { desc = "File explorer (split)" })
 
--- Fuzzy file finding (built-in)
-keymap("n", "<leader>f", ":find ", { desc = "Find file" })
-keymap("n", "<leader>b", ":buffer ", { desc = "Switch buffer" })
-
--- Grep (built-in)
-keymap("n", "<leader>g", ":grep ", { desc = "Grep" })
-
 -- Split windows
 keymap("n", "<leader>sv", "<C-w>v", { desc = "Split vertical" })
 keymap("n", "<leader>sh", "<C-w>s", { desc = "Split horizontal" })
@@ -593,93 +582,6 @@ vim.g.netrw_liststyle = 3       -- Tree view
 vim.g.netrw_browse_split = 0    -- Open in current window
 vim.g.netrw_winsize = 25        -- 25% width
 vim.g.netrw_altv = 1            -- Open splits to the right
-
--- ============================================================================
--- Statusline (Simple but Informative)
--- ============================================================================
-
-function _G.statusline()
-  local mode_map = {
-    n = "NORMAL",
-    i = "INSERT",
-    v = "VISUAL",
-    V = "V-LINE",
-    [""] = "V-BLOCK",
-    c = "COMMAND",
-    s = "SELECT",
-    S = "S-LINE",
-    [""] = "S-BLOCK",
-    R = "REPLACE",
-    r = "PROMPT",
-    ["!"] = "SHELL",
-    t = "TERMINAL",
-  }
-
-  local mode = mode_map[vim.fn.mode()] or "UNKNOWN"
-  local filename = vim.fn.expand("%:t")
-  local filetype = vim.bo.filetype
-  local modified = vim.bo.modified and "[+]" or ""
-  local readonly = vim.bo.readonly and "[RO]" or ""
-  local line = vim.fn.line(".")
-  local col = vim.fn.col(".")
-  local total = vim.fn.line("$")
-  local percent = math.floor((line / total) * 100)
-
-  return string.format(
-    " %s | %s%s%s | %s | %d:%d | %d%% ",
-    mode,
-    filename ~= "" and filename or "[No Name]",
-    modified,
-    readonly,
-    filetype ~= "" and filetype or "none",
-    line,
-    col,
-    percent
-  )
-end
-
-vim.opt.statusline = "%!v:lua.statusline()"
-
--- ============================================================================
--- Optional: LSP Support (if available)
--- ============================================================================
--- This section gracefully degrades if LSP servers aren't installed
--- No errors if missing - just works without LSP
-
-local lsp_ok, lspconfig = pcall(require, "lspconfig")
-if lsp_ok then
-  -- LSP keybindings (only set when LSP is attached)
-  vim.api.nvim_create_autocmd("LspAttach", {
-    callback = function(args)
-      local opts = { buffer = args.buf }
-      keymap("n", "gd", vim.lsp.buf.definition, vim.tbl_extend("force", opts, { desc = "Go to definition" }))
-      keymap("n", "gD", vim.lsp.buf.declaration, vim.tbl_extend("force", opts, { desc = "Go to declaration" }))
-      keymap("n", "gr", vim.lsp.buf.references, vim.tbl_extend("force", opts, { desc = "Show references" }))
-      keymap("n", "gi", vim.lsp.buf.implementation, vim.tbl_extend("force", opts, { desc = "Go to implementation" }))
-      keymap("n", "K", vim.lsp.buf.hover, vim.tbl_extend("force", opts, { desc = "Hover documentation" }))
-      keymap("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "Rename symbol" }))
-      keymap("n", "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { desc = "Code action" }))
-      keymap("n", "<leader>d", vim.diagnostic.open_float, vim.tbl_extend("force", opts, { desc = "Show diagnostics" }))
-      if vim.fn.has("nvim-0.11") == 1 then
-        keymap("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, vim.tbl_extend("force", opts, { desc = "Previous diagnostic" }))
-        keymap("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, vim.tbl_extend("force", opts, { desc = "Next diagnostic" }))
-      else
-        keymap("n", "[d", vim.diagnostic.goto_prev, vim.tbl_extend("force", opts, { desc = "Previous diagnostic" }))
-        keymap("n", "]d", vim.diagnostic.goto_next, vim.tbl_extend("force", opts, { desc = "Next diagnostic" }))
-      end
-    end,
-  })
-
-  -- Auto-start LSP servers if they exist
-  -- bash-language-server, clangd, pyright are common for sysadmin work
-  local servers = { "bashls", "clangd", "pyright" }
-
-  for _, server in ipairs(servers) do
-    if vim.fn.executable(server) == 1 or vim.fn.executable(server:gsub("ls$", "-language-server")) == 1 then
-      lspconfig[server].setup({})
-    end
-  end
-end
 
 -- ============================================================================
 -- Clipboard & Mouse Configuration
@@ -743,19 +645,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end
   end,
 })
-
--- ============================================================================
--- Color Scheme
--- ============================================================================
--- Use a simple, portable color scheme that works in all terminals
-
-vim.cmd("colorscheme default")
-
--- Enhance default colors slightly
-vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2d2d2d" })
-vim.api.nvim_set_hl(0, "LineNr", { fg = "#5f5f5f" })
-vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#d7d700", bold = true })
-vim.api.nvim_set_hl(0, "StatusLine", { bg = "#3a3a3a", fg = "#d0d0d0" })
 
 end -- End of non-VSCode configuration
 
