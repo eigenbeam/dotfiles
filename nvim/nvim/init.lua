@@ -1,10 +1,11 @@
 -- ============================================================================
--- Minimal Neovim Configuration
+-- Neovim Configuration
 -- ============================================================================
--- Zero dependencies, maximum portability
--- Perfect for: SSH sessions, remote systems, quick edits, VSCode Neovim
--- Target: Sysadmin/NetAdmin work with bash, C, Python, config files
--- Requirements: Neovim 0.8+ only
+-- Kickstart-inspired single-file config with lazy.nvim plugin management
+-- Features: Telescope, LSP (Mason), Treesitter, blink.cmp, gitsigns
+-- Theme: Base2Tone EveningDark (DuoTone)
+-- VSCode Neovim extension supported (auto-detected)
+-- Requirements: Neovim 0.8+, git
 -- ============================================================================
 
 vim.g.mapleader = " "
