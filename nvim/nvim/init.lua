@@ -671,11 +671,20 @@ end -- End of non-VSCode configuration
 --
 -- Regular Neovim Mode:
 --
+-- Search (Telescope):
+--   <leader>sf      - Find files
+--   <leader>sg      - Live grep
+--   <leader>sb      - Switch buffer
+--   <leader>sh      - Help tags
+--   <leader>sk      - Keymaps
+--   <leader>sd      - Diagnostics
+--   <leader>sr      - Resume last search
+--   <leader>s.      - Recent files
+--   <leader>/       - Fuzzy find in current buffer
+--
 -- File Navigation:
 --   <leader>e       - File explorer (netrw)
---   <leader>f       - Find file (use wildcards: **/filename)
---   <leader>b       - Switch buffer by name/number
---   <leader>g       - Grep for text
+--   <leader>f       - Format buffer
 --
 -- Window Management:
 --   <C-h/j/k/l>     - Navigate windows
@@ -688,11 +697,19 @@ end -- End of non-VSCode configuration
 --   Visual+J/K      - Move selected lines up/down
 --   Visual+</>/     - Indent left/right
 --
--- LSP (if available):
+-- Git:
+--   ]h / [h         - Next/previous hunk
+--   <leader>hs      - Stage hunk
+--   <leader>hr      - Reset hunk
+--   <leader>hb      - Blame line
+--
+-- LSP:
 --   gd              - Go to definition
 --   K               - Hover documentation
 --   <leader>rn      - Rename
 --   <leader>ca      - Code action
+--   <leader>d       - Show diagnostics
 --   [d / ]d         - Navigate diagnostics
+--   <leader>th      - Toggle inlay hints
 --
 -- ============================================================================
