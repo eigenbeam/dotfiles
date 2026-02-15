@@ -11,6 +11,7 @@ all: check
 	@touch $(HOME)/.gitconfig-local
 	stow --dotfiles -t $(HOME) bash
 	stow --dotfiles -t $(HOME) ghostty
+	stow --dotfiles -t $(HOME) keyboard
 	stow --dotfiles -t $(HOME) git
 	stow --dotfiles -t $(HOME)/.config nvim
 	stow --dotfiles -t $(HOME) starship
@@ -19,7 +20,7 @@ all: check
 	@echo "✓ Dotfiles installed successfully"
 
 uninstall:
-	stow --dotfiles -D -t $(HOME) bash ghostty git starship tmux zsh
+	stow --dotfiles -D -t $(HOME) bash ghostty keyboard git starship tmux zsh
 	stow --dotfiles -D -t $(HOME)/.config nvim
 	@echo "✓ Dotfiles uninstalled"
 
