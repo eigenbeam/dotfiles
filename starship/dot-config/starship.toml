@@ -52,7 +52,7 @@ format = '[$symbol$version]($style) '
 style = '#afa0fe'
 format = '[$symbol$version]($style) '
 
-[go]
+[golang]
 style = '#afa0fe'
 format = '[$symbol$version]($style) '
 
