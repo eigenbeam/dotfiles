@@ -16,9 +16,25 @@
 	st = status
 	sts = status --short
 	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	co = checkout
+	br = branch
+	ci = commit
+	unstage = restore --staged
+	amend = commit --amend --no-edit
+	undo = reset --soft HEAD~1
+	prev = switch -
 [push]
 	default = upstream
 	followTags = true
+[pull]
+	rebase = true
+[fetch]
+	prune = true
+[rebase]
+	autoStash = true
+	autoSquash = true
+[rerere]
+	enabled = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -32,6 +48,9 @@
 	diffFilter = delta --color-only
 [delta]
 	navigate = true
+	side-by-side = true
+	line-numbers = true
+	syntax-theme = base16
 [diff]
 	colorMoved = default
 [merge]

@@ -1,8 +1,61 @@
 # Starship prompt configuration
 # Docs: https://starship.rs/config/
+# Theme: Base2Tone EveningDark (purple + orange)
 
-# Timeout for commands that starship runs (ms)
 command_timeout = 1000
-
-# Blank line between prompts
 add_newline = true
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$python\
+$nodejs\
+$rust\
+$go\
+$lua\
+$cmd_duration\
+$line_break\
+$character"""
+
+[character]
+success_symbol = '[>](bold #6a51e6)'
+error_symbol = '[>](bold #b37537)'
+
+[directory]
+style = 'bold #8a75f5'
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+style = 'bold #e09142'
+format = '[$symbol$branch(:$remote_branch)]($style) '
+
+[git_status]
+style = '#ffad5c'
+format = '([$all_status$ahead_behind]($style) )'
+
+[cmd_duration]
+min_time = 2_000
+style = '#8e8aa3'
+format = '[$duration]($style) '
+
+[python]
+style = '#afa0fe'
+format = '[$symbol$version]($style) '
+
+[nodejs]
+style = '#afa0fe'
+format = '[$symbol$version]($style) '
+
+[rust]
+style = '#afa0fe'
+format = '[$symbol$version]($style) '
+
+[go]
+style = '#afa0fe'
+format = '[$symbol$version]($style) '
+
+[lua]
+style = '#afa0fe'
+format = '[$symbol$version]($style) '

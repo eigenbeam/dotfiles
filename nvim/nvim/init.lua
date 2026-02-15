@@ -69,7 +69,7 @@ require("lazy").setup({
       pcall(require("telescope").load_extension, "ui-select")
 
       local builtin = require("telescope.builtin")
-      vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "Search help" })
+      vim.keymap.set("n", "<leader>s?", builtin.help_tags, { desc = "Search help" })
       vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "Search keymaps" })
       vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "Search files" })
       vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "Search current word" })
@@ -117,7 +117,8 @@ require("lazy").setup({
           map("gi", vim.lsp.buf.implementation, "Go to implementation")
           map("K", vim.lsp.buf.hover, "Hover documentation")
           map("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
-          map("<leader>ca", vim.lsp.buf.code_action, "Code action", { "n", "x" })
+          map("<leader>ca", vim.lsp.buf.code_action, "Code action")
+          vim.keymap.set("x", "<leader>ca", vim.lsp.buf.code_action, { buffer = event.buf, desc = "Code action" })
           map("<leader>d", vim.diagnostic.open_float, "Show diagnostics")
 
           if vim.fn.has("nvim-0.11") == 1 then
@@ -172,7 +173,7 @@ require("lazy").setup({
         },
       })
 
-      vim.lsp.enable({ 'bashls', 'clangd', 'pyright', 'lua_ls' })
+      vim.lsp.enable({ 'bashls', 'pyright', 'lua_ls' })
     end,
   },
 
@@ -254,6 +255,27 @@ require("lazy").setup({
     end,
   },
 
+  -- ── Treesitter Context (sticky function/class headers) ─────────────
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "VimEnter",
+    opts = {
+      max_lines = 3,
+    },
+  },
+
+  -- ── Zen Mode (distraction-free editing) ────────────────────────────
+  {
+    "folke/zen-mode.nvim",
+    cmd = "ZenMode",
+    keys = {
+      { "<leader>tz", "<cmd>ZenMode<cr>", desc = "Toggle zen mode" },
+    },
+    opts = {
+      window = { width = 90 },
+    },
+  },
+
   -- ── Mini.nvim (textobjects, surround, statusline) ───────────────────
   {
     "echasnovski/mini.nvim",
@@ -331,10 +353,13 @@ require("lazy").setup({
       delay = 0,
       icons = { mappings = true },
       spec = {
-        { "<leader>s", group = "Search", mode = { "n", "v" } },
-        { "<leader>t", group = "Toggle" },
+        { "<leader>b", group = "Buffer" },
+        { "<leader>c", group = "Code" },
         { "<leader>g", group = "Git" },
         { "<leader>h", group = "Git hunk", mode = { "n", "v" } },
+        { "<leader>r", group = "Rename" },
+        { "<leader>s", group = "Search", mode = { "n", "v" } },
+        { "<leader>t", group = "Toggle" },
       },
     },
   },
@@ -705,7 +730,7 @@ end -- End of non-VSCode configuration
 --   <leader>sf      - Find files
 --   <leader>sg      - Live grep
 --   <leader>sb      - Switch buffer
---   <leader>sh      - Help tags
+--   <leader>s?      - Help tags
 --   <leader>sk      - Keymaps
 --   <leader>sd      - Diagnostics
 --   <leader>sr      - Resume last search
@@ -744,9 +769,18 @@ end -- End of non-VSCode configuration
 --   gd              - Go to definition
 --   K               - Hover documentation
 --   <leader>rn      - Rename
---   <leader>ca      - Code action
+--   <leader>ca      - Code action (normal + visual)
 --   <leader>d       - Show diagnostics
 --   [d / ]d         - Navigate diagnostics
 --   <leader>th      - Toggle inlay hints
+--
+-- Text Objects (mini.ai + treesitter):
+--   af / if         - Around/inside function
+--   aa / ia         - Around/inside argument
+--   ab / ib         - Around/inside brackets
+--   aq / iq         - Around/inside quotes
+--
+-- Focus:
+--   <leader>tz      - Toggle zen mode
 --
 -- ============================================================================

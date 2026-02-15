@@ -43,7 +43,7 @@ brewfile-extras:
 	brew bundle dump --force --file=homebrew/Brewfile.extras
 
 lint:
-	shellcheck bash/dot-bashrc bash/dot-bash_profile bash/dot-profile aws/aws.sh
+	shellcheck bash/dot-bashrc bash/dot-bash_profile bash/dot-profile
 
 iterm:
 	@mkdir -p "$(HOME)/Library/Application Support/iTerm2/DynamicProfiles"

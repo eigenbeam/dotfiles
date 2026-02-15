@@ -15,6 +15,7 @@ alias lt='eza --tree --level=2 --icons'
 # ------------------
 # History
 # ------------------
+mkdir -p ~/.cache/zsh
 HISTSIZE=8192
 SAVEHIST=8192
 HISTFILE=~/.cache/zsh/history

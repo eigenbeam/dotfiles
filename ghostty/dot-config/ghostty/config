@@ -17,6 +17,10 @@ cursor-style-blink = false
 
 # Mouse
 mouse-hide-while-typing = true
+copy-on-select = clipboard
+
+# macOS: treat Option as Alt (needed for A-h/j/k/l resize keybinds)
+macos-option-as-alt = true
 
 # No Ghostty splits/tabs (tmux handles this)
 keybind = super+d=unbind
