@@ -2,9 +2,9 @@
 # Theme: Base2Tone EveningDark (purple + orange duotone)
 
 # Font
-font-family = JetBrainsMono Nerd Font
-# font-family = IntoneMono Nerd Font
-font-size = 14
+# font-family = JetBrainsMono Nerd Font
+font-family = IntoneMono Nerd Font
+font-size = 16
 
 # Window
 window-decoration = false
