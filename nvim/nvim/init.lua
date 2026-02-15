@@ -167,7 +167,7 @@ require("lazy").setup({
       })
 
       require("mason-tool-installer").setup({
-        ensure_installed = { "bashls", "clangd", "pyright", "lua_ls", "stylua" },
+        ensure_installed = { "bash-language-server", "clangd", "pyright", "lua-language-server", "stylua" },
       })
 
       vim.lsp.enable({ 'bashls', 'clangd', 'pyright', 'lua_ls' })
