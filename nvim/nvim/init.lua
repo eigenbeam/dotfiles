@@ -27,6 +27,303 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+require("lazy").setup({
+
+  -- ── Colorscheme ──────────────────────────────────────────────────────
+  {
+    "atelierbram/Base2Tone-nvim",
+    priority = 1000,
+    config = function()
+      vim.cmd("colorscheme base2tone_evening_dark")
+    end,
+  },
+
+  -- ── Fuzzy Finder ─────────────────────────────────────────────────────
+  {
+    "nvim-telescope/telescope.nvim",
+    event = "VimEnter",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+        cond = function()
+          return vim.fn.executable("make") == 1
+        end,
+      },
+      { "nvim-telescope/telescope-ui-select.nvim" },
+      { "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
+    },
+    config = function()
+      require("telescope").setup({
+        extensions = {
+          ["ui-select"] = {
+            require("telescope.themes").get_dropdown(),
+          },
+        },
+      })
+      pcall(require("telescope").load_extension, "fzf")
+      pcall(require("telescope").load_extension, "ui-select")
+
+      local builtin = require("telescope.builtin")
+      vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "Search help" })
+      vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "Search keymaps" })
+      vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "Search files" })
+      vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "Search current word" })
+      vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "Search by grep" })
+      vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "Search diagnostics" })
+      vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "Search resume" })
+      vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = "Search recent files" })
+      vim.keymap.set("n", "<leader>sb", builtin.buffers, { desc = "Search buffers" })
+      vim.keymap.set("n", "<leader>sn", function()
+        builtin.find_files({ cwd = vim.fn.stdpath("config") })
+      end, { desc = "Search neovim config" })
+      vim.keymap.set("n", "<leader>/", function()
+        builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+          winblend = 10,
+          previewer = false,
+        }))
+      end, { desc = "Fuzzy find in buffer" })
+    end,
+  },
+
+  -- ── LSP ──────────────────────────────────────────────────────────────
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
+      { "j-hui/fidget.nvim", opts = {} },
+      "saghen/blink.cmp",
+    },
+    config = function()
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
+        callback = function(event)
+          local map = function(keys, func, desc, mode)
+            mode = mode or "n"
+            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = desc })
+          end
+          map("gd", vim.lsp.buf.definition, "Go to definition")
+          map("gD", vim.lsp.buf.declaration, "Go to declaration")
+          map("gr", vim.lsp.buf.references, "Show references")
+          map("gi", vim.lsp.buf.implementation, "Go to implementation")
+          map("K", vim.lsp.buf.hover, "Hover documentation")
+          map("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+          map("<leader>ca", vim.lsp.buf.code_action, "Code action", { "n", "x" })
+          map("<leader>d", vim.diagnostic.open_float, "Show diagnostics")
+
+          if vim.fn.has("nvim-0.11") == 1 then
+            map("[d", function() vim.diagnostic.jump({ count = -1 }) end, "Previous diagnostic")
+            map("]d", function() vim.diagnostic.jump({ count = 1 }) end, "Next diagnostic")
+          else
+            map("[d", vim.diagnostic.goto_prev, "Previous diagnostic")
+            map("]d", vim.diagnostic.goto_next, "Next diagnostic")
+          end
+
+          -- Toggle inlay hints if supported
+          if vim.lsp.inlay_hint then
+            map("<leader>th", function()
+              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+            end, "Toggle inlay hints")
+          end
+
+          -- Highlight references on cursor hold
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+            local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
+            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+              buffer = event.buf,
+              group = highlight_augroup,
+              callback = vim.lsp.buf.document_highlight,
+            })
+            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+              buffer = event.buf,
+              group = highlight_augroup,
+              callback = vim.lsp.buf.clear_references,
+            })
+            vim.api.nvim_create_autocmd("LspDetach", {
+              group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
+              callback = function(event2)
+                vim.lsp.buf.clear_references()
+                vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = event2.buf })
+              end,
+            })
+          end
+        end,
+      })
+
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+      local servers = {
+        bashls = {},
+        clangd = {},
+        pyright = {},
+        lua_ls = {
+          settings = {
+            Lua = {
+              completion = { callSnippet = "Replace" },
+            },
+          },
+        },
+      }
+
+      require("mason-tool-installer").setup({
+        ensure_installed = vim.list_extend(vim.tbl_keys(servers), { "stylua" }),
+      })
+
+      for server_name, server_config in pairs(servers) do
+        server_config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server_config.capabilities or {})
+        require("lspconfig")[server_name].setup(server_config)
+      end
+    end,
+  },
+
+  -- ── Completion ───────────────────────────────────────────────────────
+  {
+    "saghen/blink.cmp",
+    event = "VimEnter",
+    version = "1.*",
+    dependencies = {
+      {
+        "L3MON4D3/LuaSnip",
+        version = "2.*",
+        build = (function()
+          if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+            return
+          end
+          return "make install_jsregexp"
+        end)(),
+      },
+    },
+    opts = {
+      keymap = { preset = "default" },
+      appearance = { nerd_font_variant = "mono" },
+      completion = { documentation = { auto_show = false, auto_show_delay_ms = 500 } },
+      sources = { default = { "lsp", "path", "snippets" } },
+      snippets = { preset = "luasnip" },
+      fuzzy = { implementation = "lua" },
+      signature = { enabled = true },
+    },
+  },
+
+  -- ── Formatting ───────────────────────────────────────────────────────
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    keys = {
+      {
+        "<leader>f",
+        function()
+          require("conform").format({ async = true, lsp_format = "fallback" })
+        end,
+        mode = "",
+        desc = "Format buffer",
+      },
+    },
+    opts = {
+      notify_on_error = false,
+      format_on_save = function(bufnr)
+        local disable_filetypes = { c = true, cpp = true }
+        if disable_filetypes[vim.bo[bufnr].filetype] then
+          return nil
+        end
+        return { timeout_ms = 500, lsp_format = "fallback" }
+      end,
+      formatters_by_ft = {
+        lua = { "stylua" },
+      },
+    },
+  },
+
+  -- ── Treesitter ───────────────────────────────────────────────────────
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      local filetypes = {
+        "bash", "c", "cpp", "diff", "html", "lua", "luadoc",
+        "markdown", "markdown_inline", "python", "query",
+        "vim", "vimdoc", "yaml",
+      }
+      require("nvim-treesitter").install(filetypes)
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = filetypes,
+        callback = function()
+          vim.treesitter.start()
+        end,
+      })
+    end,
+  },
+
+  -- ── Mini.nvim (textobjects, surround, statusline) ───────────────────
+  {
+    "echasnovski/mini.nvim",
+    config = function()
+      require("mini.ai").setup({ n_lines = 500 })
+      require("mini.surround").setup()
+      local statusline = require("mini.statusline")
+      statusline.setup({ use_icons = vim.g.have_nerd_font })
+      statusline.section_location = function()
+        return "%2l:%-2v"
+      end
+    end,
+  },
+
+  -- ── Git Signs ────────────────────────────────────────────────────────
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = {
+      signs = {
+        add = { text = "+" },
+        change = { text = "~" },
+        delete = { text = "_" },
+        topdelete = { text = "‾" },
+        changedelete = { text = "~" },
+      },
+      on_attach = function(bufnr)
+        local gitsigns = require("gitsigns")
+        local map = function(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
+        map("n", "]h", gitsigns.next_hunk, { desc = "Next git hunk" })
+        map("n", "[h", gitsigns.prev_hunk, { desc = "Previous git hunk" })
+        map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "Stage hunk" })
+        map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset hunk" })
+        map("n", "<leader>hb", gitsigns.blame_line, { desc = "Blame line" })
+      end,
+    },
+  },
+
+  -- ── Which Key ────────────────────────────────────────────────────────
+  {
+    "folke/which-key.nvim",
+    event = "VimEnter",
+    opts = {
+      delay = 0,
+      icons = { mappings = vim.g.have_nerd_font },
+      spec = {
+        { "<leader>s", group = "Search", mode = { "n", "v" } },
+        { "<leader>t", group = "Toggle" },
+        { "<leader>h", group = "Git hunk", mode = { "n", "v" } },
+      },
+    },
+  },
+
+  -- ── Misc ─────────────────────────────────────────────────────────────
+  {
+    "folke/todo-comments.nvim",
+    event = "VimEnter",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = { signs = false },
+  },
+
+  { "NMAC427/guess-indent.nvim", opts = {} },
+})
+
 -- ============================================================================
 -- VSCode Neovim Extension Support
 -- ============================================================================
