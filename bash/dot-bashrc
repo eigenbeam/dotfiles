@@ -8,6 +8,9 @@ alias vi=nvim
 alias vim=nvim
 alias bc='bc -l'
 alias cat='bat --paging=never'
+alias ls='eza'
+alias ll='eza -la --git --icons'
+alias lt='eza --tree --level=2 --icons'
 
 # ------------------
 # History
@@ -33,7 +36,8 @@ fi
 # FZF
 # ------------------
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_COMMAND='fd --type f --hidden --exclude .git'
+export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
 eval "$(fzf --bash)"
 
 # ------------------
@@ -48,3 +52,9 @@ nvm() { _lazy_load_nvm; nvm "$@"; }
 node() { _lazy_load_nvm; node "$@"; }
 npm() { _lazy_load_nvm; npm "$@"; }
 npx() { _lazy_load_nvm; npx "$@"; }
+
+# ------------------
+# Tool integrations
+# ------------------
+eval "$(zoxide init bash)"
+eval "$(direnv hook bash)"

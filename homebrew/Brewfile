@@ -29,10 +29,19 @@ brew "starship"
 brew "stow"
 brew "stylua"
 
+# CLI enhancements
+brew "direnv"
+brew "eza"
+brew "git-delta"
+brew "tldr"
+brew "tree-sitter-cli"
+brew "zoxide"
+
 # LSP servers (for Neovim)
 brew "bash-language-server"
 brew "lua-language-server"
 brew "pyright"
+
 brew "tmux"
 brew "tree"
 brew "uv"

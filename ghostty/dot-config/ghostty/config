@@ -1,0 +1,55 @@
+# Ghostty terminal configuration
+# Theme: Base2Tone EveningDark (purple + orange duotone)
+
+# Font
+font-family = FiraCode Nerd Font
+font-size = 14
+
+# Window
+window-decoration = false
+window-padding-x = 8
+window-padding-y = 4
+
+# Cursor
+cursor-style = bar
+cursor-style-blink = false
+
+# Mouse
+mouse-hide-while-typing = true
+
+# No Ghostty splits/tabs (tmux handles this)
+keybind = super+d=unbind
+keybind = super+shift+d=unbind
+keybind = super+t=unbind
+
+# Base2Tone EveningDark colors
+# Palette: A=purple-grays, B=purples, C=warm-grays, D=oranges
+background = #2a2734
+foreground = #c4b9fe
+
+# Normal colors
+palette = 0=#2a2734
+palette = 1=#b37537
+palette = 2=#6a51e6
+palette = 3=#e09142
+palette = 4=#8a75f5
+palette = 5=#9a86fd
+palette = 6=#8e8aa3
+palette = 7=#c4b9fe
+
+# Bright colors
+palette = 8=#545167
+palette = 9=#ffa142
+palette = 10=#7a63ee
+palette = 11=#ffad5c
+palette = 12=#afa0fe
+palette = 13=#d9d2fe
+palette = 14=#bab8c7
+palette = 15=#eeebff
+
+# Cursor (orange accent from D2)
+cursor-color = #e09142
+
+# Selection
+selection-background = #545167
+selection-foreground = #eeebff

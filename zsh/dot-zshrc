@@ -8,6 +8,9 @@ alias vi=nvim
 alias vim=nvim
 alias bc='bc -l'
 alias cat='bat --paging=never'
+alias ls='eza'
+alias ll='eza -la --git --icons'
+alias lt='eza --tree --level=2 --icons'
 
 # ------------------
 # History
@@ -55,7 +58,8 @@ eval "$(starship init zsh)"
 # FZF
 # ------------------
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_COMMAND='fd --type f --hidden --exclude .git'
+export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
 source <(fzf --zsh)
 
 # ------------------
@@ -70,6 +74,12 @@ nvm() { _lazy_load_nvm; nvm "$@"; }
 node() { _lazy_load_nvm; node "$@"; }
 npm() { _lazy_load_nvm; npm "$@"; }
 npx() { _lazy_load_nvm; npx "$@"; }
+
+# ------------------
+# Tool integrations
+# ------------------
+eval "$(zoxide init zsh)"
+eval "$(direnv hook zsh)"
 
 # ------------------
 # Plugins (autosuggestions before syntax-highlighting, which must be last)

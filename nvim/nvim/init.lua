@@ -2,7 +2,7 @@
 -- Neovim Configuration
 -- ============================================================================
 -- Kickstart-inspired single-file config with lazy.nvim plugin management
--- Features: Telescope, LSP (Mason), Treesitter, blink.cmp, gitsigns
+-- Features: Telescope, LSP, Treesitter, blink.cmp, gitsigns
 -- Theme: Base2Tone EveningDark (DuoTone)
 -- VSCode Neovim extension supported (auto-detected)
 -- Requirements: Neovim 0.8+, git
@@ -11,8 +11,12 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Detect Nerd Font availability (set to true if your terminal uses a Nerd Font)
-vim.g.have_nerd_font = false
+-- Nerd Font available (Brewfile installs FiraCode and RobotoMono Nerd Fonts)
+vim.g.have_nerd_font = true
+
+-- Disable unused providers (silences checkhealth warnings)
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 
 -- ============================================================================
 -- Plugin Manager (lazy.nvim) - Auto-installs on first run
