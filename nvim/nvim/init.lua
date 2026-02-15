@@ -83,6 +83,12 @@ require("lazy").setup({
       vim.keymap.set("n", "<leader>sn", function()
         builtin.find_files({ cwd = vim.fn.stdpath("config") })
       end, { desc = "Search neovim config" })
+
+      -- Git pickers
+      vim.keymap.set("n", "<leader>gc", builtin.git_commits, { desc = "Git commits" })
+      vim.keymap.set("n", "<leader>gf", builtin.git_bcommits, { desc = "Git file history" })
+      vim.keymap.set("n", "<leader>gs", builtin.git_status, { desc = "Git status" })
+
       vim.keymap.set("n", "<leader>/", function()
         builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
           winblend = 10,
@@ -287,8 +293,36 @@ require("lazy").setup({
         map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "Stage hunk" })
         map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset hunk" })
         map("n", "<leader>hb", gitsigns.blame_line, { desc = "Blame line" })
+        map("n", "<leader>hd", function() gitsigns.diffthis() end, { desc = "Diff against index" })
+        map("n", "<leader>hD", function() gitsigns.diffthis("~") end, { desc = "Diff against last commit" })
       end,
     },
+  },
+
+  -- ── Git (lazygit) ──────────────────────────────────────────────────
+  {
+    "kdheepak/lazygit.nvim",
+    cmd = "LazyGit",
+    keys = {
+      { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+    },
+  },
+
+  -- ── Navigation (nvim/tmux seamless) ───────────────────────────────
+  {
+    "mrjones2014/smart-splits.nvim",
+    lazy = false,
+    config = function()
+      require("smart-splits").setup({})
+      vim.keymap.set("n", "<C-h>", require("smart-splits").move_cursor_left, { desc = "Move to left split/pane" })
+      vim.keymap.set("n", "<C-j>", require("smart-splits").move_cursor_down, { desc = "Move to below split/pane" })
+      vim.keymap.set("n", "<C-k>", require("smart-splits").move_cursor_up, { desc = "Move to above split/pane" })
+      vim.keymap.set("n", "<C-l>", require("smart-splits").move_cursor_right, { desc = "Move to right split/pane" })
+      vim.keymap.set("n", "<A-h>", require("smart-splits").resize_left, { desc = "Resize left" })
+      vim.keymap.set("n", "<A-j>", require("smart-splits").resize_down, { desc = "Resize down" })
+      vim.keymap.set("n", "<A-k>", require("smart-splits").resize_up, { desc = "Resize up" })
+      vim.keymap.set("n", "<A-l>", require("smart-splits").resize_right, { desc = "Resize right" })
+    end,
   },
 
   -- ── Which Key ────────────────────────────────────────────────────────
@@ -301,6 +335,7 @@ require("lazy").setup({
       spec = {
         { "<leader>s", group = "Search", mode = { "n", "v" } },
         { "<leader>t", group = "Toggle" },
+        { "<leader>g", group = "Git" },
         { "<leader>h", group = "Git hunk", mode = { "n", "v" } },
       },
     },
@@ -509,17 +544,7 @@ keymap("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" })
 keymap("n", "n", "nzzzv", { desc = "Next search result (centered)" })
 keymap("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
 
--- Window navigation
-keymap("n", "<C-h>", "<C-w>h", { desc = "Move to left window" })
-keymap("n", "<C-j>", "<C-w>j", { desc = "Move to bottom window" })
-keymap("n", "<C-k>", "<C-w>k", { desc = "Move to top window" })
-keymap("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
-
--- Window resizing
-keymap("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase window height" })
-keymap("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease window height" })
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
+-- Window navigation & resizing handled by smart-splits.nvim (crosses tmux panes)
 
 -- Buffer navigation
 keymap("n", "<S-h>", ":bprevious<CR>", { desc = "Previous buffer" })
@@ -629,6 +654,21 @@ if vim.fn.executable("rg") == 1 then
   vim.opt.grepformat = "%f:%l:%c:%m"
 end
 
+-- Auto-cd to project root (makes Telescope, :grep, :terminal use project scope)
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = vim.api.nvim_create_augroup("auto-root", { clear = true }),
+  callback = function(args)
+    if vim.bo[args.buf].buftype ~= "" then return end
+    local root = vim.fs.root(args.buf, {
+      ".git", "Makefile", "pyproject.toml", "package.json",
+      "Cargo.toml", "go.mod",
+    })
+    if root and root ~= vim.fn.getcwd() then
+      vim.fn.chdir(root)
+    end
+  end,
+})
+
 -- Auto-create parent directories when saving
 vim.api.nvim_create_autocmd("BufWritePre", {
   callback = function(args)
@@ -678,8 +718,9 @@ end -- End of non-VSCode configuration
 --   <leader>e       - File explorer (netrw)
 --   <leader>f       - Format buffer
 --
--- Window Management:
---   <C-h/j/k/l>     - Navigate windows
+-- Window Management (smart-splits: works across nvim splits and tmux panes):
+--   <C-h/j/k/l>     - Navigate splits/tmux panes
+--   <A-h/j/k/l>     - Resize splits/tmux panes
 --   <leader>sv/sh   - Split vertical/horizontal
 --   <leader>sx      - Close split
 --
@@ -690,10 +731,16 @@ end -- End of non-VSCode configuration
 --   Visual+</>/     - Indent left/right
 --
 -- Git:
+--   <leader>gg      - LazyGit
+--   <leader>gc      - Git commits (Telescope)
+--   <leader>gf      - Git file history (Telescope)
+--   <leader>gs      - Git status (Telescope)
 --   ]h / [h         - Next/previous hunk
 --   <leader>hs      - Stage hunk
 --   <leader>hr      - Reset hunk
 --   <leader>hb      - Blame line
+--   <leader>hd      - Diff against index
+--   <leader>hD      - Diff against last commit
 --
 -- LSP:
 --   gd              - Go to definition

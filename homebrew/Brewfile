@@ -35,6 +35,7 @@ brew "eza"
 brew "git-delta"
 brew "tldr"
 brew "tree-sitter-cli"
+brew "xh"
 brew "zoxide"
 
 # LSP servers (for Neovim)
