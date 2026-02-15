@@ -1,11 +1,8 @@
-tap "d12frosted/emacs-plus"
-
 # Core tools
 brew "bat"
 brew "bottom"
 brew "cmake"
 brew "curl"
-brew "d12frosted/emacs-plus/emacs-plus", args: ["with-modern-black-dragon-icon", "with-imagemagick"]
 brew "fd"
 brew "fzf"
 brew "gh"
@@ -54,8 +51,8 @@ brew "zsh-syntax-highlighting"
 # Casks
 cask "amethyst"
 cask "bitwarden"
-cask "font-fira-code-nerd-font"
-cask "font-roboto-mono-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-intone-mono-nerd-font"
 cask "iterm2"
 cask "rectangle"
 cask "temurin@21"

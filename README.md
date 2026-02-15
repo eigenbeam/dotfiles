@@ -33,7 +33,7 @@ Only needed if not using `make bootstrap`:
 | `zsh`      | `~/`                 | `.zshrc`, `.zprofile`, `.zshenv`                             |
 | `git`      | `~/`                 | `~/.config/git/config`, `ignore`, `hooks/` (XDG layout)     |
 | `nvim`     | `~/.config/`         | Minimal zero-dependency `init.lua` (works in VSCode too)     |
-| `emacs`    | `~/` (no-folding)    | Modular config: basics, theme, packages, dev, org            |
+| `ghostty`  | `~/`                 | Terminal config: JetBrains Mono, Base2Tone EveningDark colors |
 | `tmux`     | `~/`                 | Prefix `C-a`, vi keys, TPM plugins, session persistence      |
 | `starship` | `~/`                 | `~/.config/starship.toml` prompt config                      |
 

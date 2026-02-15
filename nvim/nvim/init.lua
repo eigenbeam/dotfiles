@@ -11,8 +11,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Nerd Font available (Brewfile installs FiraCode and RobotoMono Nerd Fonts)
-vim.g.have_nerd_font = true
 
 -- Disable unused providers (silences checkhealth warnings)
 vim.g.loaded_perl_provider = 0
@@ -57,7 +55,7 @@ require("lazy").setup({
         end,
       },
       { "nvim-telescope/telescope-ui-select.nvim" },
-      { "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
+      { "nvim-tree/nvim-web-devicons" },
     },
     config = function()
       require("telescope").setup({
@@ -263,7 +261,7 @@ require("lazy").setup({
       require("mini.ai").setup({ n_lines = 500 })
       require("mini.surround").setup()
       local statusline = require("mini.statusline")
-      statusline.setup({ use_icons = vim.g.have_nerd_font })
+      statusline.setup({ use_icons = true })
       statusline.section_location = function()
         return "%2l:%-2v"
       end
@@ -331,7 +329,7 @@ require("lazy").setup({
     event = "VimEnter",
     opts = {
       delay = 0,
-      icons = { mappings = vim.g.have_nerd_font },
+      icons = { mappings = true },
       spec = {
         { "<leader>s", group = "Search", mode = { "n", "v" } },
         { "<leader>t", group = "Toggle" },

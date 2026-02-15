@@ -8,10 +8,8 @@ check:
 all: check
 	@mkdir -p $(HOME)/.cache/zsh
 	@mkdir -p $(HOME)/.config
-	@mkdir -p $(HOME)/.emacs.d/lisp
 	@touch $(HOME)/.gitconfig-local
 	stow --dotfiles -t $(HOME) bash
-	stow --dotfiles --no-folding -t $(HOME) emacs
 	stow --dotfiles -t $(HOME) ghostty
 	stow --dotfiles -t $(HOME) git
 	stow --dotfiles -t $(HOME)/.config nvim
@@ -21,7 +19,7 @@ all: check
 	@echo "✓ Dotfiles installed successfully"
 
 uninstall:
-	stow --dotfiles -D -t $(HOME) bash emacs ghostty git starship tmux zsh
+	stow --dotfiles -D -t $(HOME) bash ghostty git starship tmux zsh
 	stow --dotfiles -D -t $(HOME)/.config nvim
 	@echo "✓ Dotfiles uninstalled"
 
