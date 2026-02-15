@@ -154,29 +154,23 @@ require("lazy").setup({
         end,
       })
 
-      local capabilities = require("blink.cmp").get_lsp_capabilities()
-
-      local servers = {
-        bashls = {},
-        clangd = {},
-        pyright = {},
-        lua_ls = {
-          settings = {
-            Lua = {
-              completion = { callSnippet = "Replace" },
-            },
-          },
-        },
-      }
-
-      require("mason-tool-installer").setup({
-        ensure_installed = vim.list_extend(vim.tbl_keys(servers), { "stylua" }),
+      vim.lsp.config('*', {
+        capabilities = require('blink.cmp').get_lsp_capabilities(),
       })
 
-      for server_name, server_config in pairs(servers) do
-        server_config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server_config.capabilities or {})
-        require("lspconfig")[server_name].setup(server_config)
-      end
+      vim.lsp.config('lua_ls', {
+        settings = {
+          Lua = {
+            completion = { callSnippet = 'Replace' },
+          },
+        },
+      })
+
+      require("mason-tool-installer").setup({
+        ensure_installed = { "bashls", "clangd", "pyright", "lua_ls", "stylua" },
+      })
+
+      vim.lsp.enable({ 'bashls', 'clangd', 'pyright', 'lua_ls' })
     end,
   },
 
