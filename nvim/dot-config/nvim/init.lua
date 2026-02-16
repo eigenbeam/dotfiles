@@ -170,6 +170,7 @@ require("lazy").setup({
         settings = {
           Lua = {
             completion = { callSnippet = 'Replace' },
+            diagnostics = { globals = { 'vim' } },
           },
         },
       })
@@ -626,6 +627,15 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
   callback = function()
     vim.opt_local.textwidth = 88  -- Black formatter standard
+  end,
+})
+
+-- Prose files: wrap at word boundaries
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "quarto", "text", "tex" },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
   end,
 })
 
