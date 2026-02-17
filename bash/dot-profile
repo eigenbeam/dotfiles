@@ -29,3 +29,15 @@ export NVM_DIR="$HOME/.nvm"
 # bat
 # ------------------
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+# ------------------
+# Java
+# ------------------
+if /usr/libexec/java_home &>/dev/null; then
+  export JAVA_HOME=$(/usr/libexec/java_home)
+fi
+
+# ------------------
+# LaTeX
+# ------------------
+[ -d /Library/TeX/texbin ] && export PATH="/Library/TeX/texbin:$PATH"
