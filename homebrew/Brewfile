@@ -50,6 +50,7 @@ brew "zsh-completions"
 brew "zsh-syntax-highlighting"
 
 # Data & DevOps
+brew "awscli"
 brew "duckdb"
 brew "visidata"
 brew "lazydocker"
@@ -62,8 +63,9 @@ brew "ruff"
 brew "typst"
 
 # General CLI
-brew "hyperfine"
 brew "dust"
+brew "hyperfine"
+brew "pandoc"
 
 # Casks
 cask "bitwarden"
