@@ -34,13 +34,12 @@ require("lazy").setup({
 
     -- ── Colorscheme ──────────────────────────────────────────────────────
     {
-        "thesimonho/kanagawa-paper.nvim",
+        "RRethy/base16-nvim",
         lazy = false,
         priority = 1000,
-        opts = {},
-        config = function(_, opts)
-            require("kanagawa-paper").setup(opts)
-            vim.cmd("colorscheme kanagawa-paper")
+        config = function()
+            vim.opt.background = "light"
+            require("base16-colorscheme").setup(require("parchment"))
         end,
     },
 
@@ -657,6 +656,7 @@ else
     vim.opt.number = true -- Line numbers
     vim.opt.relativenumber = true -- Relative line numbers
     vim.opt.signcolumn = "yes" -- Always show sign column (prevents shift)
+    vim.opt.linespace = 7 -- Extra line height
     vim.opt.cursorline = true -- Highlight current line
     vim.opt.scrolloff = 8 -- Keep 8 lines above/below cursor
     vim.opt.sidescrolloff = 8 -- Keep 8 columns left/right of cursor

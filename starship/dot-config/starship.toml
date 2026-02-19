@@ -1,6 +1,6 @@
 # Starship prompt configuration
 # Docs: https://starship.rs/config/
-# Theme: Base2Tone EveningDark (purple + orange)
+# Theme: Parchment (muted greens, slate blue, dusty wine, sienna)
 
 command_timeout = 1000
 add_newline = true
@@ -19,43 +19,43 @@ $line_break\
 $character"""
 
 [character]
-success_symbol = '[>](bold #6a51e6)'
-error_symbol = '[>](bold #b37537)'
+success_symbol = '[>](bold #1f401f)'
+error_symbol = '[>](bold #5c2d33)'
 
 [directory]
-style = 'bold #8a75f5'
+style = 'bold #3c475a'
 truncation_length = 3
 truncate_to_repo = true
 
 [git_branch]
-style = 'bold #e09142'
+style = 'bold #2e4e20'
 format = '[$symbol$branch(:$remote_branch)]($style) '
 
 [git_status]
-style = '#ffad5c'
+style = '#5c2d33'
 format = '([$all_status$ahead_behind]($style) )'
 
 [cmd_duration]
 min_time = 2_000
-style = '#8e8aa3'
+style = '#534b3f'
 format = '[$duration]($style) '
 
 [python]
-style = '#afa0fe'
+style = '#3c475a'
 format = '[$symbol$version]($style) '
 
 [nodejs]
-style = '#afa0fe'
+style = '#3c475a'
 format = '[$symbol$version]($style) '
 
 [rust]
-style = '#afa0fe'
+style = '#3c475a'
 format = '[$symbol$version]($style) '
 
 [golang]
-style = '#afa0fe'
+style = '#3c475a'
 format = '[$symbol$version]($style) '
 
 [lua]
-style = '#afa0fe'
+style = '#3c475a'
 format = '[$symbol$version]($style) '

@@ -7,6 +7,7 @@
 alias vi=nvim
 alias vim=nvim
 alias bc='bc -l'
+export BAT_THEME="ansi"
 alias cat='bat --paging=never'
 alias ls='eza'
 alias ll='eza -la --git --icons'
@@ -38,6 +39,7 @@ fi
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 export FZF_CTRL_T_COMMAND='fd --type f --hidden --exclude .git'
 export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
+export FZF_DEFAULT_OPTS='--color=bg+:#b8c4a8,fg:#2a3a2a,fg+:#1a2a1a,hl:#3c475a,hl+:#3c475a,info:#534b3f,prompt:#1f401f,pointer:#6b3b42,marker:#2e4e20,spinner:#534b3f,header:#3c475a'
 eval "$(fzf --bash)"
 
 # ------------------

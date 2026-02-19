@@ -13,14 +13,16 @@ all: check
 	stow --dotfiles -t $(HOME) ghostty
 	stow --dotfiles -t $(HOME) keyboard
 	stow --dotfiles -t $(HOME) git
+	stow --dotfiles -t $(HOME) lazygit
 	stow --dotfiles -t $(HOME) nvim
 	stow --dotfiles -t $(HOME) starship
 	stow --dotfiles -t $(HOME) tmux
+	stow --dotfiles -t $(HOME) yazi
 	stow --dotfiles -t $(HOME) zsh
 	@echo "✓ Dotfiles installed successfully"
 
 uninstall:
-	stow --dotfiles -D -t $(HOME) bash ghostty keyboard git nvim starship tmux zsh
+	stow --dotfiles -D -t $(HOME) bash ghostty keyboard git lazygit nvim starship tmux yazi zsh
 	@echo "✓ Dotfiles uninstalled"
 
 bootstrap:

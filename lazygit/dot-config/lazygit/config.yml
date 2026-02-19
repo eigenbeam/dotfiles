@@ -1,0 +1,24 @@
+# Lazygit configuration — Parchment theme
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#1f401f"
+      - bold
+    inactiveBorderColor:
+      - "#534b3f"
+    selectedLineBgColor:
+      - "#b8c4a8"
+    searchingActiveBorderColor:
+      - "#6b3a20"
+      - bold
+    optionsTextColor:
+      - "#3c475a"
+    cherryPickedCommitBgColor:
+      - "#b8c4a8"
+    cherryPickedCommitFgColor:
+      - "#1a2a1a"
+    unstagedChangesColor:
+      - "#5c2d33"
+    defaultFgColor:
+      - "#2a3a2a"
