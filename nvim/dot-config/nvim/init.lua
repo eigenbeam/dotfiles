@@ -4,7 +4,7 @@
 -- Kickstart-inspired single-file config with lazy.nvim plugin management
 -- Features: Telescope, LSP, Treesitter, blink.cmp, gitsigns, nvim-lint,
 --           nvim-dap, nvim-jdtls, quarto-nvim, conform.nvim
--- Theme: Base2Tone EveningDark (DuoTone)
+-- Theme: Kanagawa Paper
 -- VSCode Neovim extension supported (auto-detected)
 -- Requirements: Neovim 0.11+, git
 -- ============================================================================
@@ -35,10 +35,13 @@ require("lazy").setup({
 
   -- ── Colorscheme ──────────────────────────────────────────────────────
   {
-    "atelierbram/Base2Tone-nvim",
+    "thesimonho/kanagawa-paper.nvim",
+    lazy = false,
     priority = 1000,
-    config = function()
-      vim.cmd("colorscheme base2tone_evening_dark")
+    opts = {},
+    config = function(_, opts)
+      require("kanagawa-paper").setup(opts)
+      vim.cmd("colorscheme kanagawa-paper-ink")
     end,
   },
 
