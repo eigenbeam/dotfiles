@@ -19,9 +19,17 @@ alias lt='eza --tree --level=2 --icons'
 note() {
   local dir="$HOME/notes"
   local file="$dir/$(date +%Y-%m-%d).md"
-  mkdir -p "$dir"
+  if [[ ! -d "$dir/.git" ]]; then
+    git clone git@github.com:eigenbeam/notes.git "$dir" 2>/dev/null || \
+      { mkdir -p "$dir" && git -C "$dir" init && \
+        git -C "$dir" remote add origin git@github.com:eigenbeam/notes.git; }
+  fi
   [[ -f "$file" ]] || printf "# %s\n\n" "$(date +%Y-%m-%d)" > "$file"
+  git -C "$dir" pull --rebase --quiet 2>/dev/null
   nvim "+normal G" "$file"
+  git -C "$dir" add -A && \
+    git -C "$dir" commit -m "$(date +%Y-%m-%d)" --quiet 2>/dev/null
+  git -C "$dir" push --quiet 2>/dev/null &
 }
 
 notes() {
