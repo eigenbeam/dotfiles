@@ -84,6 +84,14 @@ require("lazy").setup({
                 builtin.find_files({ cwd = vim.fn.stdpath("config") })
             end, { desc = "Search neovim config" })
 
+            -- Notes
+            vim.keymap.set("n", "<leader>sN", function()
+                builtin.live_grep({ cwd = vim.fn.expand("~/notes") })
+            end, { desc = "Search notes" })
+            vim.keymap.set("n", "<leader>sO", function()
+                builtin.find_files({ cwd = vim.fn.expand("~/notes") })
+            end, { desc = "Browse notes" })
+
             -- Git pickers
             vim.keymap.set("n", "<leader>gc", builtin.git_commits, { desc = "Git commits" })
             vim.keymap.set("n", "<leader>gf", builtin.git_bcommits, { desc = "Git file history" })

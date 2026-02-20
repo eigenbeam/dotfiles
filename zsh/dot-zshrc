@@ -14,6 +14,21 @@ alias ll='eza -la --git --icons'
 alias lt='eza --tree --level=2 --icons'
 
 # ------------------
+# Notes
+# ------------------
+note() {
+  local dir="$HOME/notes"
+  local file="$dir/$(date +%Y-%m-%d).md"
+  mkdir -p "$dir"
+  [[ -f "$file" ]] || printf "# %s\n\n" "$(date +%Y-%m-%d)" > "$file"
+  nvim "+normal G" "$file"
+}
+
+notes() {
+  nvim -c "Telescope live_grep cwd=$HOME/notes"
+}
+
+# ------------------
 # History
 # ------------------
 mkdir -p ~/.cache/zsh
