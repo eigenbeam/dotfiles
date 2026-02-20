@@ -29,7 +29,7 @@ note() {
   nvim "+normal G" "$file"
   git -C "$dir" add -A && \
     git -C "$dir" commit -m "$(date +%Y-%m-%d)" --quiet 2>/dev/null
-  git -C "$dir" push --quiet 2>/dev/null &
+  git -C "$dir" push -u origin main --quiet 2>/dev/null &
 }
 
 notes() {
