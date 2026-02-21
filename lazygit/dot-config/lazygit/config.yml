@@ -1,24 +1,24 @@
-# Lazygit configuration — Parchment theme
+# Lazygit configuration — Gruvbox Material Light theme
 gui:
   nerdFontsVersion: "3"
   theme:
     activeBorderColor:
-      - "#1f401f"
+      - "#45707a"
       - bold
     inactiveBorderColor:
-      - "#534b3f"
+      - "#a89984"
     selectedLineBgColor:
-      - "#b8c4a8"
+      - "#e5d5ad"
     searchingActiveBorderColor:
-      - "#6b3a20"
+      - "#c35e0a"
       - bold
     optionsTextColor:
-      - "#3c475a"
+      - "#45707a"
     cherryPickedCommitBgColor:
-      - "#b8c4a8"
+      - "#e5d5ad"
     cherryPickedCommitFgColor:
-      - "#1a2a1a"
+      - "#4f3829"
     unstagedChangesColor:
-      - "#5c2d33"
+      - "#c14a4a"
     defaultFgColor:
-      - "#2a3a2a"
+      - "#654735"

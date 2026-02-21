@@ -1,7 +1,7 @@
 # Ghostty terminal configuration
 
 # Theme
-theme = parchment
+theme = Gruvbox Material Light
 
 # Font
 font-family = CommitMono Nerd Font

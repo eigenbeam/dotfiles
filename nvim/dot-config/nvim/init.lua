@@ -4,7 +4,7 @@
 -- Kickstart-inspired single-file config with lazy.nvim plugin management
 -- Features: Telescope, LSP, Treesitter, blink.cmp, gitsigns, nvim-lint,
 --           nvim-dap, nvim-jdtls, quarto-nvim, conform.nvim
--- Theme: Kanagawa Paper
+-- Theme: Gruvbox Material Light
 -- VSCode Neovim extension supported (auto-detected)
 -- Requirements: Neovim 0.11+, git
 -- ============================================================================
@@ -34,12 +34,15 @@ require("lazy").setup({
 
     -- ── Colorscheme ──────────────────────────────────────────────────────
     {
-        "RRethy/base16-nvim",
+        "sainnhe/gruvbox-material",
         lazy = false,
         priority = 1000,
         config = function()
-            vim.opt.background = "light"
-            require("base16-colorscheme").setup(require("parchment"))
+            vim.o.background = "light"
+            vim.g.gruvbox_material_background = "medium"
+            vim.g.gruvbox_material_foreground = "material"
+            vim.g.gruvbox_material_better_performance = 1
+            vim.cmd.colorscheme("gruvbox-material")
         end,
     },
 

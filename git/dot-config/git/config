@@ -50,12 +50,12 @@
 	navigate = true
 	side-by-side = true
 	line-numbers = true
-	syntax-theme = base16
+	syntax-theme = gruvbox-light
 	light = true
-	minus-style = syntax "#d4b8b0"
-	minus-emph-style = syntax "#c8a090"
-	plus-style = syntax "#b8c4a8"
-	plus-emph-style = syntax "#a8b898"
+	minus-style = syntax "#f9e0bb"
+	minus-emph-style = syntax "#f1d9b5"
+	plus-style = syntax "#e6eabc"
+	plus-emph-style = syntax "#dee2b6"
 [diff]
 	colorMoved = default
 [merge]
