@@ -14,6 +14,16 @@ alias ll='eza -la --git --icons'
 alias lt='eza --tree --level=2 --icons'
 
 # ------------------
+# Homebrew (auto-update Brewfile after install/uninstall)
+# ------------------
+brew() {
+  command brew "$@" || return $?
+  if [[ "$1" == (install|uninstall|rmtree) ]]; then
+    command brew bundle dump --force --file=~/projects/dotfiles/homebrew/Brewfile
+  fi
+}
+
+# ------------------
 # Notes
 # ------------------
 note() {

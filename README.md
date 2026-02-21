@@ -33,10 +33,12 @@ Only needed if not using `make bootstrap`:
 | `zsh`      | `~/`                 | `.zshrc`, `.zprofile`, `.zshenv`                             |
 | `git`      | `~/`                 | `~/.config/git/config`, `ignore`, `hooks/` (XDG layout)     |
 | `nvim`     | `~/`                 | Minimal zero-dependency `init.lua` (works in VSCode too)     |
-| `ghostty`  | `~/`                 | Terminal config: JetBrains Mono, Base2Tone EveningDark colors |
+| `ghostty`  | `~/`                 | Terminal config: CommitMono Nerd Font, Zenbones Light theme   |
 | `keyboard` | `~/`                 | macOS keyboard remapping via `hidutil` (right-option → control) |
 | `tmux`     | `~/`                 | Prefix `C-a`, vi keys, TPM plugins, session persistence      |
 | `starship` | `~/`                 | `~/.config/starship.toml` prompt config                      |
+| `lazygit`  | `~/`                 | `~/.config/lazygit/config.yml` (Zenbones Light theme)        |
+| `yazi`     | `~/`                 | `~/.config/yazi/theme.toml` (Zenbones Light theme)           |
 | `ssh`      | `~/`                 | `~/.ssh/config` (connection multiplexing, keepalive)         |
 
 Not stowed (reference/install scripts):
@@ -58,6 +60,7 @@ Not stowed (reference/install scripts):
 | `make ssh`         | Deploy SSH config (manual — not in `make all`)         |
 | `make lint`        | Run shellcheck on all shell config files               |
 | `make mac`         | Set macOS-specific defaults (VSCode key repeat)        |
+| `make sync`        | Pull latest, install Homebrew packages, re-stow        |
 | `make brewfile`    | Dump current Homebrew state to `Brewfile`              |
 
 ## Shell Setup
@@ -73,6 +76,16 @@ Key features:
 * **zsh-syntax-highlighting** and **zsh-autosuggestions**
 * **bat** as MANPAGER and aliased to `cat`
 * **Compinit caching** with 24h dump refresh (zsh)
+
+## Multi-Machine Sync
+
+The `brew` command is wrapped in zsh to auto-update the Brewfile after
+any `brew install` or `brew uninstall`. On another machine, pull and
+reconcile everything with:
+
+```
+$ make sync         # git pull + brew bundle install + re-stow
+```
 
 ## Reproducibility
 

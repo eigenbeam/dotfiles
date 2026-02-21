@@ -69,8 +69,7 @@ brew "pandoc"
 
 # Casks
 cask "bitwarden"
-cask "font-jetbrains-mono-nerd-font"
-cask "font-intone-mono-nerd-font"
+cask "font-commit-mono-nerd-font"
 cask "ghostty"
 cask "quarto"
 cask "rectangle"

@@ -1,4 +1,4 @@
-.PHONY: all check bootstrap homebrew homebrew-extras brewfile brewfile-extras uninstall lint mac cards tools ssh
+.PHONY: all check bootstrap homebrew homebrew-extras brewfile brewfile-extras uninstall lint mac cards tools ssh sync
 
 check:
 	@command -v stow >/dev/null 2>&1 || (echo "Error: GNU Stow not found. Please install it first." && exit 1)
@@ -64,6 +64,12 @@ ssh:
 	stow --dotfiles -t $(HOME) ssh
 	@chmod 600 ssh/dot-ssh/config
 	@echo "✓ SSH config installed"
+
+sync:
+	git pull
+	brew bundle install --file=homebrew/Brewfile
+	@$(MAKE) all
+	@echo "✓ Synced"
 
 mac:
 	defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
