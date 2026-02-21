@@ -4,7 +4,7 @@
 -- Kickstart-inspired single-file config with lazy.nvim plugin management
 -- Features: Telescope, LSP, Treesitter, blink.cmp, gitsigns, nvim-lint,
 --           nvim-dap, nvim-jdtls, quarto-nvim, conform.nvim
--- Theme: Gruvbox Material Light
+-- Theme: Zenbones Light
 -- VSCode Neovim extension supported (auto-detected)
 -- Requirements: Neovim 0.11+, git
 -- ============================================================================
@@ -34,15 +34,13 @@ require("lazy").setup({
 
     -- ── Colorscheme ──────────────────────────────────────────────────────
     {
-        "sainnhe/gruvbox-material",
+        "zenbones-theme/zenbones.nvim",
+        dependencies = { "rktjmp/lush.nvim" },
         lazy = false,
         priority = 1000,
         config = function()
             vim.o.background = "light"
-            vim.g.gruvbox_material_background = "medium"
-            vim.g.gruvbox_material_foreground = "material"
-            vim.g.gruvbox_material_better_performance = 1
-            vim.cmd.colorscheme("gruvbox-material")
+            vim.cmd.colorscheme("zenbones")
         end,
     },
 

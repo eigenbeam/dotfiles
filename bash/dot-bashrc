@@ -39,7 +39,7 @@ fi
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 export FZF_CTRL_T_COMMAND='fd --type f --hidden --exclude .git'
 export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
-export FZF_DEFAULT_OPTS='--color=bg+:#b8c4a8,fg:#2a3a2a,fg+:#1a2a1a,hl:#3c475a,hl+:#3c475a,info:#534b3f,prompt:#1f401f,pointer:#6b3b42,marker:#2e4e20,spinner:#534b3f,header:#3c475a'
+export FZF_DEFAULT_OPTS='--color=bg+:#CBD9E3,fg:#2C363C,fg+:#2C363C,hl:#286486,hl+:#286486,info:#4F5E68,prompt:#2C363C,pointer:#A8334C,marker:#4F6C31,spinner:#4F5E68,header:#286486'
 eval "$(fzf --bash)"
 
 # ------------------

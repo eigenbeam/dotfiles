@@ -85,7 +85,7 @@ eval "$(starship init zsh)"
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 export FZF_CTRL_T_COMMAND='fd --type f --hidden --exclude .git'
 export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
-export FZF_DEFAULT_OPTS='--color=bg+:#e5d5ad,fg:#654735,fg+:#4f3829,hl:#45707a,hl+:#45707a,info:#928374,prompt:#654735,pointer:#c14a4a,marker:#6c782e,spinner:#928374,header:#45707a'
+export FZF_DEFAULT_OPTS='--color=bg+:#CBD9E3,fg:#2C363C,fg+:#2C363C,hl:#286486,hl+:#286486,info:#4F5E68,prompt:#2C363C,pointer:#A8334C,marker:#4F6C31,spinner:#4F5E68,header:#286486'
 source <(fzf --zsh)
 
 # ------------------
@@ -112,7 +112,7 @@ eval "$(direnv hook zsh)"
 # ------------------
 [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
   source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#a89984"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#CFC1BA"
 
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

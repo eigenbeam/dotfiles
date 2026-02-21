@@ -50,12 +50,12 @@
 	navigate = true
 	side-by-side = true
 	line-numbers = true
-	syntax-theme = gruvbox-light
+	syntax-theme = GitHub
 	light = true
-	minus-style = syntax "#f9e0bb"
-	minus-emph-style = syntax "#f1d9b5"
-	plus-style = syntax "#e6eabc"
-	plus-emph-style = syntax "#dee2b6"
+	minus-style = syntax "#EACED1"
+	minus-emph-style = syntax "#E0BFC3"
+	plus-style = syntax "#D5E0C5"
+	plus-emph-style = syntax "#CBDAB8"
 [diff]
 	colorMoved = default
 [merge]
