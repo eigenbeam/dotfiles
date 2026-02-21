@@ -52,10 +52,10 @@
 	line-numbers = true
 	syntax-theme = base16
 	light = true
-	minus-style = syntax "#d4b8b0"
-	minus-emph-style = syntax "#c8a090"
-	plus-style = syntax "#b8c4a8"
-	plus-emph-style = syntax "#a8b898"
+	minus-style = syntax "#E8D0D0"
+	minus-emph-style = syntax "#DBBCBC"
+	plus-style = syntax "#D0E0D0"
+	plus-emph-style = syntax "#BCCFBC"
 [diff]
 	colorMoved = default
 [merge]

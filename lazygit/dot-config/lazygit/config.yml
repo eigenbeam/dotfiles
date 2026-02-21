@@ -1,24 +1,24 @@
-# Lazygit configuration — Parchment theme
+# Lazygit configuration — Zenbones Light theme
 gui:
   nerdFontsVersion: "3"
   theme:
     activeBorderColor:
-      - "#1f401f"
+      - "#286486"
       - bold
     inactiveBorderColor:
-      - "#534b3f"
+      - "#CFC1BA"
     selectedLineBgColor:
-      - "#b8c4a8"
+      - "#CBD9E3"
     searchingActiveBorderColor:
-      - "#6b3a20"
+      - "#944927"
       - bold
     optionsTextColor:
-      - "#3c475a"
+      - "#286486"
     cherryPickedCommitBgColor:
-      - "#b8c4a8"
+      - "#CBD9E3"
     cherryPickedCommitFgColor:
-      - "#1a2a1a"
+      - "#2C363C"
     unstagedChangesColor:
-      - "#5c2d33"
+      - "#A8334C"
     defaultFgColor:
-      - "#2a3a2a"
+      - "#2C363C"

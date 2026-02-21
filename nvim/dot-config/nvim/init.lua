@@ -4,7 +4,7 @@
 -- Kickstart-inspired single-file config with lazy.nvim plugin management
 -- Features: Telescope, LSP, Treesitter, blink.cmp, gitsigns, nvim-lint,
 --           nvim-dap, nvim-jdtls, quarto-nvim, conform.nvim
--- Theme: Kanagawa Paper
+-- Theme: Zenbones Light
 -- VSCode Neovim extension supported (auto-detected)
 -- Requirements: Neovim 0.11+, git
 -- ============================================================================
@@ -34,12 +34,13 @@ require("lazy").setup({
 
     -- ── Colorscheme ──────────────────────────────────────────────────────
     {
-        "RRethy/base16-nvim",
+        "zenbones-theme/zenbones.nvim",
         lazy = false,
         priority = 1000,
+        dependencies = { "rktjmp/lush.nvim" },
         config = function()
-            vim.opt.background = "light"
-            require("base16-colorscheme").setup(require("parchment"))
+            vim.o.background = "light"
+            vim.cmd.colorscheme("zenbones")
         end,
     },
 

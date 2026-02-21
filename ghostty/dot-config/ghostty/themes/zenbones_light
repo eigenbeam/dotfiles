@@ -1,0 +1,23 @@
+# Zenbones Light — warm off-white, near-monochrome terminal palette
+background = #F0EDEC
+foreground = #2C363C
+cursor-color = #2C363C
+selection-background = #CBD9E3
+selection-foreground = #2C363C
+
+palette = 0=#2C363C
+palette = 1=#A8334C
+palette = 2=#4F6C31
+palette = 3=#944927
+palette = 4=#286486
+palette = 5=#88507D
+palette = 6=#3B8992
+palette = 7=#CFC1BA
+palette = 8=#4F5E68
+palette = 9=#A8334C
+palette = 10=#4F6C31
+palette = 11=#944927
+palette = 12=#286486
+palette = 13=#88507D
+palette = 14=#3B8992
+palette = 15=#F0EDEC
