@@ -1,6 +1,9 @@
 # Return if not interactive
 [[ $- != *i* ]] && return
 
+# Source login environment if not already loaded (non-login interactive shells)
+[[ -z "$HOMEBREW_PREFIX" ]] && [ -f "$HOME/.profile" ] && . "$HOME/.profile"
+
 # ------------------
 # Aliases
 # ------------------
@@ -47,8 +50,13 @@ eval "$(fzf --bash)"
 # ------------------
 _lazy_load_nvm() {
   unset -f nvm node npm npx
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+  if [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ]; then
+    . "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"
+    [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && . "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm"
+  elif [ -s "$NVM_DIR/nvm.sh" ]; then
+    . "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+  fi
 }
 nvm() { _lazy_load_nvm; nvm "$@"; }
 node() { _lazy_load_nvm; node "$@"; }

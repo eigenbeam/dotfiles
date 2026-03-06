@@ -68,8 +68,8 @@ setopt correct
 autoload -U colors && colors
 
 if type brew &>/dev/null; then
-  fpath+=("/opt/homebrew/share/zsh/site-functions")
-  fpath+=(/opt/homebrew/share/zsh-completions)
+  fpath+=("$HOMEBREW_PREFIX/share/zsh/site-functions")
+  fpath+=("$HOMEBREW_PREFIX/share/zsh-completions")
 fi
 
 autoload -Uz compinit
@@ -103,8 +103,13 @@ source <(fzf --zsh)
 # ------------------
 _lazy_load_nvm() {
   unset -f nvm node npm npx
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+  if [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ]; then
+    . "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"
+    [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && . "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm"
+  elif [ -s "$NVM_DIR/nvm.sh" ]; then
+    . "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+  fi
 }
 nvm() { _lazy_load_nvm; nvm "$@"; }
 node() { _lazy_load_nvm; node "$@"; }
@@ -120,12 +125,17 @@ eval "$(direnv hook zsh)"
 # ------------------
 # Plugins (autosuggestions before syntax-highlighting, which must be last)
 # ------------------
-[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
-  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+for _dir in "${HOMEBREW_PREFIX}/share" "/usr/share"; do
+  [ -f "$_dir/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
+    { source "$_dir/zsh-autosuggestions/zsh-autosuggestions.zsh"; break; }
+done
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#CFC1BA"
 
-[ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
-  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+for _dir in "${HOMEBREW_PREFIX}/share" "/usr/share"; do
+  [ -f "$_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && \
+    { source "$_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"; break; }
+done
+unset _dir
 
 # Uncomment to finish profiling
 # zprof

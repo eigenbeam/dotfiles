@@ -40,8 +40,9 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[credential]
-	helper = osxkeychain
+# Credential helper is machine-specific; set in ~/.gitconfig-local
+# macOS: [credential] helper = osxkeychain
+# Linux: [credential] helper = cache  (or store, or /usr/lib/git-core/git-credential-libsecret)
 [github]
 	user = eigenbeam
 [interactive]

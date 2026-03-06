@@ -5,6 +5,8 @@
 # Homebrew
 if [ -x /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 elif [ -x /usr/local/bin/brew ]; then
   eval "$(/usr/local/bin/brew shellenv)"
 fi
@@ -13,7 +15,6 @@ fi
 # PATH
 # ------------------
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 # ------------------
 # Rust
@@ -31,13 +32,12 @@ export NVM_DIR="$HOME/.nvm"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # ------------------
-# Java
+# macOS-specific
 # ------------------
-if /usr/libexec/java_home &>/dev/null; then
-  export JAVA_HOME=$(/usr/libexec/java_home)
+if [ "$(uname)" = "Darwin" ]; then
+  export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+  if /usr/libexec/java_home &>/dev/null; then
+    export JAVA_HOME=$(/usr/libexec/java_home)
+  fi
+  [ -d /Library/TeX/texbin ] && export PATH="/Library/TeX/texbin:$PATH"
 fi
-
-# ------------------
-# LaTeX
-# ------------------
-[ -d /Library/TeX/texbin ] && export PATH="/Library/TeX/texbin:$PATH"
