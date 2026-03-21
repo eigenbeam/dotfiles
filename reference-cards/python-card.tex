@@ -4,6 +4,7 @@
             margin=0.4in]{geometry}
 \usepackage{tabularx}
 \usepackage{multicol}
+\usepackage{needspace}
 \usepackage[T1]{fontenc}
 \usepackage{microtype}
 \usepackage{helvet}
@@ -20,7 +21,7 @@
   {\Large\bfseries #1}\par\vspace{1pt}%
   \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
 }
-\newcommand{\sect}[1]{\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
 
 \begin{document}\small
 
@@ -73,6 +74,29 @@ LSP                  & \texttt{pyright}                                   & conf
 \texttt{f"\{x:.2f\}"}               & f-string formatting \\
 \end{tabularx}
 
+\sect{Error Handling}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{try: ... except E as e:}     & Catch exception \\
+\texttt{except (A, B):}              & Catch multiple types \\
+\texttt{else:}                       & No exception branch \\
+\texttt{finally:}                    & Always runs \\
+\texttt{raise ValueError("msg")}     & Raise exception \\
+\texttt{raise X from e}              & Chain exceptions \\
+\texttt{class E(Exception): ...}     & Custom exception \\
+\end{tabularx}
+
+\sect{Strings \& Slicing}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{" ".join(xs)}                & Join with separator \\
+\texttt{s.split(",")  }             & Split string \\
+\texttt{s.strip()}                   & Trim whitespace \\
+\texttt{s.startswith("x")}          & Prefix test \\
+\texttt{s.replace(a, b)}            & Replace substring \\
+\texttt{xs[1:-1]}                    & Slice (drop first/last) \\
+\texttt{xs[::2]}                     & Every 2nd element \\
+\texttt{xs[::-1]}                    & Reverse \\
+\end{tabularx}
+
 \sect{Type Hints}
 \begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
 \texttt{x: int = 0}               & Variable annotation \\
@@ -113,6 +137,27 @@ LSP                  & \texttt{pyright}                                   & conf
 \texttt{pytest}           & Testing framework \\
 \end{tabularx}
 
+\sect{Decorators}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{@property}                    & Getter method \\
+\texttt{@x.setter}                    & Setter method \\
+\texttt{@staticmethod}                & No self/cls arg \\
+\texttt{@classmethod}                 & Receives cls arg \\
+\texttt{@abstractmethod}              & Must override (ABC) \\
+\texttt{def dec(f): ... return w}     & Custom decorator \\
+\texttt{@wraps(f)}                    & Preserve metadata \\
+\end{tabularx}
+
+\sect{Async}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{async def f():}               & Async function \\
+\texttt{await coro}                   & Await coroutine \\
+\texttt{asyncio.run(main())}          & Run event loop \\
+\texttt{asyncio.gather(*coros)}       & Run concurrently \\
+\texttt{async with}                   & Async context manager \\
+\texttt{async for x in ait:}          & Async iteration \\
+\end{tabularx}
+
 \sect{Data Tools}
 \begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
 \texttt{duckdb}                        & SQL REPL (parquet/CSV) \\
@@ -131,9 +176,193 @@ LSP                  & \texttt{pyright}                                   & conf
 \texttt{tmp\_path}                    & Built-in temp dir fixture \\
 \end{tabularx}
 
+\sect{Functional Patterns}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{map(f, xs)}                   & Apply f to each element \\
+\texttt{filter(f, xs)}                & Keep elements where f is true \\
+\texttt{functools.reduce(f, xs)}      & Fold / accumulate \\
+\texttt{functools.partial(f, a)}      & Partial application \\
+\texttt{@functools.lru\_cache}        & Memoization \\
+\texttt{lambda x: \textit{expr}}      & Anonymous function \\
+\texttt{zip(xs, ys)}                  & Pair elements \\
+\texttt{enumerate(xs)}                & Index + element \\
+\texttt{any(p(x) for x in xs)}       & Existential \\
+\texttt{all(p(x) for x in xs)}       & Universal \\
+\texttt{sorted(xs, key=f)}           & Sort by projection \\
+\texttt{itertools.chain(a, b)}        & Concatenate iterables \\
+\texttt{itertools.product(a, b)}      & Cartesian product \\
+\texttt{itertools.starmap(f, pairs)}  & Map unpacking args \\
+\texttt{more-itertools}               & Extended combinators (pip) \\
+\end{tabularx}
+
+\sect{FP Libraries}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{toolz / cytoolz}     & Composable FP: pipe, curry, merge \\
+\texttt{returns}              & Result, Maybe, IO monads \\
+\texttt{expression}           & Pipe, effect system, Result \\
+\texttt{more-itertools}       & 200+ iterator recipes \\
+\end{tabularx}
+
 \end{multicols}
 
-\vfill
-{\scriptsize Python 3.12+ \quad|\quad uv: package/version manager \quad ruff: linter/formatter \quad pyright: LSP \quad|\quad match/case 3.10+ \quad PEP 695 type syntax 3.12+}
+\newpage
+
+\cardtitle{Python --- Scientific \& Geospatial}
+
+\begin{multicols}{3}
+
+\sect{NumPy --- Creation}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{np.array([1, 2, 3])}        & From list \\
+\texttt{np.zeros((m, n))}           & Zero matrix \\
+\texttt{np.ones((m, n))}            & Ones matrix \\
+\texttt{np.eye(n)}                   & Identity matrix \\
+\texttt{np.arange(0, 10, 0.5)}      & Range with step \\
+\texttt{np.linspace(0, 1, 100)}     & Evenly spaced \\
+\texttt{np.random.default\_rng()}   & RNG instance \\
+\texttt{rng.normal(0, 1, (m, n))}   & Normal samples \\
+\texttt{np.full((m, n), v)}         & Fill with value \\
+\end{tabularx}
+
+\sect{NumPy --- Indexing \& Shape}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{a[1, 2]}                     & Element access \\
+\texttt{a[1:3, :]}                   & Row slice \\
+\texttt{a[:, 0]}                     & Column slice \\
+\texttt{a[a > 0]}                    & Boolean indexing \\
+\texttt{a.shape}                     & Dimensions tuple \\
+\texttt{a.reshape(m, n)}             & Reshape \\
+\texttt{a.T}                         & Transpose \\
+\texttt{a.flatten()}                 & 1-D copy \\
+\texttt{np.concatenate([a, b])}     & Join arrays \\
+\texttt{np.stack([a, b])}           & Stack new axis \\
+\end{tabularx}
+
+\sect{NumPy --- Operations}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{a + b, a * b}               & Elementwise ops \\
+\texttt{a @ b}                       & Matrix multiply \\
+\texttt{np.dot(a, b)}               & Dot product \\
+\texttt{a.sum(axis=0)}              & Sum along axis \\
+\texttt{a.mean(), a.std()}           & Statistics \\
+\texttt{a.min(), a.max()}            & Min / max \\
+\texttt{np.argmax(a)}                & Index of max \\
+\texttt{np.where(cond, x, y)}       & Conditional select \\
+\texttt{np.sort(a)}                  & Sort array \\
+\texttt{np.unique(a)}                & Unique values \\
+\end{tabularx}
+
+\sect{NumPy --- Linear Algebra}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{np.linalg.inv(A)}           & Inverse \\
+\texttt{np.linalg.det(A)}           & Determinant \\
+\texttt{np.linalg.eig(A)}           & Eigenvalues/vectors \\
+\texttt{np.linalg.svd(A)}           & SVD \\
+\texttt{np.linalg.solve(A, b)}      & Solve Ax = b \\
+\texttt{np.linalg.norm(x)}          & Vector/matrix norm \\
+\texttt{np.linalg.lstsq(A, b)}      & Least squares \\
+\end{tabularx}
+
+\sect{Pandas --- DataFrame}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{pd.read\_csv(f)}            & Read CSV \\
+\texttt{pd.read\_parquet(f)}        & Read Parquet \\
+\texttt{df.to\_csv(f)}              & Write CSV \\
+\texttt{df.head(n)}                  & First n rows \\
+\texttt{df.info()}                   & Column types + nulls \\
+\texttt{df.describe()}               & Summary stats \\
+\texttt{df.shape}                    & (rows, cols) \\
+\texttt{df.columns}                  & Column names \\
+\texttt{df.dtypes}                   & Column types \\
+\end{tabularx}
+
+\sect{Pandas --- Selection}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{df["col"]}                   & Column (Series) \\
+\texttt{df[["a", "b"]]}             & Multiple columns \\
+\texttt{df.loc[row, col]}           & Label-based \\
+\texttt{df.iloc[i, j]}              & Position-based \\
+\texttt{df[df.x > 0]}               & Boolean filter \\
+\texttt{df.query("x > 0")}          & Query string \\
+\texttt{df.sort\_values("col")}     & Sort by column \\
+\texttt{df.drop\_duplicates()}      & Remove duplicates \\
+\texttt{df.isna()}                   & Null check \\
+\texttt{df.fillna(v)}               & Fill nulls \\
+\end{tabularx}
+
+\sect{Pandas --- Transform}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{df.groupby("k").agg(f)}     & Group + aggregate \\
+\texttt{df.pivot\_table(...)}        & Pivot / crosstab \\
+\texttt{pd.merge(a, b, on="k")}     & Join DataFrames \\
+\texttt{pd.concat([a, b])}          & Stack DataFrames \\
+\texttt{df.apply(f)}                 & Apply function \\
+\texttt{df.assign(y=lambda d: ...)} & Add column \\
+\texttt{df.rename(columns=\{...\})} & Rename columns \\
+\texttt{df.melt(...)}                & Wide to long \\
+\end{tabularx}
+
+\sect{Math Module}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{math.sqrt(x)}               & Square root \\
+\texttt{math.sin, cos, tan}         & Trig functions \\
+\texttt{math.log(x)} / \texttt{log10}  & Ln / log base 10 \\
+\texttt{math.exp(x)}                & $e^x$ \\
+\texttt{math.pi, math.e}            & Constants \\
+\texttt{math.ceil, math.floor}      & Round up / down \\
+\texttt{math.gcd(a, b)}             & GCD \\
+\texttt{math.comb(n, k)}            & Binomial coeff \\
+\texttt{math.isclose(a, b)}         & Float comparison \\
+\end{tabularx}
+
+\sect{Shapely --- Geometry}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Point(x, y)}                & Point geometry \\
+\texttt{LineString([(x,y), ...])}   & Line geometry \\
+\texttt{Polygon([(x,y), ...])}      & Polygon geometry \\
+\texttt{g.area, g.length}           & Measurements \\
+\texttt{g.buffer(d)}                & Buffer distance \\
+\texttt{g.intersection(h)}          & Intersection \\
+\texttt{g.union(h)}                 & Union \\
+\texttt{g.contains(h)}              & Containment test \\
+\texttt{g.distance(h)}              & Distance between \\
+\texttt{g.centroid}                  & Centroid point \\
+\end{tabularx}
+
+\sect{GeoPandas}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{gpd.read\_file(f)}          & Read shapefile/gpkg \\
+\texttt{gpd.read\_parquet(f)}       & Read GeoParquet \\
+\texttt{gdf.to\_file(f)}            & Write to file \\
+\texttt{gdf.geometry}               & Geometry column \\
+\texttt{gdf.crs}                     & Coordinate ref system \\
+\texttt{gdf.to\_crs(epsg=4326)}     & Reproject \\
+\texttt{gdf.plot()}                  & Quick plot \\
+\texttt{gpd.sjoin(a, b)}            & Spatial join \\
+\texttt{gdf.dissolve(by="col")}     & Merge geometries \\
+\texttt{gdf.overlay(b, how="...")} & Spatial overlay \\
+\texttt{gdf.clip(mask)}             & Clip to boundary \\
+\end{tabularx}
+
+\sect{Rasterio}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{rasterio.open(f)}           & Open raster file \\
+\texttt{src.read(1)}                & Read band 1 (array) \\
+\texttt{src.bounds}                  & Spatial extent \\
+\texttt{src.crs}                     & Coordinate ref system \\
+\texttt{src.transform}              & Affine transform \\
+\texttt{src.meta}                    & Metadata dict \\
+\texttt{rasterio.plot.show(src)}    & Quick plot \\
+\end{tabularx}
+
+\sect{Coordinate Reference}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{EPSG:4326}                   & WGS 84 (lon/lat) \\
+\texttt{EPSG:3857}                   & Web Mercator \\
+\texttt{pyproj.Transformer}         & CRS transforms \\
+\texttt{t.transform(x, y)}          & Transform coords \\
+\end{tabularx}
+
+\end{multicols}
 
 \end{document}

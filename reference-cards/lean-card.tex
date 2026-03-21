@@ -4,6 +4,7 @@
             margin=0.4in]{geometry}
 \usepackage{tabularx}
 \usepackage{multicol}
+\usepackage{needspace}
 \usepackage[T1]{fontenc}
 \usepackage{microtype}
 \usepackage{helvet}
@@ -20,7 +21,7 @@
   {\Large\bfseries #1}\par\vspace{1pt}%
   \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
 }
-\newcommand{\sect}[1]{\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
 
 \begin{document}\small
 
@@ -73,6 +74,44 @@ LSP                  & \texttt{lean --server}                             & buil
 \texttt{(\textit{a}, \textit{b})} & Product / tuple \\
 \texttt{\#[\textit{a}, \textit{b}]} & Array literal \\
 \texttt{[\textit{a}, \textit{b}]} & List literal \\
+\end{tabularx}
+
+\sect{Array Operations}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{a[i]!}                      & Index (panics OOB) \\
+\texttt{a[i]?}                      & Index (returns Option) \\
+\texttt{a.push x}                   & Append element \\
+\texttt{a.size}                     & Length \\
+\texttt{a.map f}                    & Map over array \\
+\texttt{a.filter p}                 & Filter array \\
+\texttt{a.foldl f init}             & Left fold \\
+\texttt{a.toList}                   & Convert to List \\
+\texttt{a.set! i x}                 & Update at index \\
+\texttt{a ++ b}                     & Concatenate arrays \\
+\end{tabularx}
+
+\sect{String \& IO}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{IO.println s}               & Print line \\
+\texttt{IO.FS.readFile path}        & Read file \\
+\texttt{IO.FS.writeFile path s}     & Write file \\
+\texttt{toString x}                 & Convert to string \\
+\texttt{s.length}                   & String length \\
+\texttt{s.append t}  / \texttt{s ++ t}  & Concatenate \\
+\texttt{s.splitOn ","}              & Split string \\
+\texttt{s.trim}                     & Trim whitespace \\
+\end{tabularx}
+
+\sect{Common Typeclasses}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{ToString}           & String conversion \\
+\texttt{Repr}               & Debug representation \\
+\texttt{BEq}                & Boolean equality \\
+\texttt{Ord}                & Ordering / comparison \\
+\texttt{Hashable}            & Hash support \\
+\texttt{Inhabited}           & Default value \\
+\texttt{Add, Mul, ...}       & Arithmetic ops \\
+\texttt{Monad, Functor}      & FP abstractions \\
 \end{tabularx}
 
 \sect{Inspecting}
@@ -129,6 +168,50 @@ LSP                  & \texttt{lean --server}                             & buil
 \texttt{simp?}                 & Show simp lemmas used \\
 \end{tabularx}
 
+\sect{Functional Patterns}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{List.map f xs}              & Apply f to each element \\
+\texttt{List.filter p xs}           & Keep elements where p \\
+\texttt{List.foldl f init xs}       & Left fold \\
+\texttt{List.foldr f init xs}       & Right fold \\
+\texttt{List.zip xs ys}             & Pair elements \\
+\texttt{List.enum xs}               & Index + element \\
+\texttt{List.any p xs}              & Existential \\
+\texttt{List.all p xs}              & Universal \\
+\texttt{List.filterMap f xs}        & Map + filter None \\
+\texttt{List.bind xs f}             & flatMap / concatMap \\
+\texttt{xs ++ ys}                   & Concatenate \\
+\texttt{xs |>.map f |>.filter p}    & Pipeline syntax \\
+\texttt{f \$ x}                     & Application (low prec) \\
+\texttt{f <\$> x}                   & Functor map \\
+\texttt{f <*> x}                    & Applicative apply \\
+\texttt{x >>= f}                    & Monadic bind \\
+\end{tabularx}
+
+\sect{Higher-Order \& Composition}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{fun x => f (g x)}          & Compose (no operator) \\
+\texttt{Function.comp f g}          & Composition function \\
+\texttt{(f \textit{a} \textit{b} \textperiodcentered)}  & Partial application \\
+\texttt{(· + 1)}                    & Anonymous function \\
+\texttt{@[simp] def ...}            & Tag for simp lemma \\
+\texttt{@[inline] def ...}          & Inline hint \\
+\texttt{partial def f}              & Non-terminating fn \\
+\texttt{termination\_by ...}        & Termination proof \\
+\end{tabularx}
+
+\sect{Monads \& Do Notation}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Option}              & Maybe monad \\
+\texttt{Except E A}          & Result / Either \\
+\texttt{IO A}                & Side effects \\
+\texttt{StateM S A}          & Stateful computation \\
+\texttt{ReaderM R A}         & Reader / environment \\
+\texttt{do let x $\leftarrow$ ma}  & Bind in do block \\
+\texttt{pure a}              & Wrap in monad \\
+\texttt{MonadLift}           & Lift between monads \\
+\end{tabularx}
+
 \sect{Neovim (lean.nvim)}
 \begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
 \texttt{<Leader>i}  & Toggle infoview \\
@@ -142,7 +225,146 @@ LSP                  & \texttt{lean --server}                             & buil
 
 \end{multicols}
 
-\vfill
-{\scriptsize Lean 4 + Mathlib4 \quad|\quad elan: version manager \quad lake: build system \quad Lean includes built-in LSP \quad|\quad \texttt{lake exe cache get} downloads pre-built Mathlib}
+\newpage
+
+\cardtitle{Lean 4 --- Mathlib Reference}
+
+\begin{multicols}{3}
+
+\sect{Algebraic Structures}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{AddGroup}             & Additive group \\
+\texttt{Group}                & Multiplicative group \\
+\texttt{CommRing}             & Commutative ring \\
+\texttt{Field}                & Field \\
+\texttt{Module R M}           & Module over ring R \\
+\texttt{Algebra R A}          & R-algebra \\
+\texttt{LinearMap}            & R-linear map \\
+\texttt{RingHom}              & Ring homomorphism \\
+\texttt{Subgroup G}           & Subgroup of G \\
+\texttt{Ideal R}              & Ideal of ring R \\
+\texttt{Quotient}             & Quotient structure \\
+\end{tabularx}
+
+\sect{Number Theory}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Nat.Prime p}                 & p is prime \\
+\texttt{Nat.gcd a b}                 & Greatest common divisor \\
+\texttt{a $\dvd$ b}                  & a divides b \\
+\texttt{a \% b}                      & Remainder \\
+\texttt{ZMod n}                      & Integers mod n \\
+\texttt{Int.emod}                    & Integer mod \\
+\texttt{Finset.range n}              & \{0, \ldots, n-1\} \\
+\texttt{$\sum$ i in s, f i}         & Finite sum \\
+\texttt{$\prod$ i in s, f i}        & Finite product \\
+\end{tabularx}
+
+\sect{Sets \& Logic}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Set $\alpha$}               & Set type \\
+\texttt{x $\in$ s}                  & Membership \\
+\texttt{s $\cup$ t}                 & Union \\
+\texttt{s $\cap$ t}                 & Intersection \\
+\texttt{s $\subseteq$ t}            & Subset \\
+\texttt{s $\setminus$ t}            & Set difference \\
+\texttt{s.image f}                   & Image of f \\
+\texttt{s.preimage f}               & Preimage of f \\
+\texttt{Finset $\alpha$}            & Finite set \\
+\texttt{$\forall$ x, P x}          & Universal \\
+\texttt{$\exists$ x, P x}          & Existential \\
+\texttt{P $\land$ Q}               & And \\
+\texttt{P $\lor$ Q}                & Or \\
+\texttt{P $\to$ Q}                 & Implication \\
+\texttt{$\neg$ P}                  & Negation \\
+\texttt{P $\leftrightarrow$ Q}     & Iff \\
+\end{tabularx}
+
+\sect{Order \& Lattices}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{PartialOrder}         & $\le$ partial order \\
+\texttt{LinearOrder}          & Total order \\
+\texttt{Lattice}              & Sup + inf \\
+\texttt{CompleteLattice}      & Arbitrary sup/inf \\
+\texttt{sup a b} / \texttt{inf a b}  & Join / meet \\
+\texttt{Filter}               & Mathlib filter \\
+\texttt{Filter.Tendsto}       & Limit via filters \\
+\end{tabularx}
+
+\sect{Analysis --- Reals}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{$\mathbb{R}$} (\texttt{Real}) & Real numbers \\
+\texttt{$\mathbb{Q}$} (\texttt{Rat}) & Rationals \\
+\texttt{$\mathbb{C}$} (\texttt{Complex}) & Complex numbers \\
+\texttt{abs x}                       & Absolute value \\
+\texttt{Real.sqrt x}                 & Square root \\
+\texttt{Real.exp x}                  & Exponential \\
+\texttt{Real.log x}                  & Natural log \\
+\texttt{Real.sin x} / \texttt{cos x} & Trig functions \\
+\end{tabularx}
+
+\sect{Analysis --- Limits \& Continuity}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Filter.Tendsto f l l'}    & f tends to l' along l \\
+\texttt{nhds a}                    & Neighborhood filter \\
+\texttt{atTop}                     & Filter at $+\infty$ \\
+\texttt{Continuous f}              & f is continuous \\
+\texttt{HasDerivAt f f' x}        & Derivative at x \\
+\texttt{Differentiable $\mathbb{R}$ f}  & f differentiable \\
+\texttt{$\int$ x in a..b, f x}   & Interval integral \\
+\texttt{MeasureTheory.Integrable}  & Lebesgue integrable \\
+\end{tabularx}
+
+\sect{Topology}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{TopologicalSpace}     & Topology typeclass \\
+\texttt{IsOpen s}              & s is open \\
+\texttt{IsClosed s}            & s is closed \\
+\texttt{IsCompact s}           & s is compact \\
+\texttt{IsConnected s}         & s is connected \\
+\texttt{MetricSpace}           & Metric space \\
+\texttt{dist x y}              & Distance \\
+\texttt{NormedAddCommGroup}    & Normed group \\
+\end{tabularx}
+
+\sect{Linear Algebra}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Matrix m n $\alpha$}       & m $\times$ n matrix \\
+\texttt{Matrix.mul A B}             & Matrix multiply \\
+\texttt{Matrix.det A}               & Determinant \\
+\texttt{Matrix.transpose A}         & Transpose \\
+\texttt{LinearMap.ker f}             & Kernel \\
+\texttt{LinearMap.range f}           & Image / range \\
+\texttt{Submodule R M}              & Submodule \\
+\texttt{Basis}                       & Basis of module \\
+\texttt{FiniteDimensional}           & Finite dim space \\
+\end{tabularx}
+
+\sect{Key Imports}
+{\footnotesize
+\texttt{Mathlib.Tactic} \\
+\texttt{Mathlib.Data.\{Nat,Int,Real,Finset\}.Basic} \\
+\texttt{Mathlib.Algebra.Group.Basic} \\
+\texttt{Mathlib.Analysis.SpecificLimits.Basic} \\
+\texttt{Mathlib.Topology.Basic} \\
+\texttt{Mathlib.LinearAlgebra.Matrix.Determinant}
+}
+
+\sect{Proof Search Tactics}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{exact?}       & Find exact proof term \\
+\texttt{apply?}       & Find applicable lemma \\
+\texttt{rw?}          & Find rewrite rule \\
+\texttt{simp?}        & Show which simp lemmas \\
+\texttt{decide}       & Decidable propositions \\
+\texttt{norm\_num}    & Numeric computation \\
+\texttt{positivity}   & Prove positivity \\
+\texttt{polyrith}     & Polynomial arithmetic \\
+\texttt{aesop}        & Automated reasoning \\
+\texttt{gcongr}       & Congruence for $\le$ \\
+\texttt{field\_simp}  & Clear denominators \\
+\texttt{push\_neg}    & Push negation inward \\
+\end{tabularx}
+
+\end{multicols}
 
 \end{document}
