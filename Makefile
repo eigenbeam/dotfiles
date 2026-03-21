@@ -1,4 +1,4 @@
-.PHONY: all check bootstrap homebrew homebrew-extras brewfile brewfile-extras uninstall lint mac cards tools ssh sync fonts linux-packages
+.PHONY: all check bootstrap homebrew homebrew-extras brewfile brewfile-extras uninstall lint mac cards tools ssh sync fonts linux-packages ssm-plugin
 
 UNAME := $(shell uname)
 
@@ -115,3 +115,24 @@ ifeq ($(UNAME),Darwin)
 else
 	@echo "Skipped: macOS-only target"
 endif
+
+ssm-plugin:
+	@echo "Installing AWS Session Manager Plugin..."
+ifeq ($(UNAME),Darwin)
+	@if [ "$$(uname -m)" = "arm64" ]; then \
+		curl -fsSL "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac_arm64/session-manager-plugin.pkg" -o /tmp/session-manager-plugin.pkg; \
+	else \
+		curl -fsSL "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac/session-manager-plugin.pkg" -o /tmp/session-manager-plugin.pkg; \
+	fi
+	sudo installer -pkg /tmp/session-manager-plugin.pkg -target /
+	@rm -f /tmp/session-manager-plugin.pkg
+else
+	@if [ "$$(uname -m)" = "aarch64" ]; then \
+		curl -fsSL "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_arm64/session-manager-plugin.deb" -o /tmp/session-manager-plugin.deb; \
+	else \
+		curl -fsSL "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o /tmp/session-manager-plugin.deb; \
+	fi
+	sudo dpkg -i /tmp/session-manager-plugin.deb
+	@rm -f /tmp/session-manager-plugin.deb
+endif
+	@echo "✓ AWS Session Manager Plugin installed"
