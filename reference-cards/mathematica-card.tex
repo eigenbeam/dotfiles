@@ -1,0 +1,304 @@
+% Mathematica Language Reference Card
+\documentclass[9pt]{extarticle}
+\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
+            margin=0.4in]{geometry}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{needspace}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{helvet}
+\usepackage[scaled=0.82]{beramono}
+\renewcommand{\familydefault}{\sfdefault}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.3in}
+
+\newcommand{\cardtitle}[1]{%
+  {\Large\bfseries #1}\par\vspace{1pt}%
+  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
+}
+\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+
+\begin{document}\small
+
+\cardtitle{Mathematica / Wolfram Language}
+
+% ── Standard Tasks ─────────────────────────────────────────────────
+\begin{tabularx}{\linewidth}{@{}l@{\quad}l@{\quad}Y@{}}
+\textbf{Task}        & \textbf{Command}                                  & \textbf{Notes} \\[2pt]
+Version manager      & ---                                                & installed with Wolfram product \\
+New project          & ---                                                & notebook or \texttt{.wl} script \\
+Add dependency       & \texttt{PacletInstall["name"]}                    & Wolfram paclet system \\
+Install deps         & \texttt{Needs["pkg`"]}                            & load package \\
+Build                & ---                                                & interpreted language \\
+Run                  & \texttt{wolframscript -file s.wl}                 & CLI execution \\
+REPL                 & \texttt{wolframscript}                            & or notebook interface \\
+Test                 & \texttt{VerificationTest[expr, expected]}         & built-in test framework \\
+Format               & ---                                                & notebook auto-formats \\
+Lint                 & \texttt{CodeInspector}                            & \texttt{PacletInstall["CodeInspector"]} \\
+LSP                  & ---                                                & notebook is primary IDE \\
+\end{tabularx}
+
+\vspace{6pt}
+\rule{\linewidth}{0.2pt}
+
+% ── Language-Specific Content ──────────────────────────────────────
+\begin{multicols}{3}
+
+\sect{Basic Syntax}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{f[x, y]}                    & Function call \\
+\texttt{x = expr}                   & Assignment \\
+\texttt{x := expr}                  & Delayed assignment \\
+\texttt{f[x\_] := body}            & Function definition \\
+\texttt{x /. rule}                  & Apply rule \\
+\texttt{x //. rule}                 & Apply repeatedly \\
+\texttt{expr // f}                  & Postfix apply \\
+\texttt{f @ x}                      & Prefix apply \\
+\texttt{f @@ list}                  & Apply to list \\
+\texttt{f @@@ list}                 & Apply at level 1 \\
+\texttt{x // f // g}               & Pipeline \\
+\texttt{(* comment *)}             & Comment \\
+\end{tabularx}
+
+\sect{Patterns \& Rules}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{\_}                          & Any expression \\
+\texttt{x\_}                        & Named pattern \\
+\texttt{\_Integer}                  & Head pattern \\
+\texttt{x\_?NumericQ}              & Conditional pattern \\
+\texttt{\_\_} / \texttt{\_\_\_}     & One+ / zero+ args \\
+\texttt{x\_ /; cond}               & Pattern with guard \\
+\texttt{a -> b}                     & Rule \\
+\texttt{a :> b}                     & Delayed rule \\
+\texttt{Cases[xs, pat]}            & Extract matches \\
+\texttt{MatchQ[expr, pat]}         & Test pattern \\
+\texttt{Replace[e, rules]}         & Apply rules \\
+\end{tabularx}
+
+\sect{Lists}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{\{a, b, c\}}               & List \\
+\texttt{xs[[i]]}                    & Element (1-based) \\
+\texttt{xs[[i;;j]]}                & Span / slice \\
+\texttt{xs[[-1]]}                   & Last element \\
+\texttt{Length[xs]}                 & Length \\
+\texttt{Join[a, b]}                & Concatenate \\
+\texttt{Append[xs, x]}             & Append \\
+\texttt{Prepend[xs, x]}            & Prepend \\
+\texttt{Flatten[xs]}               & Flatten nested \\
+\texttt{Partition[xs, n]}          & Chunk by n \\
+\texttt{Range[a, b, step]}         & Number range \\
+\texttt{Table[f[i], \{i, n\}]}    & Generate list \\
+\end{tabularx}
+
+\sect{Functional}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Map[f, xs]}                 & Apply f to each \\
+\texttt{f /@ xs}                    & Map (operator) \\
+\texttt{Select[xs, p]}             & Filter \\
+\texttt{Fold[f, init, xs]}         & Left fold \\
+\texttt{FoldList[f, init, xs]}     & Scan / accumulate \\
+\texttt{MapThread[f, \{a, b\}]}   & Zip + map \\
+\texttt{Thread[f[a, b]]}           & Thread over lists \\
+\texttt{Nest[f, x, n]}             & Apply f n times \\
+\texttt{NestList[f, x, n]}         & Collect iterations \\
+\texttt{FixedPoint[f, x]}          & Iterate to fixpoint \\
+\texttt{Function[\{x\}, body]}     & Named pure fn \\
+\texttt{\#1, \#2}                   & Slot (arg 1, 2) \\
+\texttt{f[\#] \&}                   & Pure function \\
+\texttt{Composition[f, g]}         & $f \circ g$ \\
+\texttt{Identity}                   & Identity function \\
+\end{tabularx}
+
+\sect{Control Flow}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{If[cond, then, else]}      & Conditional \\
+\texttt{Which[c1,v1, c2,v2]}      & Multi-branch \\
+\texttt{Switch[x, p1,v1, ...]}    & Pattern switch \\
+\texttt{Do[body, \{i, n\}]}       & For loop \\
+\texttt{While[cond, body]}         & While loop \\
+\texttt{Module[\{x=v\}, body]}    & Local scope \\
+\texttt{Block[\{x\}, body]}       & Dynamic scope \\
+\texttt{With[\{x=v\}, body]}      & Constants \\
+\end{tabularx}
+
+\sect{Associations (Dicts)}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{<|"a"->1, "b"->2|>}       & Association \\
+\texttt{assoc["key"]}              & Lookup \\
+\texttt{Keys[a] / Values[a]}      & Keys / values \\
+\texttt{Merge[a, b]}              & Merge \\
+\texttt{KeySelect[a, p]}          & Filter by key \\
+\texttt{AssociationMap[f, a]}     & Map over assoc \\
+\end{tabularx}
+
+\sect{String Operations}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{StringJoin[a, b]} / \texttt{a <> b}  & Concatenate \\
+\texttt{StringSplit[s, ","]}       & Split \\
+\texttt{StringReplace[s, rule]}    & Replace \\
+\texttt{StringMatchQ[s, pat]}      & Pattern test \\
+\texttt{StringCases[s, pat]}       & Extract matches \\
+\texttt{ToString[expr]}            & Convert to string \\
+\texttt{StringTemplate["<*x*>"]}  & Template \\
+\end{tabularx}
+
+\sect{Debugging}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{?f}                         & Show definition \\
+\texttt{??f}                        & Full information \\
+\texttt{Head[expr]}                 & Expression head \\
+\texttt{FullForm[expr]}            & Internal form \\
+\texttt{TreeForm[expr]}            & Tree visualization \\
+\texttt{Trace[expr]}               & Evaluation trace \\
+\texttt{Echo[expr]}                & Print and return \\
+\texttt{AbortProtect[...]}         & Protect from abort \\
+\end{tabularx}
+
+\end{multicols}
+
+\newpage
+
+\cardtitle{Mathematica --- Mathematics \& Data}
+
+\begin{multicols}{3}
+
+\sect{Calculus}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{D[f, x]}                    & Derivative \\
+\texttt{D[f, \{x, n\}]}            & n-th derivative \\
+\texttt{D[f, x, y]}                 & Partial derivatives \\
+\texttt{Integrate[f, x]}            & Indefinite integral \\
+\texttt{Integrate[f, \{x, a, b\}]} & Definite integral \\
+\texttt{NIntegrate[f, \{x,a,b\}]} & Numerical integral \\
+\texttt{Limit[f, x -> a]}          & Limit \\
+\texttt{Series[f, \{x, a, n\}]}   & Taylor series \\
+\texttt{Normal[\%]}                 & Series to polynomial \\
+\texttt{DSolve[ode, y, x]}          & Solve ODE \\
+\texttt{NDSolve[ode, y, \{x,a,b\}]} & Numerical ODE \\
+\texttt{Sum[f, \{i, a, b\}]}       & Summation \\
+\texttt{Product[f, \{i, a, b\}]}   & Product \\
+\end{tabularx}
+
+\sect{Algebra}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Solve[eqn, x]}              & Solve equation \\
+\texttt{NSolve[eqn, x]}             & Numerical solve \\
+\texttt{Reduce[expr, x]}            & Reduce conditions \\
+\texttt{Simplify[expr]}             & Simplify \\
+\texttt{FullSimplify[expr]}         & Aggressive simplify \\
+\texttt{Expand[expr]}               & Expand \\
+\texttt{Factor[expr]}               & Factor \\
+\texttt{Apart[expr]}                & Partial fractions \\
+\texttt{Together[expr]}             & Common denominator \\
+\texttt{Collect[expr, x]}           & Collect terms \\
+\end{tabularx}
+
+\sect{Linear Algebra}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{m . v}                       & Matrix multiply \\
+\texttt{Inverse[m]}                  & Matrix inverse \\
+\texttt{Det[m]}                      & Determinant \\
+\texttt{Transpose[m]}               & Transpose \\
+\texttt{Eigenvalues[m]}             & Eigenvalues \\
+\texttt{Eigenvectors[m]}            & Eigenvectors \\
+\texttt{SingularValueDecomp...[m]} & SVD \\
+\texttt{LinearSolve[m, b]}          & Solve mx = b \\
+\texttt{MatrixRank[m]}              & Rank \\
+\texttt{IdentityMatrix[n]}          & Identity \\
+\texttt{DiagonalMatrix[v]}         & Diagonal \\
+\texttt{Norm[v]}                     & Vector norm \\
+\end{tabularx}
+
+\sect{Probability \& Statistics}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Mean[xs]}                    & Mean \\
+\texttt{Median[xs]}                  & Median \\
+\texttt{StandardDeviation[xs]}      & Std dev \\
+\texttt{Variance[xs]}               & Variance \\
+\texttt{Correlation[a, b]}          & Correlation \\
+\texttt{NormalDistribution[$\mu$,$\sigma$]}  & Normal dist \\
+\texttt{PDF[dist, x]}               & Probability density \\
+\texttt{CDF[dist, x]}               & Cumulative dist \\
+\texttt{RandomVariate[dist, n]}     & Random samples \\
+\texttt{Probability[event, dist]}   & Exact probability \\
+\texttt{Expectation[f, dist]}       & Expected value \\
+\texttt{LinearModelFit[data, ...]} & Linear regression \\
+\end{tabularx}
+
+\sect{Plotting}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Plot[f, \{x, a, b\}]}      & 2D function plot \\
+\texttt{ListPlot[data]}             & Scatter plot \\
+\texttt{ListLinePlot[data]}         & Line plot \\
+\texttt{Plot3D[f, \{x,..\}, \{y,..\}]}  & 3D surface \\
+\texttt{ContourPlot[f, ...]}        & Contour plot \\
+\texttt{ParametricPlot[...]}        & Parametric curve \\
+\texttt{Histogram[data]}            & Histogram \\
+\texttt{Show[p1, p2]}               & Overlay plots \\
+\texttt{GraphicsRow[\{...\}]}      & Side by side \\
+\texttt{Export["f.pdf", plot]}      & Export figure \\
+\texttt{Manipulate[plot, \{p,..\}]} & Interactive slider \\
+\end{tabularx}
+
+\sect{Data Import / Export}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Import["f.csv"]}            & Import file \\
+\texttt{Import["f.csv", "Dataset"]} & As Dataset \\
+\texttt{Export["f.csv", data]}      & Export to file \\
+\texttt{Import[url]}                & Import from URL \\
+\texttt{SemanticImport["f.csv"]}   & Smart import \\
+\end{tabularx}
+
+\sect{Dataset (Structured Data)}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Dataset[data]}              & Create Dataset \\
+\texttt{ds[All, "col"]}             & Select column \\
+\texttt{ds[Select[p], All]}        & Filter rows \\
+\texttt{ds[GroupBy["k"], Mean]}    & Group + aggregate \\
+\texttt{ds[SortBy["col"]]}         & Sort \\
+\texttt{ds[Total, "col"]}          & Sum column \\
+\texttt{Normal[ds]}                 & To raw data \\
+\end{tabularx}
+
+\sect{Number Theory}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{PrimeQ[n]}                  & Primality test \\
+\texttt{FactorInteger[n]}           & Prime factors \\
+\texttt{GCD[a, b]}                  & GCD \\
+\texttt{LCM[a, b]}                  & LCM \\
+\texttt{Mod[a, m]}                  & Modular arith \\
+\texttt{PowerMod[a, b, m]}         & Modular power \\
+\texttt{Prime[n]}                   & n-th prime \\
+\texttt{Fibonacci[n]}              & Fibonacci number \\
+\end{tabularx}
+
+\sect{Special Functions}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Gamma[z]}                    & Gamma function \\
+\texttt{BesselJ[n, z]}              & Bessel function \\
+\texttt{LegendreP[n, x]}           & Legendre polynomial \\
+\texttt{SphericalHarmonicY}         & Spherical harmonics \\
+\texttt{EllipticK[m]}               & Elliptic integral \\
+\texttt{HypergeometricPFQ}         & Hypergeometric \\
+\end{tabularx}
+
+\sect{Constants}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Pi} ($\pi$)                 & 3.14159\ldots \\
+\texttt{E} ($e$)                    & 2.71828\ldots \\
+\texttt{I} ($i$)                    & Imaginary unit \\
+\texttt{Infinity} ($\infty$)       & Infinity \\
+\texttt{EulerGamma}                & Euler--Mascheroni \\
+\texttt{GoldenRatio}               & $\phi$ = 1.61803\ldots \\
+\texttt{N[expr, digits]}           & Numerical value \\
+\end{tabularx}
+
+\end{multicols}
+
+\end{document}

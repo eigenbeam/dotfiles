@@ -1,0 +1,314 @@
+% Julia Language Reference Card
+\documentclass[9pt]{extarticle}
+\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
+            margin=0.4in]{geometry}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{needspace}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{helvet}
+\usepackage[scaled=0.82]{beramono}
+\renewcommand{\familydefault}{\sfdefault}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.3in}
+
+\newcommand{\cardtitle}[1]{%
+  {\Large\bfseries #1}\par\vspace{1pt}%
+  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
+}
+\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+
+\begin{document}\small
+
+\cardtitle{Julia}
+
+% ── Standard Tasks ─────────────────────────────────────────────────
+\begin{tabularx}{\linewidth}{@{}l@{\quad}l@{\quad}Y@{}}
+\textbf{Task}        & \textbf{Command}                                  & \textbf{Notes} \\[2pt]
+Version manager      & \texttt{juliaup}                                   & \texttt{juliaup add 1.11} to install a version \\
+New project          & \texttt{] generate PkgName}                        & creates \texttt{Project.toml} + \texttt{src/} \\
+Add dependency       & \texttt{] add PkgName}                             & \texttt{] add PkgName@0.5} for version \\
+Install deps         & \texttt{] instantiate}                             & installs from \texttt{Manifest.toml} \\
+Build                & \texttt{] build}                                   & runs \texttt{deps/build.jl} if present \\
+Run                  & \texttt{julia script.jl}                           & \texttt{-{}-project=.} for local env \\
+REPL                 & \texttt{julia}                                     & \texttt{]} pkg, \texttt{;} shell, \texttt{?} help modes \\
+Test                 & \texttt{] test}                                    & runs \texttt{test/runtests.jl} \\
+Format               & \texttt{JuliaFormatter.format\_file()}             & \texttt{] add JuliaFormatter} \\
+Lint                 & ---                                                & LSP provides diagnostics \\
+LSP                  & \texttt{LanguageServer.jl}                         & configured in neovim via lspconfig \\
+\end{tabularx}
+
+\vspace{6pt}
+\rule{\linewidth}{0.2pt}
+
+% ── Language-Specific Content ──────────────────────────────────────
+\begin{multicols}{3}
+
+\sect{Basic Syntax}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{function f(x) ... end}      & Function \\
+\texttt{f(x) = expr}                & Short form \\
+\texttt{x -> expr}                   & Anonymous function \\
+\texttt{if / elseif / else / end}   & Conditional \\
+\texttt{x ? a : b}                   & Ternary \\
+\texttt{for x in xs ... end}        & For loop \\
+\texttt{while cond ... end}         & While loop \\
+\texttt{begin ... end}               & Block expression \\
+\texttt{let x = v ... end}          & Local scope \\
+\texttt{return expr}                 & Return value \\
+\end{tabularx}
+
+\sect{Types \& Dispatch}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{struct S ... end}            & Immutable struct \\
+\texttt{mutable struct S}            & Mutable struct \\
+\texttt{abstract type T end}         & Abstract type \\
+\texttt{T <: S}                      & Subtype \\
+\texttt{f(x::Int)}                   & Type annotation \\
+\texttt{f(x::T) where T}            & Parametric method \\
+\texttt{methods(f)}                  & List methods \\
+\texttt{@which f(x)}                & Which method? \\
+\texttt{isa(x, T)}                   & Type check \\
+\texttt{typeof(x)}                   & Runtime type \\
+\texttt{Union\{A, B\}}              & Union type \\
+\texttt{Nothing}                     & Unit / void type \\
+\end{tabularx}
+
+\sect{Common Types}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Int64, Float64}              & Numeric defaults \\
+\texttt{Bool}                        & true / false \\
+\texttt{String, Char}               & Text \\
+\texttt{Symbol} (\texttt{:name})    & Interned name \\
+\texttt{Nothing}                     & Singleton \\
+\texttt{Missing}                     & Missing data \\
+\texttt{Tuple\{A,B\}}               & Fixed tuple \\
+\texttt{NamedTuple}                  & Named tuple \\
+\texttt{Dict\{K,V\}}                & Dictionary \\
+\texttt{Set\{T\}}                   & Set \\
+\end{tabularx}
+
+\sect{Arrays}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{[1, 2, 3]}                   & Vector (1-indexed) \\
+\texttt{[1 2; 3 4]}                  & Matrix \\
+\texttt{zeros(m, n)}                 & Zero matrix \\
+\texttt{ones(m, n)}                  & Ones matrix \\
+\texttt{fill(v, m, n)}              & Fill value \\
+\texttt{a[i]}                        & Index (1-based) \\
+\texttt{a[2:5]}                      & Slice \\
+\texttt{a[end]}                      & Last element \\
+\texttt{push!(a, x)}                & Append (mutate) \\
+\texttt{length(a)}                   & Length \\
+\texttt{size(a)}                     & Dimensions \\
+\texttt{a'}                          & Adjoint (transpose) \\
+\texttt{vcat(a, b) / hcat(a, b)}   & Stack vert / horiz \\
+\texttt{vec(a)}                      & Flatten to vector \\
+\end{tabularx}
+
+\sect{Comprehensions \& Generators}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{[f(x) for x in xs]}         & Array comprehension \\
+\texttt{[f(x) for x in xs if p]}   & Filtered \\
+\texttt{[f(i,j) for i=1:m, j=1:n]} & 2D comprehension \\
+\texttt{Dict(k => v for ...)}       & Dict comprehension \\
+\texttt{(f(x) for x in xs)}         & Generator (lazy) \\
+\end{tabularx}
+
+\sect{Strings \& I/O}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{"\$x and \$(expr)"}         & String interpolation \\
+\texttt{string(a, b)}               & Concatenate \\
+\texttt{join(xs, ",")}              & Join with sep \\
+\texttt{split(s, ",")}              & Split string \\
+\texttt{strip(s)}                    & Trim whitespace \\
+\texttt{println(x)}                 & Print with newline \\
+\texttt{@show x}                    & Debug print \\
+\texttt{@info "msg" x y}           & Logging \\
+\texttt{open(f, "r") do io}        & File handle \\
+\texttt{read(f, String)}           & Read file \\
+\texttt{write(f, data)}            & Write file \\
+\end{tabularx}
+
+\sect{Functional Patterns}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{map(f, xs)}                 & Apply f to each \\
+\texttt{filter(p, xs)}             & Keep matching \\
+\texttt{reduce(f, xs)}             & Fold \\
+\texttt{mapreduce(f, op, xs)}      & Map then reduce \\
+\texttt{any(p, xs) / all(p, xs)}   & Existential / universal \\
+\texttt{zip(xs, ys)}               & Pair elements \\
+\texttt{enumerate(xs)}             & Index + element \\
+\texttt{sort(xs; by=f)}            & Sort by projection \\
+\texttt{unique(xs)}                & Unique values \\
+\texttt{xs .|> f}                  & Broadcast pipe \\
+\texttt{x |> f |> g}              & Pipeline \\
+\texttt{f} $\circ$ \texttt{g}      & Compose (unicode) \\
+\texttt{do ... end}                & Closure block \\
+\end{tabularx}
+
+\sect{Broadcasting}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{f.(xs)}                     & Broadcast call \\
+\texttt{a .+ b}                    & Elementwise ops \\
+\texttt{@. expr}                   & Broadcast everything \\
+\texttt{a .== b}                   & Elementwise compare \\
+\end{tabularx}
+
+\sect{Error Handling}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{try ... catch e ... end}   & Try/catch \\
+\texttt{finally ... end}           & Always runs \\
+\texttt{throw(ErrorException(m))}  & Throw \\
+\texttt{error("msg")}             & Shorthand throw \\
+\texttt{@assert cond "msg"}       & Assertion \\
+\end{tabularx}
+
+\sect{Macros \& Metaprogramming}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{@time expr}                & Benchmark \\
+\texttt{@benchmark expr}          & BenchmarkTools \\
+\texttt{@code\_warntype f(x)}     & Type stability \\
+\texttt{@macroexpand @m x}        & Expand macro \\
+\texttt{macro m(x) ... end}       & Define macro \\
+\texttt{:(expr)}                   & Quote expression \\
+\texttt{\$(expr)}                  & Interpolate in quote \\
+\end{tabularx}
+
+\end{multicols}
+
+\newpage
+
+\cardtitle{Julia --- Scientific Computing}
+
+\begin{multicols}{3}
+
+\sect{LinearAlgebra}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{using LinearAlgebra}        & Import \\
+\texttt{A * B}                      & Matrix multiply \\
+\texttt{A \textbackslash{} b}       & Solve Ax = b \\
+\texttt{det(A)}                     & Determinant \\
+\texttt{inv(A)}                     & Inverse \\
+\texttt{eigen(A)}                   & Eigendecomposition \\
+\texttt{svd(A)}                     & SVD \\
+\texttt{qr(A)}                     & QR factorization \\
+\texttt{norm(x)}                    & Vector/matrix norm \\
+\texttt{dot(a, b)} / \texttt{a $\cdot$ b}  & Dot product \\
+\texttt{cross(a, b)}               & Cross product \\
+\texttt{tr(A)}                      & Trace \\
+\texttt{rank(A)}                    & Rank \\
+\texttt{I}                          & Identity operator \\
+\texttt{Diagonal(v)}               & Diagonal matrix \\
+\texttt{Symmetric(A)}              & Symmetric view \\
+\end{tabularx}
+
+\sect{Statistics}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{using Statistics}            & Import \\
+\texttt{mean(x)}                     & Mean \\
+\texttt{median(x)}                   & Median \\
+\texttt{std(x) / var(x)}           & Std dev / variance \\
+\texttt{cor(x, y)}                  & Correlation \\
+\texttt{quantile(x, p)}            & Quantile \\
+\end{tabularx}
+
+\sect{Distributions.jl}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Normal($\mu$, $\sigma$)}   & Normal distribution \\
+\texttt{Uniform(a, b)}              & Uniform distribution \\
+\texttt{Poisson($\lambda$)}        & Poisson distribution \\
+\texttt{rand(d, n)}                  & Sample n values \\
+\texttt{pdf(d, x) / cdf(d, x)}    & PDF / CDF \\
+\texttt{fit(Normal, data)}          & Fit distribution \\
+\end{tabularx}
+
+\sect{DataFrames.jl}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{using DataFrames, CSV}       & Import \\
+\texttt{CSV.read(f, DataFrame)}     & Read CSV \\
+\texttt{CSV.write(f, df)}           & Write CSV \\
+\texttt{DataFrame(a=xs, b=ys)}     & Create DataFrame \\
+\texttt{df.col} / \texttt{df[:, :col]}  & Column access \\
+\texttt{df[1:5, :]}                 & Row slice \\
+\texttt{filter(:col => p, df)}     & Filter rows \\
+\texttt{select(df, :a, :b)}        & Select columns \\
+\texttt{transform(df, :a => f)}    & Add/modify column \\
+\texttt{groupby(df, :key)}         & Group by \\
+\texttt{combine(gd, :v => mean)}   & Aggregate \\
+\texttt{innerjoin(a, b; on=:k)}    & Join tables \\
+\texttt{sort(df, :col)}            & Sort \\
+\texttt{describe(df)}              & Summary stats \\
+\texttt{dropmissing(df)}           & Drop missing rows \\
+\end{tabularx}
+
+\sect{Plots.jl / Makie.jl}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{using Plots}                 & Import (GR default) \\
+\texttt{plot(x, y)}                  & Line plot \\
+\texttt{scatter(x, y)}              & Scatter plot \\
+\texttt{histogram(x)}               & Histogram \\
+\texttt{heatmap(z)}                  & Heatmap \\
+\texttt{plot!(x, y)}                 & Add to current plot \\
+\texttt{xlabel!("x")}               & Set label \\
+\texttt{title!("T")}                & Set title \\
+\texttt{savefig("f.png")}           & Save figure \\
+\texttt{using CairoMakie}           & Makie backend \\
+\texttt{fig, ax, plt = lines(x,y)} & Makie plot \\
+\end{tabularx}
+
+\sect{DifferentialEquations.jl}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{using DifferentialEquations} & Import \\
+\texttt{f(u, p, t) = ...}           & ODE function \\
+\texttt{ODEProblem(f, u0, tspan)}   & Define problem \\
+\texttt{solve(prob)}                 & Solve (auto alg) \\
+\texttt{solve(prob, Tsit5())}       & Specific solver \\
+\texttt{sol(t)}                     & Interpolate solution \\
+\texttt{plot(sol)}                  & Plot solution \\
+\end{tabularx}
+
+\sect{Optimization (Optim.jl)}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{using Optim}                 & Import \\
+\texttt{optimize(f, x0)}            & Minimize f \\
+\texttt{optimize(f, lo, hi)}        & Bounded 1D \\
+\texttt{NelderMead(), BFGS()}       & Algorithms \\
+\texttt{Optim.minimizer(res)}       & Optimal x \\
+\texttt{Optim.minimum(res)}         & Optimal f(x) \\
+\end{tabularx}
+
+\sect{Pkg Operations}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{] status}                    & List packages \\
+\texttt{] update}                    & Update all \\
+\texttt{] remove PkgName}           & Remove package \\
+\texttt{] activate .}               & Activate local env \\
+\texttt{] activate -{}-temp}        & Temp environment \\
+\texttt{] dev PkgName}              & Dev mode (editable) \\
+\texttt{] pin PkgName}              & Pin version \\
+\texttt{] gc}                        & Garbage collect \\
+\end{tabularx}
+
+\sect{Key Packages}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{DataFrames}          & Tabular data \\
+\texttt{CSV}                 & CSV read/write \\
+\texttt{Plots / Makie}       & Visualization \\
+\texttt{DifferentialEquations} & ODE/SDE/PDE \\
+\texttt{Optim / JuMP}        & Optimization \\
+\texttt{Flux / Lux}          & Neural networks \\
+\texttt{Distributions}       & Probability \\
+\texttt{StatsBase}           & Statistics \\
+\texttt{HTTP}                & HTTP client \\
+\texttt{JSON3}               & JSON parsing \\
+\end{tabularx}
+
+\end{multicols}
+
+\end{document}

@@ -1,0 +1,307 @@
+% JavaScript / TypeScript Language Reference Card
+\documentclass[9pt]{extarticle}
+\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
+            margin=0.4in]{geometry}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{needspace}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{helvet}
+\usepackage[scaled=0.82]{beramono}
+\renewcommand{\familydefault}{\sfdefault}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.3in}
+
+\newcommand{\cardtitle}[1]{%
+  {\Large\bfseries #1}\par\vspace{1pt}%
+  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
+}
+\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+
+\begin{document}\small
+
+\cardtitle{JavaScript / TypeScript}
+
+% ── Standard Tasks ─────────────────────────────────────────────────
+\begin{tabularx}{\linewidth}{@{}l@{\quad}l@{\quad}Y@{}}
+\textbf{Task}        & \textbf{Command}                                  & \textbf{Notes} \\[2pt]
+Version manager      & \texttt{nvm}                                       & \texttt{nvm install -{}-lts} for latest LTS \\
+New project          & \texttt{npm init}                                  & \texttt{npm create vite@latest} for frontend \\
+Add dependency       & \texttt{npm install \textit{pkg}}                  & \texttt{-{}-save-dev} for dev dependency \\
+Install deps         & \texttt{npm install}                               & installs from \texttt{package-lock.json} \\
+Build                & \texttt{tsc}                                       & or \texttt{npm run build} \\
+Run                  & \texttt{node script.js}                            & \texttt{npx tsx script.ts} for TypeScript \\
+REPL                 & \texttt{node}                                      & \\
+Test                 & \texttt{vitest}                                    & or \texttt{jest}; \texttt{npx vitest} \\
+Format               & \texttt{prettier -{}-write .}                     & \texttt{-{}-check} for dry run \\
+Lint                 & \texttt{eslint .}                                  & \texttt{-{}-fix} to autofix \\
+LSP                  & \texttt{typescript-language-server}                 & configured in neovim via lspconfig \\
+\end{tabularx}
+
+\vspace{6pt}
+\rule{\linewidth}{0.2pt}
+
+% ── Language-Specific Content ──────────────────────────────────────
+\begin{multicols}{3}
+
+\sect{Variables \& Types}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{const x = v}               & Immutable binding \\
+\texttt{let x = v}                 & Mutable binding \\
+\texttt{x: number = 0}             & TS type annotation \\
+\texttt{x?: string}                & Optional property \\
+\texttt{typeof x}                  & Runtime type check \\
+\texttt{x as T}                    & TS type assertion \\
+\texttt{x satisfies T}             & TS type check (4.9+) \\
+\end{tabularx}
+
+\sect{Functions}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{(x: T): R => expr}         & Arrow function \\
+\texttt{function f(x: T): R}       & Named function \\
+\texttt{(...args: T[])}            & Rest params \\
+\texttt{f(a, ...xs)}               & Spread args \\
+\texttt{\{x = default\}}           & Default params \\
+\texttt{function* f()}              & Generator \\
+\texttt{yield v}                    & Yield value \\
+\end{tabularx}
+
+\sect{Destructuring \& Spread}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{const \{a, b\} = obj}      & Object destructure \\
+\texttt{const [x, y] = arr}        & Array destructure \\
+\texttt{const \{a: renamed\} = o}  & Rename \\
+\texttt{const \{a, ...rest\} = o}  & Rest in destructure \\
+\texttt{\{...obj, key: v\}}        & Object spread \\
+\texttt{[...arr, x]}               & Array spread \\
+\end{tabularx}
+
+\sect{Common Patterns}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{x ?? fallback}             & Nullish coalescing \\
+\texttt{x?.prop}                   & Optional chaining \\
+\texttt{x ??= v}                   & Nullish assign \\
+\texttt{cond ? a : b}              & Ternary \\
+\texttt{`\$\{expr\}`}             & Template literal \\
+\texttt{Symbol("desc")}            & Unique symbol \\
+\texttt{for (const x of xs)}       & Iterate values \\
+\texttt{for (const k in obj)}      & Iterate keys \\
+\end{tabularx}
+
+\sect{Array Methods}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{.map(f)}                    & Transform each \\
+\texttt{.filter(p)}                 & Keep matching \\
+\texttt{.reduce(f, init)}          & Fold \\
+\texttt{.find(p)}                   & First match \\
+\texttt{.findIndex(p)}             & First match index \\
+\texttt{.some(p) / .every(p)}      & Any / all \\
+\texttt{.flat() / .flatMap(f)}     & Flatten \\
+\texttt{.includes(v)}              & Contains \\
+\texttt{.sort((a,b) => a - b)}    & Sort \\
+\texttt{.slice(i, j)}              & Subarray (copy) \\
+\texttt{.splice(i, n, ...items)}   & Mutate in-place \\
+\texttt{Array.from(iterable)}      & From iterable \\
+\texttt{[...new Set(xs)]}          & Unique values \\
+\texttt{.at(-1)}                    & Last element \\
+\end{tabularx}
+
+\sect{Object Methods}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Object.keys(o)}             & Keys array \\
+\texttt{Object.values(o)}           & Values array \\
+\texttt{Object.entries(o)}          & [key, value] pairs \\
+\texttt{Object.fromEntries(es)}     & Pairs to object \\
+\texttt{Object.assign(t, s)}        & Merge / copy \\
+\texttt{structuredClone(o)}         & Deep clone \\
+\end{tabularx}
+
+\sect{Async / Await}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{async function f()}         & Async function \\
+\texttt{await promise}              & Await result \\
+\texttt{Promise.all(ps)}            & Wait for all \\
+\texttt{Promise.allSettled(ps)}     & All results \\
+\texttt{Promise.race(ps)}           & First settled \\
+\texttt{Promise.any(ps)}            & First fulfilled \\
+\texttt{new Promise((res, rej) =>)} & Create promise \\
+\texttt{.then(f).catch(e)}          & Chain / handle \\
+\end{tabularx}
+
+\sect{Error Handling}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{try \{ \} catch (e) \{ \}} & Try/catch \\
+\texttt{finally \{ \}}              & Always runs \\
+\texttt{throw new Error("msg")}     & Throw error \\
+\texttt{class E extends Error}      & Custom error \\
+\texttt{e instanceof TypeError}     & Error type check \\
+\end{tabularx}
+
+\sect{Modules}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{export const x = v}         & Named export \\
+\texttt{export default f}           & Default export \\
+\texttt{import \{x\} from "m"}     & Named import \\
+\texttt{import x from "m"}          & Default import \\
+\texttt{import * as M from "m"}    & Namespace import \\
+\texttt{import type \{T\} from}    & TS type-only import \\
+\end{tabularx}
+
+\sect{Classes}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{class C extends B}          & Class declaration \\
+\texttt{constructor(x: T)}          & Constructor \\
+\texttt{private / \#field}          & Private field \\
+\texttt{readonly prop: T}           & TS readonly \\
+\texttt{get x() / set x(v)}        & Getter / setter \\
+\texttt{static method()}            & Static method \\
+\texttt{implements I}               & TS interface impl \\
+\end{tabularx}
+
+\end{multicols}
+
+\newpage
+
+\cardtitle{TypeScript --- Type System \& Node.js}
+
+\begin{multicols}{3}
+
+\sect{Basic Types}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{string, number, boolean}     & Primitives \\
+\texttt{null, undefined}             & Nullish types \\
+\texttt{unknown}                      & Safe any \\
+\texttt{never}                        & Unreachable \\
+\texttt{void}                         & No return \\
+\texttt{any}                          & Escape hatch \\
+\texttt{bigint, symbol}              & Other primitives \\
+\end{tabularx}
+
+\sect{Interfaces \& Type Aliases}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{interface I \{ x: T \}}     & Interface \\
+\texttt{type T = A | B}              & Union type \\
+\texttt{type T = A \& B}             & Intersection type \\
+\texttt{type T = \{[k: string]: V\}} & Index signature \\
+\texttt{extends}                      & Interface extension \\
+\texttt{interface I \{ (x: T): R \}} & Callable \\
+\end{tabularx}
+
+\sect{Generics}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{function f<T>(x: T): T}     & Generic function \\
+\texttt{<T extends Constraint>}     & Bounded generic \\
+\texttt{<T = Default>}               & Default type \\
+\texttt{interface I<T>}              & Generic interface \\
+\texttt{type Box<T> = \{v: T\}}     & Generic alias \\
+\end{tabularx}
+
+\sect{Utility Types}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Partial<T>}                  & All optional \\
+\texttt{Required<T>}                 & All required \\
+\texttt{Readonly<T>}                 & All readonly \\
+\texttt{Record<K, V>}               & Key-value map \\
+\texttt{Pick<T, K>}                 & Subset of keys \\
+\texttt{Omit<T, K>}                 & Exclude keys \\
+\texttt{Exclude<U, T>}              & Remove from union \\
+\texttt{Extract<U, T>}              & Keep in union \\
+\texttt{NonNullable<T>}             & Remove null/undef \\
+\texttt{ReturnType<F>}              & Function return type \\
+\texttt{Parameters<F>}              & Function params tuple \\
+\texttt{Awaited<T>}                  & Unwrap Promise \\
+\end{tabularx}
+
+\sect{Advanced Types}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{T extends U ? A : B}        & Conditional type \\
+\texttt{infer R}                     & Infer in conditional \\
+\texttt{\{[K in keyof T]: V\}}     & Mapped type \\
+\texttt{as}                          & Key remapping \\
+\texttt{keyof T}                     & Keys as union \\
+\texttt{T[K]}                        & Indexed access \\
+\texttt{template literal types}     & \texttt{`\$\{A\}-\$\{B\}`} \\
+\texttt{const assertions}            & \texttt{as const} \\
+\end{tabularx}
+
+\sect{Type Guards}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{typeof x === "string"}      & Primitive guard \\
+\texttt{x instanceof C}              & Class guard \\
+\texttt{"key" in obj}                & Property guard \\
+\texttt{x is T}                      & Custom type pred \\
+\texttt{asserts x is T}              & Assertion function \\
+\end{tabularx}
+
+\sect{Discriminated Unions}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{type R = A | B}              & Union type \\
+\texttt{\{kind: "a", ...\}}         & Tag field \\
+\texttt{switch (r.kind)}             & Narrow by tag \\
+\texttt{exhaustive check}            & \texttt{never} in default \\
+\end{tabularx}
+
+\sect{Node.js --- File System}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{import fs from "node:fs/promises"} & Async FS \\
+\texttt{fs.readFile(f, "utf8")}     & Read file \\
+\texttt{fs.writeFile(f, data)}      & Write file \\
+\texttt{fs.readdir(dir)}            & List directory \\
+\texttt{fs.stat(f)}                 & File info \\
+\texttt{fs.mkdir(d, \{recursive\})} & Create dirs \\
+\texttt{fs.rm(f)}                   & Remove file \\
+\end{tabularx}
+
+\sect{Node.js --- Path \& Process}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{import path from "node:path"} & Path utils \\
+\texttt{path.join(a, b)}             & Join paths \\
+\texttt{path.resolve(p)}             & Absolute path \\
+\texttt{path.basename(p)}           & Filename \\
+\texttt{path.extname(p)}            & Extension \\
+\texttt{process.argv}                & CLI arguments \\
+\texttt{process.env.KEY}            & Environment var \\
+\texttt{process.cwd()}               & Working directory \\
+\texttt{process.exit(code)}          & Exit \\
+\end{tabularx}
+
+\sect{Node.js --- HTTP \& Child Process}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{fetch(url, opts)}            & HTTP request \\
+\texttt{await res.json()}            & Parse JSON \\
+\texttt{new URL(s)}                  & Parse URL \\
+\texttt{URLSearchParams}             & Query params \\
+\texttt{exec(cmd, cb)}               & Run shell cmd \\
+\texttt{spawn(cmd, args)}            & Spawn process \\
+\end{tabularx}
+{\footnotesize \texttt{from "node:child\_process"}}
+
+\sect{Testing (Vitest)}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{describe("...", () => \{\})} & Test suite \\
+\texttt{it("...", () => \{\})}       & Test case \\
+\texttt{expect(x).toBe(y)}           & Strict equal \\
+\texttt{expect(x).toEqual(y)}        & Deep equal \\
+\texttt{expect(f).toThrow()}         & Throws \\
+\texttt{vi.fn()}                      & Mock function \\
+\texttt{vi.spyOn(obj, "method")}     & Spy on method \\
+\texttt{beforeEach / afterEach}      & Setup / teardown \\
+\end{tabularx}
+
+\sect{Package Config}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{"type": "module"}            & ESM in package.json \\
+\texttt{"strict": true}              & TS strict mode \\
+\texttt{tsconfig.json}               & TS configuration \\
+\texttt{.eslintrc / eslint.config}   & ESLint config \\
+\texttt{.prettierrc}                  & Prettier config \\
+\end{tabularx}
+
+\end{multicols}
+
+\end{document}

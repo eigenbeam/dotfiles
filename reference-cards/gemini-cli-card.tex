@@ -1,0 +1,341 @@
+% Gemini CLI Reference Card
+\documentclass[9pt]{extarticle}
+\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
+            margin=0.4in]{geometry}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{needspace}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{helvet}
+\usepackage[scaled=0.82]{beramono}
+\renewcommand{\familydefault}{\sfdefault}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.3in}
+
+\newcommand{\cardtitle}[1]{%
+  {\Large\bfseries #1}\par\vspace{1pt}%
+  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
+}
+\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+
+\begin{document}\small
+
+\cardtitle{Gemini CLI}
+
+% ── Installation & Basics ─────────────────────────────────────────
+\begin{tabularx}{\linewidth}{@{}l@{\quad}l@{\quad}Y@{}}
+\textbf{Task}        & \textbf{Command}                                  & \textbf{Notes} \\[2pt]
+Install (npx)        & \texttt{npx @google/gemini-cli}                   & no install needed \\
+Install (npm)        & \texttt{npm i -g @google/gemini-cli}              & global install \\
+Install (Homebrew)   & \texttt{brew install gemini-cli}                  & \\
+Update               & \texttt{gemini update}                            & channels: latest / preview / nightly \\
+Auth                 & Google OAuth on first run                         & or API key via \texttt{GEMINI\_API\_KEY} \\
+Version              & \texttt{gemini -v}                                & \\
+\end{tabularx}
+
+\vspace{6pt}
+\rule{\linewidth}{0.2pt}
+
+\begin{multicols}{3}
+
+\sect{CLI Flags --- Essentials}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{-p "query"}                  & Print mode (non-interactive) \\
+\texttt{-i "query"}                  & Run prompt, stay interactive \\
+\texttt{-r latest}                   & Resume last session \\
+\texttt{-m \textit{model}}          & Set model \\
+\texttt{-s}                          & Run in sandbox \\
+\texttt{-y}                          & YOLO (auto-approve all) \\
+\texttt{-w}                          & Git worktree (experimental) \\
+\texttt{-d}                          & Debug mode \\
+\end{tabularx}
+
+\sect{CLI Flags --- Advanced}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{-{}-approval-mode \textit{m}}  & default / auto\_edit / yolo \\
+\texttt{-{}-output-format \textit{f}}  & text / json / stream-json \\
+\texttt{-{}-include-directories}     & Add workspace dirs \\
+\texttt{-{}-extensions \textit{e}}   & Specify extensions \\
+\texttt{-{}-list-extensions}         & List extensions \\
+\texttt{-{}-list-sessions}           & List sessions \\
+\texttt{-{}-delete-session \textit{n}} & Delete session \\
+\texttt{-{}-screen-reader}           & Accessibility mode \\
+\end{tabularx}
+
+\sect{Slash Commands --- Session}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{/chat}                       & Browse/resume sessions \\
+\texttt{/chat save \textit{tag}}    & Save checkpoint \\
+\texttt{/chat share f.md}           & Export conversation \\
+\texttt{/compress}                   & Summarize context \\
+\texttt{/clear}                      & Clear screen \\
+\texttt{/rewind}                     & Step back in history \\
+\texttt{/restore}                    & Restore files to pre-edit \\
+\texttt{/copy}                       & Copy last output \\
+\texttt{/quit}                       & Exit \\
+\end{tabularx}
+
+\sect{Slash Commands --- Info}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{/help}                       & Show commands \\
+\texttt{/stats}                      & Usage statistics \\
+\texttt{/about}                      & Version info \\
+\texttt{/tools}                      & List available tools \\
+\texttt{/bug}                        & File bug report \\
+\texttt{/docs}                       & Open documentation \\
+\end{tabularx}
+
+\sect{Slash Commands --- Config}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{/settings}                   & Interactive settings editor \\
+\texttt{/model set \textit{name}}   & Change model \\
+\texttt{/auth}                       & Change auth method \\
+\texttt{/theme}                      & Change theme \\
+\texttt{/vim}                        & Toggle vim mode \\
+\texttt{/editor}                     & Select editor \\
+\texttt{/terminal-setup}            & Terminal keybindings \\
+\texttt{/permissions trust}         & Manage folder trust \\
+\end{tabularx}
+
+\sect{Slash Commands --- Tools}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{/memory show}               & Display loaded context \\
+\texttt{/memory add \textit{text}}  & Append to GEMINI.md \\
+\texttt{/init}                       & Generate GEMINI.md \\
+\texttt{/plan}                       & Enter plan mode \\
+\texttt{/mcp list}                   & List MCP servers \\
+\texttt{/extensions list}           & List extensions \\
+\texttt{/hooks list}                 & List hooks \\
+\texttt{/skills list}               & List skills \\
+\texttt{/agents list}               & List subagents \\
+\texttt{/directory add \textit{p}} & Add workspace dir \\
+\end{tabularx}
+
+\sect{Special Input}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{@path/to/file}              & Inject file into prompt \\
+\texttt{@path/to/dir/}             & Inject directory contents \\
+\texttt{@server-name query}         & Target MCP server \\
+\texttt{!command}                    & Execute shell directly \\
+\texttt{!}                           & Toggle shell mode \\
+\end{tabularx}
+
+\sect{Keyboard Shortcuts}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Ctrl+C}                      & Cancel / quit \\
+\texttt{Ctrl+D}                      & Exit (empty input) \\
+\texttt{Ctrl+L}                      & Clear screen \\
+\texttt{Ctrl+R}                      & Search history \\
+\texttt{Ctrl+X}                      & Open in editor \\
+\texttt{Ctrl+Y}                      & Toggle YOLO mode \\
+\texttt{Ctrl+T}                      & Toggle TODO list \\
+\texttt{Ctrl+S}                      & Toggle copy mode \\
+\texttt{Ctrl+B}                      & Toggle bg shells \\
+\texttt{Ctrl+O}                      & Expand/collapse blocks \\
+\texttt{Ctrl+Z}                      & Suspend to bg \\
+\texttt{Shift+Tab}                   & Cycle approval modes \\
+\texttt{Alt+M}                       & Toggle markdown \\
+\texttt{Esc Esc}                     & Clear / rewind \\
+\texttt{Tab Tab}                     & Toggle UI detail \\
+\texttt{?}                           & Show shortcuts (empty) \\
+\end{tabularx}
+
+\sect{Multiline Input}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Ctrl+Enter}                 & Newline \\
+\texttt{Shift+Enter}                & Newline \\
+\texttt{Alt+Enter}                   & Newline \\
+\end{tabularx}
+
+\sect{Model Aliases}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{auto}                        & Default (Pro or 2.5 Pro) \\
+\texttt{pro}                         & Gemini 3 Pro / 2.5 Pro \\
+\texttt{flash}                       & Gemini 2.5 Flash \\
+\texttt{flash-lite}                  & Gemini 2.5 Flash Lite \\
+\end{tabularx}
+
+\sect{Built-in Tools}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{run\_shell\_command}        & Execute shell \\
+\texttt{read\_file / write\_file}   & File I/O \\
+\texttt{replace}                     & Edit file \\
+\texttt{glob / grep\_search}        & Search \\
+\texttt{google\_web\_search}        & Web search \\
+\texttt{web\_fetch}                  & Fetch URL \\
+\texttt{save\_memory}               & Persist to GEMINI.md \\
+\end{tabularx}
+
+\end{multicols}
+
+\newpage
+
+\cardtitle{Gemini CLI --- Configuration \& Extensions}
+
+\begin{multicols}{3}
+
+\sect{GEMINI.md Files}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{\~{}/.gemini/GEMINI.md}     & User (all projects) \\
+\texttt{./GEMINI.md}                 & Project (shared via git) \\
+\texttt{@file.md}                    & Import syntax \\
+\texttt{/init}                       & Auto-generate for project \\
+\texttt{/memory show}               & View loaded context \\
+\texttt{/memory add "..."}          & Append to global \\
+\texttt{/memory refresh}            & Reload all context \\
+\end{tabularx}
+{\footnotesize JIT discovery: auto-loaded when tools access dirs with GEMINI.md.}
+
+\sect{Settings Files}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{\~{}/.gemini/settings.json}  & User settings \\
+\texttt{.gemini/settings.json}       & Project settings \\
+\texttt{.gemini/.env}                & Project env vars \\
+\texttt{.geminiignore}               & Ignore patterns \\
+\end{tabularx}
+{\footnotesize Precedence: defaults $<$ user $<$ project $<$ overrides $<$ env $<$ CLI.}
+
+\sect{Other Config Files}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{\~{}/.gemini/keybindings.json} & Custom shortcuts \\
+\texttt{\~{}/.gemini/trustedFolders.json} & Folder trust \\
+\texttt{\~{}/.gemini/commands/*.toml} & Global custom cmds \\
+\texttt{.gemini/commands/*.toml}     & Project custom cmds \\
+\end{tabularx}
+
+\sect{Approval Modes}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{default}                     & Prompt for mutating tools \\
+\texttt{auto\_edit}                  & Auto-approve file edits \\
+\texttt{yolo}                        & Auto-approve everything \\
+\end{tabularx}
+{\footnotesize Toggle: \texttt{Shift+Tab} or \texttt{Ctrl+Y}.}
+
+\sect{Security Settings}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{security.disableYoloMode}   & Prevent YOLO \\
+\texttt{security.disableAlwaysAllow} & No ``always allow'' \\
+\texttt{security.folderTrust.enabled} & Folder trust system \\
+\texttt{security.enableConseca}     & LLM-based security \\
+\end{tabularx}
+
+\sect{Sandboxing}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{-s} / \texttt{GEMINI\_SANDBOX} & Enable sandbox \\
+\texttt{sandbox-exec}               & macOS Seatbelt \\
+\texttt{docker}                      & Docker container \\
+\texttt{podman}                      & Podman container \\
+\texttt{runsc}                       & gVisor (Linux) \\
+\texttt{lxc}                         & LXC/LXD (Linux) \\
+\end{tabularx}
+
+\sect{MCP Configuration}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{gemini mcp add \textit{n} \textit{cmd}} & Add stdio server \\
+\texttt{gemini mcp add \textit{n} \textit{url} -{}-transport http} & Add HTTP server \\
+\texttt{gemini mcp add ... -{}-scope user} & User scope \\
+\texttt{gemini mcp remove \textit{n}} & Remove server \\
+\texttt{gemini mcp list}             & List servers \\
+\texttt{/mcp auth \textit{name}}    & OAuth for server \\
+\end{tabularx}
+
+\sect{MCP Server Config}
+{\footnotesize
+\begin{verbatim}
+{
+  "mcpServers": {
+    "name": {
+      "command": "npx",
+      "args": ["-y", "@mcp/server"],
+      "env": {"TOKEN": "$TOKEN"},
+      "cwd": "/optional/path"
+    }
+  }
+}
+\end{verbatim}
+}
+{\footnotesize Transports: stdio, SSE, streamable HTTP.}
+
+\sect{Extensions}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{gemini extensions install \textit{url}} & Install from git \\
+\texttt{gemini extensions list}      & List installed \\
+\texttt{gemini extensions update}   & Update all \\
+\texttt{gemini extensions link \textit{p}} & Link local \\
+\texttt{/extensions enable \textit{n}} & Enable in session \\
+\texttt{/extensions disable \textit{n}} & Disable in session \\
+\end{tabularx}
+
+\sect{Custom Commands}
+{\footnotesize TOML files in \texttt{commands/} directories:
+\begin{verbatim}
+# ~/.gemini/commands/review.toml
+[command]
+description = "Code review"
+prompt = """
+Review the following for bugs:
+{{args}}
+"""
+\end{verbatim}
+}
+{\footnotesize Subdirectories create namespaces: \texttt{git/commit.toml} $\to$ \texttt{/git:commit}.}
+
+\sect{Sessions \& Checkpointing}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{gemini -r latest}            & Resume last session \\
+\texttt{/chat save \textit{tag}}    & Named checkpoint \\
+\texttt{/chat resume \textit{tag}}  & Load checkpoint \\
+\texttt{/restore}                    & Git-based file restore \\
+\texttt{/compress}                   & Compress context \\
+\end{tabularx}
+{\footnotesize Auto-checkpoints before file edits (enable \texttt{general.checkpointing.enabled}).}
+
+\sect{Authentication}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+Google OAuth                         & Free: 60 req/min \\
+\texttt{GEMINI\_API\_KEY}           & Free: 1000 req/day \\
+Vertex AI                            & Enterprise (GCP) \\
+\end{tabularx}
+
+\sect{Environment Variables}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{GEMINI\_API\_KEY}           & API key auth \\
+\texttt{GOOGLE\_API\_KEY}           & Google Cloud key \\
+\texttt{GOOGLE\_CLOUD\_PROJECT}     & GCP project ID \\
+\texttt{GEMINI\_MODEL}              & Default model \\
+\texttt{GEMINI\_SANDBOX}            & Sandbox mode \\
+\texttt{GEMINI\_CLI\_HOME}          & Config root dir \\
+\end{tabularx}
+
+\sect{Plan Mode}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{/plan}                       & Enter plan mode \\
+\texttt{Ctrl+X}                      & Edit plan in editor \\
+\texttt{model routing}               & Pro plans, Flash executes \\
+\end{tabularx}
+
+\sect{Headless Patterns}
+{\footnotesize
+\begin{verbatim}
+# JSON output
+gemini -p "query" -o json | jq
+
+# Auto-approve
+gemini -p "query" -y
+
+# Pipe input
+cat f.txt | gemini -p "analyze"
+
+# Specific model
+gemini -p "query" -m flash
+\end{verbatim}
+}
+
+\end{multicols}
+
+\end{document}

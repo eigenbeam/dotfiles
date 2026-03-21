@@ -1,0 +1,329 @@
+% Claude Code Reference Card
+\documentclass[9pt]{extarticle}
+\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
+            margin=0.4in]{geometry}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{needspace}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{helvet}
+\usepackage[scaled=0.82]{beramono}
+\renewcommand{\familydefault}{\sfdefault}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.3in}
+
+\newcommand{\cardtitle}[1]{%
+  {\Large\bfseries #1}\par\vspace{1pt}%
+  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
+}
+\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+
+\begin{document}\small
+
+\cardtitle{Claude Code}
+
+% ── Installation & Basics ─────────────────────────────────────────
+\begin{tabularx}{\linewidth}{@{}l@{\quad}l@{\quad}Y@{}}
+\textbf{Task}        & \textbf{Command}                                  & \textbf{Notes} \\[2pt]
+Install              & \texttt{curl -fsSL https://claude.ai/install.sh | bash}  & native installer (auto-updates) \\
+Install (Homebrew)   & \texttt{brew install -{}-cask claude-code}        & alternative \\
+Update               & \texttt{claude update}                            & or auto-updates on launch \\
+Diagnose             & \texttt{claude doctor}                            & check installation health \\
+Auth                 & \texttt{claude auth login}                        & \texttt{-{}-sso} for SSO, \texttt{-{}-console} for API key \\
+Version              & \texttt{claude -v}                                & \\
+\end{tabularx}
+
+\vspace{6pt}
+\rule{\linewidth}{0.2pt}
+
+\begin{multicols}{3}
+
+\sect{CLI Flags --- Essentials}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{-p "query"}                  & Print mode (non-interactive) \\
+\texttt{-c}                          & Continue last session \\
+\texttt{-r \textit{id}}             & Resume specific session \\
+\texttt{-n "name"}                   & Name session \\
+\texttt{-w \textit{name}}           & Run in git worktree \\
+\texttt{-{}-model opus}             & Set model \\
+\texttt{-{}-fast}                    & Fast mode \\
+\end{tabularx}
+
+\sect{CLI Flags --- Permissions}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{-{}-permission-mode \textit{m}} & default / plan / acceptEdits / dontAsk \\
+\texttt{-{}-allowedTools "..."}      & Auto-approve tools \\
+\texttt{-{}-disallowedTools "..."}   & Remove tools \\
+\end{tabularx}
+
+\sect{CLI Flags --- Output}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{-{}-output-format text}      & Plain text (default) \\
+\texttt{-{}-output-format json}      & JSON with metadata \\
+\texttt{-{}-output-format stream-json} & Streaming JSON \\
+\texttt{-{}-json-schema '\{...\}'}  & Structured output \\
+\end{tabularx}
+
+\sect{CLI Flags --- Advanced}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{-{}-effort high}             & low / medium / high / max \\
+\texttt{-{}-max-turns 5}             & Limit agentic turns \\
+\texttt{-{}-max-budget-usd 5}       & Spending cap \\
+\texttt{-{}-system-prompt "..."}    & Replace system prompt \\
+\texttt{-{}-append-system-prompt}   & Add to system prompt \\
+\texttt{-{}-mcp-config f.json}      & Load MCP servers \\
+\texttt{-{}-add-dir ../lib}         & Add working dirs \\
+\texttt{-{}-debug}                   & Debug mode \\
+\texttt{-{}-verbose}                 & Verbose logging \\
+\texttt{-{}-remote}                  & Web session on claude.ai \\
+\end{tabularx}
+
+\sect{Slash Commands --- Session}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{/clear}                      & New conversation \\
+\texttt{/resume}                     & Resume session picker \\
+\texttt{/rename \textit{name}}      & Rename session \\
+\texttt{/compact}                    & Compress context \\
+\texttt{/branch}                     & Fork conversation \\
+\texttt{/copy}                       & Copy last response \\
+\texttt{/export}                     & Export as text \\
+\texttt{/exit}                       & Quit \\
+\end{tabularx}
+
+\sect{Slash Commands --- Info}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{/help}                       & Show commands \\
+\texttt{/status}                     & Version, model, account \\
+\texttt{/cost}                       & Token usage \\
+\texttt{/context}                    & Context usage grid \\
+\texttt{/doctor}                     & Diagnose install \\
+\texttt{/stats}                      & Daily usage stats \\
+\end{tabularx}
+
+\sect{Slash Commands --- Config}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{/config}                     & Settings UI \\
+\texttt{/model \textit{name}}       & Change model \\
+\texttt{/effort \textit{level}}     & Change effort \\
+\texttt{/fast}                       & Toggle fast mode \\
+\texttt{/vim}                        & Toggle vim mode \\
+\texttt{/theme}                      & Change theme \\
+\texttt{/terminal-setup}            & Terminal keybindings \\
+\texttt{/permissions}                & View/manage rules \\
+\end{tabularx}
+
+\sect{Slash Commands --- Tools}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{/memory}                     & Edit CLAUDE.md / memory \\
+\texttt{/init}                       & Init project CLAUDE.md \\
+\texttt{/plan}                       & Enter plan mode \\
+\texttt{/diff}                       & Interactive diff viewer \\
+\texttt{/mcp}                        & Manage MCP servers \\
+\texttt{/hooks}                      & View hook configs \\
+\texttt{/skills}                     & List skills \\
+\texttt{/agents}                     & Manage subagents \\
+\texttt{/review}                     & Code review \\
+\end{tabularx}
+
+\sect{Keyboard Shortcuts}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Ctrl+C}                      & Cancel / interrupt \\
+\texttt{Ctrl+D}                      & Exit session \\
+\texttt{Ctrl+L}                      & Clear screen \\
+\texttt{Ctrl+R}                      & Search history \\
+\texttt{Ctrl+G}                      & Open in editor \\
+\texttt{Ctrl+O}                      & Toggle verbose \\
+\texttt{Ctrl+T}                      & Toggle task list \\
+\texttt{Ctrl+V}                      & Paste image \\
+\texttt{Shift+Tab}                   & Cycle permission modes \\
+\texttt{Alt+P}                       & Switch model \\
+\texttt{Alt+T}                       & Toggle thinking \\
+\texttt{Esc Esc}                     & Rewind \\
+\end{tabularx}
+
+\sect{Multiline Input}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Option+Enter}               & macOS default \\
+\texttt{Shift+Enter}                & After terminal-setup \\
+\texttt{\textbackslash{} + Enter}   & Quick escape \\
+\texttt{Ctrl+J}                      & Control sequence \\
+\end{tabularx}
+
+\sect{Model Aliases}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{sonnet}                      & Latest Sonnet (4.6) \\
+\texttt{opus}                        & Latest Opus (4.6) \\
+\texttt{haiku}                       & Fast / cheap \\
+\texttt{default}                     & Plan default \\
+\texttt{opus[1m]}                    & Opus 1M context \\
+\texttt{sonnet[1m]}                  & Sonnet 1M context \\
+\end{tabularx}
+
+\end{multicols}
+
+\newpage
+
+\cardtitle{Claude Code --- Configuration \& Hooks}
+
+\begin{multicols}{3}
+
+\sect{CLAUDE.md Files}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{./CLAUDE.md}                 & Project (shared via git) \\
+\texttt{./.claude/CLAUDE.md}        & Alt project location \\
+\texttt{\~{}/.claude/CLAUDE.md}     & User (all projects) \\
+\texttt{.claude/rules/*.md}         & Scoped rules \\
+\texttt{@path/to/file}              & Import syntax \\
+\end{tabularx}
+{\footnotesize Rules support \texttt{paths:} frontmatter to scope to specific files. Keep CLAUDE.md $<$200 lines.}
+
+\sect{Settings Files}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{\~{}/.claude/settings.json}  & User settings \\
+\texttt{.claude/settings.json}       & Project (shared) \\
+\texttt{.claude/settings.local.json} & Project (local, gitignored) \\
+\end{tabularx}
+{\footnotesize Precedence: user $<$ project $<$ local $<$ CLI args $<$ managed.}
+
+\sect{Settings Keys}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{model}                       & Default model alias \\
+\texttt{effortLevel}                 & low / medium / high \\
+\texttt{autoMemoryEnabled}          & Auto-memory on/off \\
+\texttt{permissions.defaultMode}    & Default perm mode \\
+\texttt{permissions.allow}          & Auto-approve list \\
+\texttt{permissions.deny}           & Block list \\
+\texttt{hooks}                       & Hook definitions \\
+\texttt{env}                         & Environment vars \\
+\texttt{sandbox.enabled}            & Sandbox mode \\
+\end{tabularx}
+
+\sect{Permission Rules}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{"Bash"}                      & Entire tool \\
+\texttt{"Bash(npm run *)"}          & Glob on command \\
+\texttt{"Bash(git push *)"}         & In deny list \\
+\texttt{"Edit(src/**/*.ts)"}        & Glob on file path \\
+\texttt{"Read(\~{}/.ssh/*)"}        & Block sensitive files \\
+\texttt{"WebFetch(domain:gh.com)"}  & Domain filter \\
+\texttt{"mcp\_\_server\_\_*"}       & MCP tool pattern \\
+\end{tabularx}
+{\footnotesize Eval order: deny $\to$ ask $\to$ allow.}
+
+\sect{Permission Modes}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{default}                     & Prompt on first use \\
+\texttt{plan}                        & Read-only analysis \\
+\texttt{acceptEdits}                 & Auto-accept edits \\
+\texttt{dontAsk}                     & Deny unless allowed \\
+\texttt{bypassPermissions}          & Skip all prompts \\
+\end{tabularx}
+
+\sect{Hook Events}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{PreToolUse}                  & Before tool (can block) \\
+\texttt{PostToolUse}                 & After tool success \\
+\texttt{UserPromptSubmit}           & User sends prompt \\
+\texttt{SessionStart}               & Session begins \\
+\texttt{SessionEnd}                  & Session ends \\
+\texttt{Stop}                        & Claude finishes \\
+\texttt{Notification}               & Needs attention \\
+\texttt{SubagentStart/Stop}         & Subagent lifecycle \\
+\texttt{PreCompact/PostCompact}     & Context compaction \\
+\end{tabularx}
+
+\sect{Hook Types}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{command}                     & Run shell command \\
+\texttt{http}                        & POST to endpoint \\
+\texttt{prompt}                      & Single-turn LLM \\
+\texttt{agent}                       & Multi-turn subagent \\
+\end{tabularx}
+{\footnotesize Exit codes: 0 = allow, 2 = block.}
+
+\sect{Hook Example}
+{\footnotesize
+\begin{verbatim}
+"hooks": {
+  "PostToolUse": [{
+    "matcher": "Edit|Write",
+    "hooks": [{
+      "type": "command",
+      "command": "prettier --write
+        \"$TOOL_INPUT.file_path\""
+    }]
+  }]
+}
+\end{verbatim}
+}
+
+\sect{MCP Configuration}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{\~{}/.claude/mcp.json}      & User-scope servers \\
+\texttt{.claude/.mcp.json}           & Project-scope \\
+\texttt{-{}-mcp-config f.json}      & Session-scope \\
+\texttt{claude mcp add \textit{n}}  & Add server (CLI) \\
+\texttt{claude mcp remove \textit{n}} & Remove server \\
+\texttt{claude mcp list}             & List servers \\
+\end{tabularx}
+
+\sect{MCP Server Config}
+{\footnotesize
+\begin{verbatim}
+{
+  "mcpServers": {
+    "name": {
+      "command": "/path/to/server",
+      "args": ["arg1"],
+      "env": {"KEY": "value"}
+    }
+  }
+}
+\end{verbatim}
+}
+
+\sect{Memory System}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{\~{}/.claude/projects/*/memory/} & Auto-memory dir \\
+\texttt{MEMORY.md}                  & Index (auto-loaded) \\
+\texttt{*.md}                        & Topic files \\
+\texttt{/memory}                     & Manage memory \\
+\end{tabularx}
+
+\sect{Environment Variables}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{ANTHROPIC\_API\_KEY}        & API key auth \\
+\texttt{ANTHROPIC\_MODEL}           & Default model \\
+\texttt{CLAUDE\_CODE\_EFFORT\_LEVEL} & Effort level \\
+\texttt{MAX\_THINKING\_TOKENS}      & Thinking budget \\
+\texttt{DISABLE\_AUTOUPDATER}       & Stop auto-updates \\
+\end{tabularx}
+
+\sect{Headless Patterns}
+{\footnotesize
+\begin{verbatim}
+# JSON output
+claude -p "query" \
+  --output-format json | jq '.result'
+
+# Auto-approve tools
+claude -p "query" \
+  --allowedTools "Bash,Read,Edit"
+
+# Pipe input
+cat f.txt | claude -p "analyze"
+
+# Continue session
+claude -p "follow-up" \
+  --resume $SESSION_ID
+\end{verbatim}
+}
+
+\end{multicols}
+
+\end{document}

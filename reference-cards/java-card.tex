@@ -1,0 +1,295 @@
+% Java Language Reference Card
+\documentclass[9pt]{extarticle}
+\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
+            margin=0.4in]{geometry}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{needspace}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{helvet}
+\usepackage[scaled=0.82]{beramono}
+\renewcommand{\familydefault}{\sfdefault}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.3in}
+
+\newcommand{\cardtitle}[1]{%
+  {\Large\bfseries #1}\par\vspace{1pt}%
+  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
+}
+\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+
+\begin{document}\small
+
+\cardtitle{Java}
+
+% ── Standard Tasks ─────────────────────────────────────────────────
+\begin{tabularx}{\linewidth}{@{}l@{\quad}l@{\quad}Y@{}}
+\textbf{Task}        & \textbf{Command}                                  & \textbf{Notes} \\[2pt]
+Version manager      & \texttt{sdkman}                                    & \texttt{sdk install java 21-tem} \\
+New project          & \texttt{mvn archetype:generate}                    & or \texttt{gradle init} \\
+Add dependency       & edit \texttt{pom.xml}                              & or \texttt{build.gradle.kts} \\
+Install deps         & \texttt{mvn dependency:resolve}                    & or \texttt{gradle dependencies} \\
+Build                & \texttt{mvn package}                               & or \texttt{gradle build} \\
+Run                  & \texttt{java -jar target/app.jar}                  & or \texttt{gradle run} \\
+REPL                 & \texttt{jshell}                                    & Java 9+ \\
+Test                 & \texttt{mvn test}                                  & or \texttt{gradle test}; JUnit 5 \\
+Format               & \texttt{google-java-format}                        & or Spotless plugin \\
+Lint                 & ---                                                & IDE / SpotBugs / ErrorProne \\
+LSP                  & \texttt{jdtls}                                     & configured in neovim via lspconfig \\
+\end{tabularx}
+
+\vspace{6pt}
+\rule{\linewidth}{0.2pt}
+
+% ── Language-Specific Content ──────────────────────────────────────
+\begin{multicols}{3}
+
+\sect{Basic Syntax}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{var x = expr}                & Local type inference \\
+\texttt{final var x = expr}          & Immutable local \\
+\texttt{if / else if / else}         & Conditional \\
+\texttt{switch (x) \{ case ... \}}   & Switch statement \\
+\texttt{case P -> expr}              & Switch expression (14+) \\
+\texttt{for (var x : xs)}            & Enhanced for \\
+\texttt{while / do-while}            & Loops \\
+\texttt{try / catch / finally}       & Error handling \\
+\texttt{throw new E("msg")}          & Throw exception \\
+\texttt{import static}               & Static import \\
+\end{tabularx}
+
+\sect{Types \& Data}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{record R(int x, String y)}   & Record (16+) \\
+\texttt{sealed interface I}          & Sealed type (17+) \\
+\texttt{permits A, B}               & Permitted subtypes \\
+\texttt{enum E \{ A, B, C \}}       & Enum \\
+\texttt{interface I}                 & Interface \\
+\texttt{class C extends B}           & Inheritance \\
+\texttt{implements I}                & Implement interface \\
+\texttt{Optional<T>}                & Nullable wrapper \\
+\texttt{@Override}                   & Override annotation \\
+\end{tabularx}
+
+\sect{Modern Java (17+)}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{case P when g ->}            & Guarded pattern (21+) \\
+\texttt{instanceof P p}              & Pattern match (16+) \\
+\texttt{""" text block """}          & Multiline string (15+) \\
+\texttt{yield expr}                  & Switch yield \\
+\texttt{Stream.toList()}             & Unmodifiable list (16+) \\
+\texttt{SequencedCollection}         & Ordered access (21+) \\
+\texttt{.getFirst() / .getLast()}    & First/last element (21+) \\
+\end{tabularx}
+
+\sect{Generics}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{class C<T>}                  & Generic class \\
+\texttt{<T> T f(T x)}               & Generic method \\
+\texttt{<T extends Comparable>}     & Upper bound \\
+\texttt{List<? extends T>}          & Covariant \\
+\texttt{List<? super T>}            & Contravariant \\
+\texttt{List<?>}                     & Wildcard \\
+\end{tabularx}
+
+\sect{Collections}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{List.of(a, b, c)}           & Immutable list \\
+\texttt{Set.of(a, b)}               & Immutable set \\
+\texttt{Map.of(k1,v1, k2,v2)}      & Immutable map \\
+\texttt{new ArrayList<>()}           & Mutable list \\
+\texttt{new HashMap<>()}             & Mutable map \\
+\texttt{new HashSet<>()}             & Mutable set \\
+\texttt{Collections.unmodifiable*}  & Unmodifiable view \\
+\texttt{Deque} / \texttt{ArrayDeque} & Stack / queue \\
+\end{tabularx}
+
+\sect{Streams}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{xs.stream()}                 & Create stream \\
+\texttt{.map(f)}                     & Transform \\
+\texttt{.filter(p)}                  & Filter \\
+\texttt{.flatMap(f)}                 & Flatten \\
+\texttt{.reduce(id, f)}             & Fold / reduce \\
+\texttt{.collect(toList())}          & Collect to list \\
+\texttt{.collect(groupingBy(f))}    & Group by key \\
+\texttt{.collect(joining(","))}     & Join strings \\
+\texttt{.sorted(comparator)}        & Sort \\
+\texttt{.distinct()}                 & Unique \\
+\texttt{.limit(n) / .skip(n)}       & Take / drop \\
+\texttt{.anyMatch(p)}               & Existential \\
+\texttt{.allMatch(p)}               & Universal \\
+\texttt{.findFirst()}               & First as Optional \\
+\texttt{Stream.of(a, b)}            & From values \\
+\texttt{IntStream.range(0, n)}      & Int range \\
+\end{tabularx}
+
+\sect{Functional Interfaces}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Function<T,R>}              & T $\to$ R \\
+\texttt{Predicate<T>}               & T $\to$ boolean \\
+\texttt{Consumer<T>}                & T $\to$ void \\
+\texttt{Supplier<T>}                & () $\to$ T \\
+\texttt{BiFunction<T,U,R>}          & (T,U) $\to$ R \\
+\texttt{Comparator<T>}              & Ordering \\
+\texttt{x -> expr}                   & Lambda \\
+\texttt{ClassName::method}           & Method reference \\
+\end{tabularx}
+
+\sect{Testing (JUnit 5)}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{@Test}                       & Test method \\
+\texttt{assertEquals(e, a)}         & Equality \\
+\texttt{assertTrue(p)}              & Boolean assertion \\
+\texttt{assertThrows(E.class, ())} & Expect exception \\
+\texttt{@BeforeEach / @AfterEach}   & Setup / teardown \\
+\texttt{@ParameterizedTest}          & Parametric test \\
+\texttt{@DisplayName("...")}        & Test name \\
+\end{tabularx}
+
+\sect{Error Handling}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Exception}                   & Checked exception \\
+\texttt{RuntimeException}            & Unchecked exception \\
+\texttt{try-with-resources}          & Auto-closeable \\
+\texttt{throws E}                    & Declare checked \\
+\texttt{e.getMessage()}              & Error message \\
+\texttt{e.getCause()}                & Chained cause \\
+\end{tabularx}
+
+\end{multicols}
+
+\newpage
+
+\cardtitle{Java --- Concurrency \& Standard Library}
+
+\begin{multicols}{3}
+
+\sect{Concurrency --- Basics}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Thread.start()}                & Start thread \\
+\texttt{Runnable}                      & Task (no return) \\
+\texttt{Callable<T>}                  & Task (returns T) \\
+\texttt{synchronized}                  & Mutual exclusion \\
+\texttt{volatile}                      & Visibility guarantee \\
+\texttt{Thread.sleep(ms)}              & Sleep \\
+\texttt{thread.join()}                 & Wait for completion \\
+\end{tabularx}
+
+\sect{Concurrency --- Executors}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Executors.newFixedThreadPool}  & Fixed pool \\
+\texttt{Executors.newVirtualThread*}   & Virtual threads (21+) \\
+\texttt{executor.submit(task)}          & Submit task \\
+\texttt{Future<T>}                     & Async result \\
+\texttt{future.get()}                   & Block for result \\
+\end{tabularx}
+
+\sect{CompletableFuture}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{supplyAsync(() -> v)}          & Async supplier \\
+\texttt{.thenApply(f)}                  & Map result \\
+\texttt{.thenCompose(f)}                & FlatMap \\
+\texttt{.thenAccept(c)}                 & Consume result \\
+\texttt{.exceptionally(f)}              & Handle error \\
+\texttt{.thenCombine(other, f)}         & Combine two \\
+\texttt{allOf(a, b, c)}                 & Wait for all \\
+\texttt{anyOf(a, b, c)}                 & First completed \\
+\texttt{.join()}                         & Block (unchecked) \\
+\end{tabularx}
+
+\sect{Virtual Threads (21+)}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Thread.ofVirtual().start(r)}  & Start virtual thread \\
+\texttt{Thread.startVirtualThread(r)} & Shorthand \\
+\texttt{newVirtualThreadPerTask*()}   & Executor factory \\
+\end{tabularx}
+
+\sect{Concurrent Collections}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{ConcurrentHashMap}             & Thread-safe map \\
+\texttt{CopyOnWriteArrayList}          & Thread-safe list \\
+\texttt{BlockingQueue}                  & Producer/consumer \\
+\texttt{ConcurrentLinkedQueue}         & Lock-free queue \\
+\texttt{AtomicInteger / AtomicRef}     & Lock-free vars \\
+\end{tabularx}
+
+\sect{Optional}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Optional.of(v)}               & Wrap non-null \\
+\texttt{Optional.ofNullable(v)}       & Wrap nullable \\
+\texttt{Optional.empty()}              & Empty optional \\
+\texttt{.map(f)}                        & Transform if present \\
+\texttt{.flatMap(f)}                    & Chain optionals \\
+\texttt{.filter(p)}                     & Conditional keep \\
+\texttt{.orElse(default)}               & Default value \\
+\texttt{.orElseThrow()}                 & Throw if empty \\
+\texttt{.ifPresent(c)}                  & Consume if present \\
+\texttt{.or(() -> other)}               & Alternative Optional \\
+\end{tabularx}
+
+\sect{I/O \& Files}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{Files.readString(path)}        & Read file \\
+\texttt{Files.writeString(path, s)}   & Write file \\
+\texttt{Files.readAllLines(path)}      & Lines as list \\
+\texttt{Files.list(dir)}               & List directory \\
+\texttt{Files.walk(dir)}               & Recursive walk \\
+\texttt{Files.exists(path)}            & Check exists \\
+\texttt{Files.copy(src, dst)}          & Copy file \\
+\texttt{Path.of("a", "b")}            & Build path \\
+\end{tabularx}
+
+\sect{Strings}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{s.formatted(args)}             & Format string (15+) \\
+\texttt{"\%s is \%d".formatted(a,b)}  & Printf-style \\
+\texttt{String.join(",", xs)}          & Join with separator \\
+\texttt{s.split(",")}                   & Split to array \\
+\texttt{s.strip()}                      & Trim whitespace \\
+\texttt{s.contains(t)}                 & Substring test \\
+\texttt{s.startsWith(t)}              & Prefix test \\
+\texttt{s.toCharArray()}               & To char array \\
+\texttt{s.chars()}                      & IntStream of chars \\
+\end{tabularx}
+
+\sect{Common Annotations}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{@Override}              & Override check \\
+\texttt{@Deprecated}           & Mark deprecated \\
+\texttt{@SuppressWarnings}     & Suppress warning \\
+\texttt{@FunctionalInterface}  & Single abstract method \\
+\texttt{@SafeVarargs}          & Varargs safety \\
+\end{tabularx}
+
+\sect{HTTP Client (11+)}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{HttpClient.newHttpClient()}    & Create client \\
+\texttt{HttpRequest.newBuilder()}      & Build request \\
+\texttt{.uri(URI.create(url))}          & Set URI \\
+\texttt{.GET() / .POST(body)}          & HTTP method \\
+\texttt{client.send(req, handler)}      & Sync send \\
+\texttt{client.sendAsync(req, h)}       & Async send \\
+\texttt{BodyHandlers.ofString()}       & String response \\
+\end{tabularx}
+
+\sect{Key Packages}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{java.util}              & Collections, Optional \\
+\texttt{java.util.stream}       & Stream API \\
+\texttt{java.util.concurrent}   & Concurrency \\
+\texttt{java.nio.file}          & File I/O \\
+\texttt{java.net.http}          & HTTP client \\
+\texttt{java.time}              & Date/time (8+) \\
+\texttt{java.util.function}     & Functional interfaces \\
+\texttt{java.util.regex}        & Regular expressions \\
+\end{tabularx}
+
+\end{multicols}
+
+\end{document}
