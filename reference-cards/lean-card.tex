@@ -1,0 +1,148 @@
+% Lean 4 Language Reference Card
+\documentclass[9pt]{extarticle}
+\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
+            margin=0.4in]{geometry}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{helvet}
+\usepackage[scaled=0.82]{beramono}
+\renewcommand{\familydefault}{\sfdefault}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.3in}
+
+\newcommand{\cardtitle}[1]{%
+  {\Large\bfseries #1}\par\vspace{1pt}%
+  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
+}
+\newcommand{\sect}[1]{\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+
+\begin{document}\small
+
+\cardtitle{Lean 4}
+
+% ── Standard Tasks ─────────────────────────────────────────────────
+\begin{tabularx}{\linewidth}{@{}l@{\quad}l@{\quad}Y@{}}
+\textbf{Task}        & \textbf{Command}                                  & \textbf{Notes} \\[2pt]
+Version manager      & \texttt{elan}                                      & \texttt{elan self update} to update \\
+New project          & \texttt{lake init \textit{name} math}              & \texttt{math} template adds Mathlib \\
+Add dependency       & edit \texttt{lakefile.lean}                        & \texttt{require \textit{pkg} from git \textit{url}} \\
+Install deps         & \texttt{lake update}                               & also: \texttt{lake exe cache get} for Mathlib oleans \\
+Build                & \texttt{lake build}                                & \texttt{lake clean} to rebuild \\
+Run                  & \texttt{lake env lean \textit{file}.lean}          & \\
+REPL                 & \texttt{lake repl}                                 & \\
+Test                 & \texttt{lake test}                                 & requires test target in lakefile \\
+Format               & ---                                                & style is by convention \\
+Lint                 & ---                                                & LSP provides diagnostics \\
+LSP                  & \texttt{lean --server}                             & built-in; lean.nvim starts it automatically \\
+\end{tabularx}
+
+\vspace{6pt}
+\rule{\linewidth}{0.2pt}
+
+% ── Language-Specific Content ──────────────────────────────────────
+\begin{multicols}{3}
+
+\sect{Basic Syntax}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{def f (x : Nat) : Nat}   & Function definition \\
+\texttt{let x := \textit{expr}}   & Local binding \\
+\texttt{where}                    & Local definitions \\
+\texttt{fun x => \textit{expr}}   & Lambda \\
+\texttt{match x with}             & Pattern match \\
+\texttt{| pat => \textit{expr}}   & Match arm \\
+\texttt{if h : p then ... else}   & If (with opt.\ proof) \\
+\texttt{for x in xs do}           & For loop (monadic) \\
+\texttt{do}                       & Monadic block \\
+\texttt{return \textit{e}}        & Return in do block \\
+\end{tabularx}
+
+\sect{Types \& Data}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{structure S where}        & Record type \\
+\texttt{inductive T where}        & Sum type / enum \\
+\texttt{class C where}            & Typeclass \\
+\texttt{instance : C T}           & Typeclass instance \\
+\texttt{abbrev}                   & Transparent def \\
+\texttt{deriving Repr, BEq}      & Auto-derive \\
+\texttt{(\textit{a}, \textit{b})} & Product / tuple \\
+\texttt{\#[\textit{a}, \textit{b}]} & Array literal \\
+\texttt{[\textit{a}, \textit{b}]} & List literal \\
+\end{tabularx}
+
+\sect{Inspecting}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{\#eval \textit{expr}}     & Evaluate expression \\
+\texttt{\#check \textit{expr}}    & Show type \\
+\texttt{\#check @\textit{name}}   & Show with implicits \\
+\texttt{\#print \textit{name}}    & Print definition \\
+\texttt{open \textit{Ns} in}      & Open namespace \\
+\end{tabularx}
+
+\sect{Theorem Proving}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{theorem n : P := by}      & Prove by tactics \\
+\texttt{example : P := by}        & Anonymous proof \\
+\texttt{lemma}                    & Same as theorem \\
+\texttt{sorry}                    & Placeholder (hole) \\
+\end{tabularx}
+
+\sect{Core Tactics}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{exact e}           & Provide exact term \\
+\texttt{apply f}           & Apply function/lemma \\
+\texttt{intro h}           & Introduce hypothesis \\
+\texttt{cases h}           & Case split \\
+\texttt{induction n}       & Induction \\
+\texttt{constructor}       & Split goal (And/Exists) \\
+\texttt{rfl}               & Reflexivity \\
+\texttt{rw [h]}            & Rewrite with h \\
+\texttt{rw [$\leftarrow$ h]} & Rewrite backward \\
+\texttt{simp}              & Simplification \\
+\texttt{ring}              & Ring equations \\
+\texttt{omega}             & Linear integer arith \\
+\texttt{linarith}          & Linear real arith \\
+\texttt{norm\_num}         & Numeric normalization \\
+\texttt{contradiction}     & Close by contradiction \\
+\end{tabularx}
+
+\sect{Tactic Combinators}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{have h : P := by}    & Intermediate lemma \\
+\texttt{suffices h : P by}   & Backward reasoning \\
+\texttt{obtain $\langle$a, b$\rangle$ := h}  & Destructure \\
+\texttt{calc}                 & Calculational proof \\
+\end{tabularx}
+
+\sect{Mathlib}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{import Mathlib.Tactic} & Import tactics \\
+\texttt{import Mathlib.Data.Nat} & Specific module \\
+\texttt{exact?}                & Search for proof term \\
+\texttt{apply?}                & Search for lemma \\
+\texttt{rw?}                   & Search for rewrite \\
+\texttt{simp?}                 & Show simp lemmas used \\
+\end{tabularx}
+
+\sect{Neovim (lean.nvim)}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{<Leader>i}  & Toggle infoview \\
+\texttt{<Leader>p}  & Pin infoview to cursor \\
+\texttt{<Leader>x}  & Unpin infoview \\
+\texttt{<Leader>t}  & Replace sorry \\
+\texttt{K}          & Hover info \\
+\texttt{gd}         & Go to definition \\
+\texttt{gr}         & References \\
+\end{tabularx}
+
+\end{multicols}
+
+\vfill
+{\scriptsize Lean 4 + Mathlib4 \quad|\quad elan: version manager \quad lake: build system \quad Lean includes built-in LSP \quad|\quad \texttt{lake exe cache get} downloads pre-built Mathlib}
+
+\end{document}

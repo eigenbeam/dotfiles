@@ -1,0 +1,139 @@
+% Python Language Reference Card
+\documentclass[9pt]{extarticle}
+\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
+            margin=0.4in]{geometry}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{helvet}
+\usepackage[scaled=0.82]{beramono}
+\renewcommand{\familydefault}{\sfdefault}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.3in}
+
+\newcommand{\cardtitle}[1]{%
+  {\Large\bfseries #1}\par\vspace{1pt}%
+  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
+}
+\newcommand{\sect}[1]{\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+
+\begin{document}\small
+
+\cardtitle{Python}
+
+% ── Standard Tasks ─────────────────────────────────────────────────
+\begin{tabularx}{\linewidth}{@{}l@{\quad}l@{\quad}Y@{}}
+\textbf{Task}        & \textbf{Command}                                  & \textbf{Notes} \\[2pt]
+Version manager      & \texttt{uv}                                        & \texttt{uv python install 3.12} to install a version \\
+New project          & \texttt{uv init \textit{name}}                     & \texttt{-{}-lib} for library; creates \texttt{pyproject.toml} \\
+Add dependency       & \texttt{uv add \textit{pkg}}                       & \texttt{-{}-dev} for dev-only dependency \\
+Install deps         & \texttt{uv sync}                                   & installs from \texttt{uv.lock} \\
+Build                & \texttt{uv build}                                  & builds wheel + sdist to \texttt{dist/} \\
+Run                  & \texttt{uv run \textit{script}.py}                 & runs in project virtualenv \\
+REPL                 & \texttt{uv run python} / \texttt{ipython}          & \\
+Test                 & \texttt{uv run pytest}                             & \texttt{-x} stop first fail, \texttt{-k \textit{pat}} filter \\
+Format               & \texttt{ruff format .}                             & \texttt{-{}-check} for dry run \\
+Lint                 & \texttt{ruff check .}                              & \texttt{-{}-fix} to autofix \\
+LSP                  & \texttt{pyright}                                   & configured in neovim via lspconfig \\
+\end{tabularx}
+
+\vspace{6pt}
+\rule{\linewidth}{0.2pt}
+
+% ── Language-Specific Content ──────────────────────────────────────
+\begin{multicols}{3}
+
+\sect{uv Extras}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{uv remove \textit{pkg}}       & Remove dependency \\
+\texttt{uv lock}                       & Update lockfile \\
+\texttt{uv tool install \textit{pkg}} & Install global CLI \\
+\texttt{uv tool list}                  & List global tools \\
+\texttt{uvx \textit{cmd}}             & Run tool without install \\
+\texttt{uv python list}               & Available versions \\
+\texttt{uv python pin 3.12}           & Pin project version \\
+\end{tabularx}
+
+\sect{Common Patterns}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{[x for x in xs if p(x)]}     & List comprehension \\
+\texttt{\{k: v for k, v in d\}}      & Dict comprehension \\
+\texttt{x if cond else y}            & Ternary \\
+\texttt{a, b = b, a}                 & Swap \\
+\texttt{*args, **kwargs}             & Variadic args \\
+\texttt{yield}                       & Generator \\
+\texttt{with open(f) as fh:}         & Context manager \\
+\texttt{match x:}                    & Pattern match (3.10+) \\
+\texttt{case \textit{pat}:}          & Match arm \\
+\texttt{f"\{x:.2f\}"}               & f-string formatting \\
+\end{tabularx}
+
+\sect{Type Hints}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{x: int = 0}               & Variable annotation \\
+\texttt{def f(x: str) -> bool:}   & Function signature \\
+\texttt{list[int]}                 & Generic list \\
+\texttt{dict[str, Any]}           & Generic dict \\
+\texttt{X | None}                  & Optional (3.10+) \\
+\texttt{TypeAlias = ...}           & Type alias \\
+\texttt{@dataclass}                & Data class \\
+\texttt{Protocol}                  & Structural typing \\
+\texttt{\# pyright: strict}        & Strict mode (file) \\
+\end{tabularx}
+
+\sect{Standard Library}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{pathlib}          & File paths \\
+\texttt{itertools}        & chain, product, groupby \\
+\texttt{functools}        & lru\_cache, partial, reduce \\
+\texttt{collections}      & Counter, defaultdict, deque \\
+\texttt{dataclasses}      & @dataclass \\
+\texttt{typing}           & Type hint utilities \\
+\texttt{json}             & JSON encode/decode \\
+\texttt{subprocess}       & Run shell commands \\
+\texttt{argparse}         & CLI argument parsing \\
+\texttt{logging}          & Structured logging \\
+\end{tabularx}
+
+\sect{Key Libraries}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{polars}           & Fast DataFrames \\
+\texttt{numpy}            & Array computing \\
+\texttt{scipy}            & Numerics, optimization \\
+\texttt{matplotlib}       & Plotting \\
+\texttt{xarray}           & N-dim labeled arrays \\
+\texttt{geopandas}        & Geospatial DataFrames \\
+\texttt{httpx}            & HTTP client (async) \\
+\texttt{pydantic}         & Validation / settings \\
+\texttt{pytest}           & Testing framework \\
+\end{tabularx}
+
+\sect{Data Tools}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{duckdb}                        & SQL REPL (parquet/CSV) \\
+\texttt{vd \textit{file}}             & VisiData TUI \\
+\texttt{marimo edit \textit{nb}.py}   & Reactive notebook \\
+\texttt{quarto render \textit{f}.qmd} & Render document \\
+\end{tabularx}
+
+\sect{Testing Patterns}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{def test\_\textit{name}():}    & Test function \\
+\texttt{assert x == y}                & Assertion \\
+\texttt{@pytest.fixture}              & Fixture decorator \\
+\texttt{@pytest.mark.parametrize}     & Parametrize tests \\
+\texttt{pytest.raises(Exc)}           & Expect exception \\
+\texttt{tmp\_path}                    & Built-in temp dir fixture \\
+\end{tabularx}
+
+\end{multicols}
+
+\vfill
+{\scriptsize Python 3.12+ \quad|\quad uv: package/version manager \quad ruff: linter/formatter \quad pyright: LSP \quad|\quad match/case 3.10+ \quad PEP 695 type syntax 3.12+}
+
+\end{document}

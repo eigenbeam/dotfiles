@@ -1,4 +1,4 @@
-.PHONY: all check bootstrap homebrew brewfile uninstall lint mac cards tools ssh sync fonts linux-packages ssm-plugin doctor
+.PHONY: all check bootstrap homebrew brewfile uninstall lint mac cards language-cards tools ssh sync fonts linux-packages ssm-plugin doctor
 
 UNAME := $(shell uname)
 
@@ -63,6 +63,13 @@ cards:
 	pdflatex -interaction=nonstopmode -output-directory=reference-cards reference-cards/reference-cards.tex
 	@rm -f reference-cards/reference-cards.aux reference-cards/reference-cards.log
 	@echo "✓ reference-cards/reference-cards.pdf built"
+
+language-cards:
+	@for f in reference-cards/*-card.tex; do \
+		pdflatex -interaction=nonstopmode -output-directory=reference-cards "$$f"; \
+	done
+	@rm -f reference-cards/*-card.aux reference-cards/*-card.log
+	@echo "✓ Language cards built"
 
 tools:
 	@command -v node >/dev/null 2>&1 || (echo "Error: node not found. Run 'nvm install --lts' first." && exit 1)
