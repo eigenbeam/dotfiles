@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # ------------------
 # Shared environment for login shells (sourced by .zprofile and .bash_profile)
 # ------------------
@@ -29,6 +30,7 @@ export NVM_DIR="$HOME/.nvm"
 # ------------------
 # bat
 # ------------------
+export BAT_THEME="ansi"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # ------------------
@@ -37,7 +39,8 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 if [ "$(uname)" = "Darwin" ]; then
   export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
   if /usr/libexec/java_home &>/dev/null; then
-    export JAVA_HOME=$(/usr/libexec/java_home)
+    JAVA_HOME=$(/usr/libexec/java_home)
+    export JAVA_HOME
   fi
   [ -d /Library/TeX/texbin ] && export PATH="/Library/TeX/texbin:$PATH"
 fi

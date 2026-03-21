@@ -18,6 +18,7 @@ Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](
 | `make sync` | Pull latest, install Homebrew packages, re-stow |
 | `make tools` | Install npm globals (LSPs, prettier) and uv tools |
 | `make ssh` | Deploy SSH config (excluded from `make all` — must be run manually) |
+| `make cards` | Build `reference-cards/reference-cards.pdf` via pdflatex |
 
 ## Architecture
 
@@ -28,7 +29,11 @@ Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](
 - `zsh/dot-zshrc` — interactive zsh config (aliases, completions, FZF, plugins, lazy-loaded NVM).
 - `bash/dot-bashrc` — interactive bash config.
 
-**Neovim** (`nvim/dot-config/nvim/init.lua`): Single-file config using lazy.nvim. Has a `vim.g.vscode` branch — when running inside VSCode Neovim extension, it loads a minimal keybinding-only config; otherwise it loads the full setup (Telescope, LSP, Treesitter, conform, nvim-lint, nvim-dap, etc.). Theme: Zenbones Light.
+**Neovim** (`nvim/dot-config/nvim/init.lua`): Single-file config using lazy.nvim. Has a `vim.g.vscode` branch — when running inside VSCode Neovim extension, it loads a minimal keybinding-only config; otherwise it loads the full setup (Telescope, LSP via nvim-lspconfig, blink.cmp, Treesitter, conform, nvim-lint, nvim-dap, gitsigns, smart-splits, etc.). Theme: Zenbones Light.
+
+**Tmux ↔ Neovim navigation:** smart-splits.nvim + tmux config use `@pane-is-vim` to seamlessly share `C-h/j/k/l` navigation and `M-h/j/k/l` resizing across nvim splits and tmux panes.
+
+**NVM lazy-loading:** NVM is lazy-loaded in `.zshrc` for startup performance — wrapper functions for `nvm`, `node`, `npm`, `npx` trigger the actual load on first use.
 
 **Brew auto-sync:** The `brew` command is wrapped in `.zshrc` to auto-dump `Brewfile` after any install/uninstall, keeping `homebrew/Brewfile` always current.
 

@@ -1,2 +1,4 @@
+# shellcheck shell=bash
+# shellcheck source=dot-profile
 . "$HOME/.profile"
 [ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"

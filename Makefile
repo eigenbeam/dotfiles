@@ -62,7 +62,7 @@ brewfile-extras:
 	brew bundle dump --force --file=homebrew/Brewfile.extras
 
 lint:
-	shellcheck bash/dot-bashrc bash/dot-bash_profile bash/dot-profile
+	cd bash && shellcheck -x -e SC1091 dot-bashrc dot-bash_profile dot-profile dot-shell-common
 
 cards:
 	pdflatex -interaction=nonstopmode -output-directory=reference-cards reference-cards/reference-cards.tex
@@ -78,6 +78,11 @@ tools:
 
 ssh:
 	@mkdir -p $(HOME)/.ssh/sockets
+	@if [ ! -f $(HOME)/.ssh/config-local ]; then \
+		touch $(HOME)/.ssh/config-local; \
+		chmod 600 $(HOME)/.ssh/config-local; \
+		echo "✓ Created empty ~/.ssh/config-local"; \
+	fi
 	stow --dotfiles --no-folding -t $(HOME) ssh
 	@chmod 600 ssh/.ssh/config
 	@echo "✓ SSH config installed"

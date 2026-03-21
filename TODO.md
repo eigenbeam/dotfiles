@@ -91,11 +91,8 @@
   DAP, etc.), or wrap the entire `require("lazy").setup(...)` call in an
   `if not vim.g.vscode` guard and provide a minimal plugin list for VSCode mode.
 
-- [ ] **Stow `--no-folding` not used** — The Makefile stow commands don't use
-  `--no-folding`, so stow may create directory-level symlinks (e.g., symlinking
-  `~/.config/nvim/` itself rather than individual files within it). If another tool
-  writes to that directory, the file ends up in your dotfiles repo. Fix: add
-  `--no-folding` to all stow invocations in the Makefile.
+- [x] **Stow `--no-folding` not used** — Fixed: `--no-folding` added to all stow
+  invocations in the Linux support commit.
 
 ## Medium Priority
 
@@ -166,14 +163,8 @@
 
 ## Low Priority
 
-- [ ] **Hardcoded `/opt/homebrew` paths** — `zsh/dot-zshrc` lines 38-39, 73-74,
-  90-91, 94-95 hardcode `/opt/homebrew` (Apple Silicon). On Intel Macs, Homebrew
-  lives at `/usr/local`. The profile script (`dot-profile:6-10`) correctly handles
-  both architectures for Homebrew init, but the rc files don't. The paths are
-  guarded with `[ -s ... ]` / `[ -f ... ]` checks so they fail silently on Intel,
-  but the features (zsh completions, autosuggestions, syntax-highlighting, NVM)
-  would be missing. Fix: use `$HOMEBREW_PREFIX` (set by `brew shellenv` in the
-  profile) instead of hardcoded paths.
+- [x] **Hardcoded `/opt/homebrew` paths** — Fixed: replaced with `$HOMEBREW_PREFIX`
+  in the Linux support commit.
 
 - [ ] **Unnecessary zsh autoloads** — `zsh/dot-zshrc:35` loads `colors` (provides
   `$fg`/`$bg` variables) but nothing in the config uses them — Starship handles the
@@ -228,6 +219,37 @@
   `smart-splits.nvim`). pain-control provides `|` and `-` splits. Fix: clarify
   the attribution in the reference cards.
 
+- [ ] **Track machine-local configs in git (encrypted)** — `~/.ssh/config-local`
+  and `~/.gitconfig-local` contain machine-specific settings (hosts, credentials,
+  keys) and aren't version-controlled. If the machine dies, they're lost.
+  **Preferred approach: `age` + SSH keys.** Each machine's `id_ed25519` can decrypt;
+  no GPG or separate keyfile needed. A `local/` directory (gitignored) holds
+  plaintext configs, while `local/secrets.age` is the encrypted blob checked into
+  git. `local/authorized-keys` lists public keys of all machines (safe to commit).
+  Two Makefile targets: `make local-encrypt` (tar + age encrypt) and
+  `make local-decrypt` (age decrypt + untar). Pre-commit hook can warn if plaintext
+  is newer than the encrypted blob. **Alternatives considered:** git-crypt
+  (transparent but needs GPG or symmetric keyfile), Bitwarden CLI (good as a backup
+  mechanism, not a daily workflow), Yubikey (future hardening — resident SSH keys
+  work with age via ssh-agent, so this upgrades naturally). A practical combo:
+  age for daily use, Bitwarden as backup, Yubikey as optional future step.
+
+- [ ] **Server and minimal make targets** — Two tiers for non-desktop machines:
+  **Tier 1 (`make server`):** For controlled servers (Docker, cloud VMs) where you
+  have root. Stows a subset of packages (bash, zsh, git, nvim, tmux, starship —
+  skip ghostty, keyboard) and installs tools via apt/dnf through a new
+  `linux/server-packages.sh` script (stow, zsh, neovim, tmux, starship, fzf,
+  ripgrep, fd, bat, git-delta). Paired with `make bootstrap-server` that runs the
+  install script + `make server` + `make ssh`.
+  **Tier 2 (`make minimal`):** For uncontrolled servers (shared EC2, HPC) where you
+  likely don't have root. No stow dependency — uses direct `ln -sf` to link bash
+  and git configs only. Works with just bash + vi/vim. Requires a new portable
+  `vim/dot-vimrc` with sane defaults (line numbers, search, indent, no plugins) to
+  mirror basic neovim muscle memory. `.bashrc` needs a fallback `PS1` for when
+  starship isn't installed. No downloading of external binaries.
+  **New files needed:** `linux/server-packages.sh`, `vim/dot-vimrc`.
+  **Changes to existing files:** Makefile (new targets), `bash/dot-bashrc` (fallback PS1).
+
 ## Aspirational
 
 - [ ] **CI for dotfiles** — No automated validation exists. A GitHub Actions
@@ -243,6 +265,17 @@
 - [ ] **Caps Lock → Escape remap** — Very common for Vim users and not present in
   the keyboard config. May already be handled in System Settings or Karabiner. If
   not, it can be added to the existing `hidutil` plist or configured in Ghostty.
+
+- [ ] **Vi mode in zsh/bash** — Use vim keybindings in the shell for consistency
+  with neovim. Zsh's vi-mode is better than bash's (faster mode switching, better
+  widgets). **Tradeoffs:** loses default emacs-mode bindings (`C-a`, `C-e`, `C-r`,
+  `C-w`) that are optimized for single-line editing; mode ambiguity without cursor
+  shape configuration; FZF and zsh-autosuggestions key bindings assume emacs mode
+  and need manual rebinding. **If adopted:** configure cursor shape change per mode
+  (block for normal, beam for insert), rebind FZF/autosuggestion keys for vi-mode,
+  set up `Esc v` or a binding to edit command in neovim. Consider keeping emacs
+  mode and just adding a keybind to open `$EDITOR` for complex commands as a
+  lighter alternative.
 
 - [ ] **`~/.inputrc` for readline** — No readline configuration exists. This affects
   bash, the Python REPL, and any readline-based tool. Common settings: vi mode,

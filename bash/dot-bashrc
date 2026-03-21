@@ -1,20 +1,16 @@
+# shellcheck shell=bash
 # Return if not interactive
 [[ $- != *i* ]] && return
 
 # Source login environment if not already loaded (non-login interactive shells)
+# shellcheck source=dot-profile
 [[ -z "$HOMEBREW_PREFIX" ]] && [ -f "$HOME/.profile" ] && . "$HOME/.profile"
 
 # ------------------
-# Aliases
+# Shared config (aliases, FZF vars, brew wrapper, NVM lazy-load)
 # ------------------
-alias vi=nvim
-alias vim=nvim
-alias bc='bc -l'
-export BAT_THEME="ansi"
-alias cat='bat --paging=never'
-alias ls='eza'
-alias ll='eza -la --git --icons'
-alias lt='eza --tree --level=2 --icons'
+# shellcheck source=dot-shell-common
+[ -f "$HOME/.shell-common" ] && . "$HOME/.shell-common"
 
 # ------------------
 # History
@@ -37,31 +33,9 @@ if type brew &>/dev/null; then
 fi
 
 # ------------------
-# FZF
+# FZF (shell integration — env vars are in .shell-common)
 # ------------------
-export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
-export FZF_CTRL_T_COMMAND='fd --type f --hidden --exclude .git'
-export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
-export FZF_DEFAULT_OPTS='--color=bg+:#CBD9E3,fg:#2C363C,fg+:#2C363C,hl:#286486,hl+:#286486,info:#4F5E68,prompt:#2C363C,pointer:#A8334C,marker:#4F6C31,spinner:#4F5E68,header:#286486'
 eval "$(fzf --bash)"
-
-# ------------------
-# JavaScript (lazy-loaded)
-# ------------------
-_lazy_load_nvm() {
-  unset -f nvm node npm npx
-  if [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ]; then
-    . "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"
-    [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && . "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm"
-  elif [ -s "$NVM_DIR/nvm.sh" ]; then
-    . "$NVM_DIR/nvm.sh"
-    [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
-  fi
-}
-nvm() { _lazy_load_nvm; nvm "$@"; }
-node() { _lazy_load_nvm; node "$@"; }
-npm() { _lazy_load_nvm; npm "$@"; }
-npx() { _lazy_load_nvm; npx "$@"; }
 
 # ------------------
 # Tool integrations
