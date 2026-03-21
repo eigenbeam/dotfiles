@@ -3,7 +3,7 @@
 -- ============================================================================
 -- Kickstart-inspired single-file config with lazy.nvim plugin management
 -- Features: Telescope, LSP, Treesitter, blink.cmp, gitsigns, nvim-lint,
---           nvim-dap, nvim-jdtls, quarto-nvim, conform.nvim
+--           nvim-dap, nvim-jdtls, quarto-nvim, lean.nvim, conform.nvim
 -- Theme: Zenbones Light
 -- VSCode Neovim extension supported (auto-detected)
 -- Requirements: Neovim 0.11+, git
@@ -392,6 +392,20 @@ require("lazy").setup({
         opts = {},
     },
 
+    -- ── Lean 4 ──────────────────────────────────────────────────────
+    {
+        "Julian/lean.nvim",
+        event = { "BufReadPre *.lean", "BufNewFile *.lean" },
+        dependencies = {
+            "neovim/nvim-lspconfig",
+            "nvim-lua/plenary.nvim",
+        },
+        opts = {
+            lsp = {},
+            mappings = true,
+        },
+    },
+
     -- ── Treesitter ───────────────────────────────────────────────────────
     {
         "nvim-treesitter/nvim-treesitter",
@@ -410,6 +424,7 @@ require("lazy").setup({
                 "javascript",
                 "json",
                 "julia",
+                "lean",
                 "lua",
                 "luadoc",
                 "markdown",
