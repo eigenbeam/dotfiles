@@ -1,4 +1,4 @@
-.PHONY: all check bootstrap homebrew homebrew-extras brewfile brewfile-extras uninstall lint mac cards tools ssh sync fonts linux-packages ssm-plugin doctor
+.PHONY: all check bootstrap homebrew brewfile uninstall lint mac cards tools ssh sync fonts linux-packages ssm-plugin doctor
 
 UNAME := $(shell uname)
 
@@ -53,14 +53,8 @@ endif
 homebrew:
 	brew bundle install --file=homebrew/Brewfile
 
-homebrew-extras:
-	brew bundle install --file=homebrew/Brewfile.extras
-
 brewfile:
 	brew bundle dump --force --file=homebrew/Brewfile
-
-brewfile-extras:
-	brew bundle dump --force --file=homebrew/Brewfile.extras
 
 lint:
 	cd bash && shellcheck -x -e SC1091 dot-bashrc dot-bash_profile dot-profile dot-shell-common
