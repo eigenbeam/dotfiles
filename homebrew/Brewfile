@@ -1,79 +1,130 @@
+tap "common-fate/granted"
 tap "hashicorp/tap"
+tap "snyk/tap"
 
-# Core tools
+# Core CLI
 brew "bat"
-brew "curl"
+brew "bottom"
+brew "direnv"
+brew "dust"
+brew "eza"
 brew "fd"
 brew "fzf"
 brew "gh"
 brew "git"
+brew "git-filter-repo"
+brew "git-lfs"
 brew "git-secrets"
-brew "go"
+brew "glow"
+brew "hyperfine"
 brew "jq"
+brew "just"
 brew "lazygit"
 brew "make"
-brew "neovim"
-brew "nvm"
+brew "procs"
 brew "ripgrep"
-brew "rustup"
 brew "shellcheck"
-brew "starship"
 brew "stow"
-brew "stylua"
-
-# CLI enhancements
-brew "bottom"
-brew "direnv"
-brew "glow"
-brew "eza"
-brew "git-delta"
 brew "tldr"
-brew "tree-sitter-cli"
+brew "tokei"
 brew "xh"
 brew "yazi"
 brew "zoxide"
 
-# LSP servers (for Neovim)
-brew "bash-language-server"
-brew "lua-language-server"
-brew "pyright"
-brew "yaml-language-server"
-brew "taplo"
-brew "hashicorp/tap/terraform-ls"
-brew "jdtls"
-
+# Shell & terminal
+brew "starship"
 brew "tmux"
 brew "tpm"
-brew "uv"
 brew "zsh-autosuggestions"
 brew "zsh-completions"
 brew "zsh-syntax-highlighting"
 
-# Data & DevOps
-brew "hashicorp/tap/terraform"
-brew "awscli"
-brew "duckdb"
-brew "visidata"
-brew "lazydocker"
-brew "mosh"
-brew "tflint"
+# Neovim (editor + LSP servers + formatters)
+brew "neovim"
+brew "bash-language-server"
+brew "hashicorp/tap/terraform-ls"
+brew "jdtls"
+brew "lua-language-server"
+brew "pyright"
+brew "stylua"
+brew "taplo"
+brew "yaml-language-server"
 
-# Language toolchains
-brew "juliaup"
+# Python
 brew "ruff"
+brew "uv"
+
+# JavaScript
+brew "nvm"
+
+# Java
+brew "maven"
+
+# Other languages
+brew "elan-init"
+brew "juliaup"
 brew "typst"
 
-# General CLI
-brew "dust"
-brew "hyperfine"
+# Infrastructure (AWS, Terraform, Docker, CI)
+brew "awscli"
+brew "aws-cdk"
+brew "aws-vault"
+brew "circleci"
+brew "common-fate/granted/granted"
+brew "devcontainer"
+brew "hashicorp/tap/terraform"
+brew "infracost"
+brew "lazydocker"
+brew "snyk/tap/snyk"
+brew "tflint"
+
+# AI tools
+brew "gemini-cli"
+cask "copilot-cli"
+
+# Data & science
+brew "duckdb"
+brew "gdal"
+brew "gnuplot"
+brew "octave"
 brew "pandoc"
+brew "postgis"
+brew "postgresql@16"
+brew "visidata"
+
+# Security & networking
+brew "age"
+brew "autossh"
+brew "bitwarden-cli"
+brew "mosh"
+brew "sshuttle"
+brew "telnet"
+brew "ykman"
+
+# Misc CLI
+brew "asciinema"
+brew "dive"
+brew "exif"
+brew "exiftool"
+brew "figlet"
+brew "fswatch"
+brew "graphviz"
 
 # Casks (macOS only — ignored by Linuxbrew)
 cask "bitwarden"
 cask "font-commit-mono-nerd-font"
 cask "ghostty"
+cask "iterm2"
+cask "julia-app"
+cask "mactex-no-gui"
+cask "panoply"
+cask "paraview"
+cask "pgadmin4"
+cask "qgis"
 cask "quarto"
 cask "rectangle"
+cask "sage"
 cask "temurin@21"
-cask "mactex-no-gui"
+cask "virtualbox"
+cask "yubico-yubikey-manager"
 cask "zotero"

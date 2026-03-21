@@ -183,6 +183,8 @@ doctor:
 	has ipython                   && ok "ipython"                    || wrn "ipython (run make tools)"; \
 	has marimo                    && ok "marimo"                     || wrn "marimo (run make tools)"; \
 	has session-manager-plugin    && ok "session-manager-plugin"     || wrn "session-manager-plugin (run make ssm-plugin)"; \
+	has claude                    && ok "claude"                      || wrn "claude (curl -fsSL https://claude.ai/install.sh | bash)"; \
+	has gemini                    && ok "gemini"                      || wrn "gemini"; \
 	echo ""; \
 	echo "Homebrew:"; \
 	brew bundle check --file=homebrew/Brewfile >/dev/null 2>&1 \

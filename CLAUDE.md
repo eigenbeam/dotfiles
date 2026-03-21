@@ -38,8 +38,6 @@ Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](
 
 **NVM lazy-loading:** NVM is lazy-loaded in `.shell-common` for startup performance — wrapper functions for `nvm`, `node`, `npm`, `npx` trigger the actual load on first use.
 
-**Brew auto-sync:** The `brew` command is wrapped in `.shell-common` to auto-dump `Brewfile` after any install/uninstall, keeping `homebrew/Brewfile` always current.
-
 **Tmux sessionizer:** `C-a f` opens fzf popup to fuzzy-find `~/projects` directories and create/attach named tmux sessions. Script at `bash/dot-local/bin/tmux-sessionizer`.
 
 **Git config** uses XDG layout (`~/.config/git/`), delta for diffs, and includes `~/.gitconfig-local` for machine-specific overrides. The `make all` target creates this file if missing.

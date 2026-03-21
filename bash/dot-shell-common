@@ -16,18 +16,6 @@ alias ll='eza -la --git --icons'
 alias lt='eza --tree --level=2 --icons'
 
 # ------------------
-# Homebrew (auto-update Brewfile after install/uninstall)
-# ------------------
-brew() {
-  command brew "$@" || return $?
-  case "$1" in
-    install|uninstall|rmtree)
-      command brew bundle dump --force --file=~/projects/dotfiles/homebrew/Brewfile
-      ;;
-  esac
-}
-
-# ------------------
 # FZF
 # ------------------
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
