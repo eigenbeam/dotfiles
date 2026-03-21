@@ -18,6 +18,8 @@ Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](
 | `make sync` | Pull latest, install Homebrew packages, re-stow |
 | `make tools` | Install npm globals (LSPs, prettier) and uv tools |
 | `make ssh` | Deploy SSH config (excluded from `make all` — must be run manually) |
+| `make doctor` | Verify symlinks, tools, configs, and shell setup on current machine |
+| `make ssm-plugin` | Install AWS Session Manager Plugin directly from AWS (requires sudo) |
 | `make cards` | Build `reference-cards/reference-cards.pdf` via pdflatex |
 
 ## Architecture

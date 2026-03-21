@@ -1,4 +1,4 @@
-.PHONY: all check bootstrap homebrew homebrew-extras brewfile brewfile-extras uninstall lint mac cards tools ssh sync fonts linux-packages ssm-plugin
+.PHONY: all check bootstrap homebrew homebrew-extras brewfile brewfile-extras uninstall lint mac cards tools ssh sync fonts linux-packages ssm-plugin doctor
 
 UNAME := $(shell uname)
 
@@ -115,6 +115,85 @@ ifeq ($(UNAME),Darwin)
 else
 	@echo "Skipped: macOS-only target"
 endif
+
+doctor:
+	@pass=0; fail=0; warn=0; \
+	ok()  { pass=$$((pass + 1)); printf '  \033[32m✓\033[0m %s\n' "$$1"; }; \
+	nok() { fail=$$((fail + 1)); printf '  \033[31m✗\033[0m %s\n' "$$1"; }; \
+	wrn() { warn=$$((warn + 1)); printf '  \033[33m!\033[0m %s\n' "$$1"; }; \
+	has() { command -v "$$1" >/dev/null 2>&1; }; \
+	link_ok() { [ -L "$$1" ] && [ -e "$$1" ]; }; \
+	echo "Dotfiles Doctor"; \
+	echo "================"; \
+	echo ""; \
+	echo "Symlinks:"; \
+	link_ok "$(HOME)/.profile"                    && ok ".profile"             || nok ".profile"; \
+	link_ok "$(HOME)/.bashrc"                     && ok ".bashrc"              || nok ".bashrc"; \
+	link_ok "$(HOME)/.bash_profile"               && ok ".bash_profile"        || nok ".bash_profile"; \
+	link_ok "$(HOME)/.shell-common"               && ok ".shell-common"        || nok ".shell-common"; \
+	link_ok "$(HOME)/.zshrc"                      && ok ".zshrc"               || nok ".zshrc"; \
+	link_ok "$(HOME)/.zprofile"                   && ok ".zprofile"            || nok ".zprofile"; \
+	link_ok "$(HOME)/.zshenv"                     && ok ".zshenv"              || nok ".zshenv"; \
+	link_ok "$(HOME)/.tmux.conf"                  && ok ".tmux.conf"           || nok ".tmux.conf"; \
+	link_ok "$(HOME)/.config/ghostty/config"      && ok "ghostty/config"       || nok "ghostty/config"; \
+	link_ok "$(HOME)/.config/git/config"          && ok "git/config"           || nok "git/config"; \
+	link_ok "$(HOME)/.config/git/ignore"          && ok "git/ignore"           || nok "git/ignore"; \
+	link_ok "$(HOME)/.config/lazygit/config.yml"  && ok "lazygit/config.yml"   || nok "lazygit/config.yml"; \
+	link_ok "$(HOME)/.config/nvim/init.lua"       && ok "nvim/init.lua"        || nok "nvim/init.lua"; \
+	link_ok "$(HOME)/.config/starship.toml"       && ok "starship.toml"        || nok "starship.toml"; \
+	link_ok "$(HOME)/.config/yazi/yazi.toml"      && ok "yazi/yazi.toml"       || nok "yazi/yazi.toml"; \
+	link_ok "$(HOME)/.local/bin/tmux-sessionizer" && ok "tmux-sessionizer"     || nok "tmux-sessionizer"; \
+	if [ "$$(uname)" = "Darwin" ]; then \
+		link_ok "$(HOME)/Library/LaunchAgents/com.local.KeyRemapping.plist" \
+			&& ok "keyboard remap plist" || nok "keyboard remap plist"; \
+	fi; \
+	echo ""; \
+	echo "Configs:"; \
+	[ -f "$(HOME)/.gitconfig-local" ] \
+		&& ok "~/.gitconfig-local exists" || nok "~/.gitconfig-local missing (run make all)"; \
+	git config --file "$(HOME)/.gitconfig-local" user.email >/dev/null 2>&1 \
+		&& ok "git user.email set" || nok "git user.email not set in ~/.gitconfig-local"; \
+	[ -d "$(HOME)/.cache/zsh" ] \
+		&& ok "~/.cache/zsh exists" || nok "~/.cache/zsh missing (run make all)"; \
+	echo ""; \
+	echo "Shell:"; \
+	if [ "$$(uname)" = "Darwin" ]; then \
+		cur_shell=$$(dscl . -read "/Users/$$(whoami)" UserShell 2>/dev/null | awk '{print $$2}'); \
+	else \
+		cur_shell=$$(getent passwd "$$(whoami)" | cut -d: -f7); \
+	fi; \
+	case "$$cur_shell" in */zsh) ok "default shell is zsh";; *) wrn "default shell is not zsh ($$cur_shell)";; esac; \
+	echo ""; \
+	echo "Core tools:"; \
+	for cmd in brew stow git nvim tmux starship fzf rg fd bat delta; do \
+		has "$$cmd" && ok "$$cmd" || nok "$$cmd not found"; \
+	done; \
+	echo ""; \
+	echo "CLI tools:"; \
+	for cmd in lazygit zoxide direnv eza yazi glow xh; do \
+		has "$$cmd" && ok "$$cmd" || wrn "$$cmd not found"; \
+	done; \
+	echo ""; \
+	echo "Dev tools:"; \
+	for cmd in node npm uv python3 aws terraform; do \
+		has "$$cmd" && ok "$$cmd" || wrn "$$cmd not found"; \
+	done; \
+	has typescript-language-server && ok "typescript-language-server" || wrn "typescript-language-server (run make tools)"; \
+	has prettier                  && ok "prettier"                   || wrn "prettier (run make tools)"; \
+	has ipython                   && ok "ipython"                    || wrn "ipython (run make tools)"; \
+	has marimo                    && ok "marimo"                     || wrn "marimo (run make tools)"; \
+	has session-manager-plugin    && ok "session-manager-plugin"     || wrn "session-manager-plugin (run make ssm-plugin)"; \
+	echo ""; \
+	echo "Homebrew:"; \
+	brew bundle check --file=homebrew/Brewfile >/dev/null 2>&1 \
+		&& ok "Brewfile packages installed" || wrn "some Brewfile packages missing (run make homebrew)"; \
+	echo ""; \
+	echo "================"; \
+	printf 'Summary: \033[32m%d passed\033[0m' "$$pass"; \
+	[ "$$warn" -gt 0 ] && printf ', \033[33m%d warnings\033[0m' "$$warn"; \
+	[ "$$fail" -gt 0 ] && printf ', \033[31m%d failed\033[0m' "$$fail"; \
+	echo ""; \
+	[ "$$fail" -eq 0 ]
 
 ssm-plugin:
 	@echo "Installing AWS Session Manager Plugin..."
