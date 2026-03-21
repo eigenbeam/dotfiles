@@ -204,6 +204,7 @@ ifeq ($(UNAME),Darwin)
 		curl -fsSL "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac/session-manager-plugin.pkg" -o /tmp/session-manager-plugin.pkg; \
 	fi
 	sudo installer -pkg /tmp/session-manager-plugin.pkg -target /
+	sudo ln -sf /usr/local/sessionmanagerplugin/bin/session-manager-plugin /usr/local/bin/session-manager-plugin
 	@rm -f /tmp/session-manager-plugin.pkg
 else
 	@if [ "$$(uname -m)" = "aarch64" ]; then \
