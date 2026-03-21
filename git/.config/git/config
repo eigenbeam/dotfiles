@@ -1,6 +1,6 @@
 [user]
 	name = Kevin W. Beam
-	email = kevin.beam@colorado.edu
+	# email set per-machine in ~/.gitconfig-local
 [color]
 	ui = auto
 [apply]
