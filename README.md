@@ -38,7 +38,7 @@ Only needed if not using `make bootstrap`:
 | `bash`     | `~/`                 | `.bashrc`, `.bash_profile`, `.profile` (shared with zsh)     |
 | `zsh`      | `~/`                 | `.zshrc`, `.zprofile`, `.zshenv`                             |
 | `git`      | `~/`                 | `~/.config/git/config`, `ignore`, `hooks/` (XDG layout)     |
-| `nvim`     | `~/`                 | Minimal zero-dependency `init.lua` (works in VSCode too)     |
+| `nvim`     | `~/`                 | Single-file `init.lua` with lazy.nvim (30+ plugins); VSCode-compatible |
 | `ghostty`  | `~/`                 | Terminal config: CommitMono Nerd Font, Zenbones Light theme   |
 | `keyboard` | `~/`                 | macOS-only: keyboard remapping via `hidutil` (right-option → control) |
 | `tmux`     | `~/`                 | Prefix `C-a`, vi keys, TPM plugins, session persistence      |
@@ -65,11 +65,12 @@ Not stowed (reference/install scripts):
 | `make homebrew-extras` | Install optional packages from `Brewfile.extras`   |
 | `make tools`       | Install npm globals (LSPs, prettier) and uv tools      |
 | `make ssh`         | Deploy SSH config (manual — not in `make all`)         |
-| `make lint`        | Run shellcheck on all shell config files               |
+| `make lint`        | Run shellcheck on bash config files                    |
 | `make fonts`       | Install CommitMono Nerd Font (Linux: downloads from GitHub, macOS: use cask) |
 | `make linux-packages` | Install desktop apps via apt (requires sudo)        |
 | `make mac`         | Set macOS-specific defaults (VSCode key repeat)        |
 | `make sync`        | Pull latest, install Homebrew packages, re-stow        |
+| `make cards`       | Build `reference-cards/reference-cards.pdf` via pdflatex |
 | `make brewfile`    | Dump current Homebrew state to `Brewfile`              |
 
 ## Shell Setup

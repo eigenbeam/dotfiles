@@ -11,9 +11,10 @@ $git_branch\
 $git_status\
 $python\
 $nodejs\
-$rust\
-$go\
+$java\
 $lua\
+$terraform\
+$docker_context\
 $cmd_duration\
 $line_break\
 $character"""
@@ -48,14 +49,18 @@ format = '[$symbol$version]($style) '
 style = '#88507D'
 format = '[$symbol$version]($style) '
 
-[rust]
-style = '#88507D'
-format = '[$symbol$version]($style) '
-
-[golang]
+[java]
 style = '#88507D'
 format = '[$symbol$version]($style) '
 
 [lua]
 style = '#88507D'
 format = '[$symbol$version]($style) '
+
+[terraform]
+style = '#88507D'
+format = '[$symbol$version]($style) '
+
+[docker_context]
+style = '#88507D'
+format = '[$symbol$context]($style) '

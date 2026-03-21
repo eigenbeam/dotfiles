@@ -50,6 +50,7 @@ brew "zsh-completions"
 brew "zsh-syntax-highlighting"
 
 # Data & DevOps
+brew "hashicorp/tap/terraform"
 brew "awscli"
 brew "duckdb"
 brew "visidata"

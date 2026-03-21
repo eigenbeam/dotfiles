@@ -16,6 +16,7 @@ vim.g.maplocalleader = " "
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 
+if not vim.g.vscode then
 -- ============================================================================
 -- Plugin Manager (lazy.nvim) - Auto-installs on first run
 -- ============================================================================
@@ -203,12 +204,6 @@ require("lazy").setup({
                     },
                 },
             })
-
-            vim.lsp.config("ts_ls", {})
-            vim.lsp.config("terraformls", {})
-            vim.lsp.config("dockerls", {})
-            vim.lsp.config("taplo", {})
-            vim.lsp.config("julials", {})
 
             vim.lsp.enable({
                 "bashls",
@@ -575,6 +570,7 @@ require("lazy").setup({
 
     { "NMAC427/guess-indent.nvim", opts = {} },
 })
+end -- lazy.nvim (skipped in VSCode mode)
 
 -- ============================================================================
 -- VSCode Neovim Extension Support
@@ -611,12 +607,6 @@ if vim.g.vscode then
 
     -- Better paste (don't yank replaced text)
     keymap("x", "<leader>p", '"_dP', { desc = "Paste without yanking" })
-
-    -- Explicit clipboard operations (force y, Y, p, P to use system clipboard)
-    keymap({ "n", "v" }, "y", '"+y', { desc = "Yank to clipboard" })
-    keymap("n", "Y", '"+Y', { desc = "Yank line to clipboard" })
-    keymap({ "n", "v" }, "p", '"+p', { desc = "Paste from clipboard" })
-    keymap({ "n", "v" }, "P", '"+P', { desc = "Paste before from clipboard" })
 
     -- VSCode commands (call VSCode's native functionality)
     keymap("n", "<leader>w", "<Cmd>call VSCodeNotify('workbench.action.files.save')<CR>", { desc = "Save file" })
@@ -665,7 +655,6 @@ else
     vim.opt.number = true -- Line numbers
     vim.opt.relativenumber = true -- Relative line numbers
     vim.opt.signcolumn = "yes" -- Always show sign column (prevents shift)
-    vim.opt.linespace = 7 -- Extra line height
     vim.opt.cursorline = true -- Highlight current line
     vim.opt.scrolloff = 8 -- Keep 8 lines above/below cursor
     vim.opt.sidescrolloff = 8 -- Keep 8 columns left/right of cursor
@@ -822,13 +811,6 @@ else
     -- Better paste (don't yank replaced text)
     keymap("x", "<leader>p", '"_dP', { desc = "Paste without yanking" })
 
-    -- Explicit clipboard operations (force y, Y, p, P to use system clipboard)
-    -- This ensures clipboard works even if provider isn't properly configured
-    keymap({ "n", "v" }, "y", '"+y', { desc = "Yank to clipboard" })
-    keymap("n", "Y", '"+Y', { desc = "Yank line to clipboard" })
-    keymap({ "n", "v" }, "p", '"+p', { desc = "Paste from clipboard" })
-    keymap({ "n", "v" }, "P", '"+P', { desc = "Paste before from clipboard" })
-
     -- Quick save/quit
     keymap("n", "<leader>w", ":write<CR>", { desc = "Save file" })
     keymap("n", "<leader>q", ":quit<CR>", { desc = "Quit" })
@@ -887,10 +869,14 @@ else
         end,
     })
 
-    -- Remove trailing whitespace on save
+    -- Remove trailing whitespace on save (skip markdown/quarto where trailing spaces are meaningful)
     vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = "*",
         callback = function()
+            local ft = vim.bo.filetype
+            if ft == "markdown" or ft == "quarto" then
+                return
+            end
             local save_cursor = vim.fn.getpos(".")
             vim.cmd([[%s/\s\+$//e]])
             vim.fn.setpos(".", save_cursor)

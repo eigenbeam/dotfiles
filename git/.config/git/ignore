@@ -33,4 +33,15 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# IDE
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
 **/.claude/settings.local.json

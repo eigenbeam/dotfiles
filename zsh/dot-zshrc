@@ -45,12 +45,11 @@ setopt INC_APPEND_HISTORY
 # Options
 # ------------------
 setopt correct
+typeset -U path
 
 # ------------------
 # Completions
 # ------------------
-autoload -U colors && colors
-
 if type brew &>/dev/null; then
   fpath+=("$HOMEBREW_PREFIX/share/zsh/site-functions")
   fpath+=("$HOMEBREW_PREFIX/share/zsh-completions")
@@ -70,7 +69,6 @@ _comp_options+=(globdots)		# Include hidden files.
 # ------------------
 # Prompt
 # ------------------
-autoload -U promptinit; promptinit
 eval "$(starship init zsh)"
 
 # ------------------
@@ -87,11 +85,11 @@ eval "$(direnv hook zsh)"
 # ------------------
 # Plugins (autosuggestions before syntax-highlighting, which must be last)
 # ------------------
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#CFC1BA"
 for _dir in "${HOMEBREW_PREFIX}/share" "/usr/share"; do
   [ -f "$_dir/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
     { source "$_dir/zsh-autosuggestions/zsh-autosuggestions.zsh"; break; }
 done
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#CFC1BA"
 
 for _dir in "${HOMEBREW_PREFIX}/share" "/usr/share"; do
   [ -f "$_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && \

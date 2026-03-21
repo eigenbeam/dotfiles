@@ -24,7 +24,7 @@
 	undo = reset --soft HEAD~1
 	prev = switch -
 [push]
-	default = upstream
+	default = simple
 	followTags = true
 [pull]
 	rebase = true
@@ -59,6 +59,7 @@
 	plus-emph-style = syntax "#CBDAB8"
 [diff]
 	colorMoved = default
+	algorithm = histogram
 [merge]
 	conflictStyle = zdiff3
 [init]

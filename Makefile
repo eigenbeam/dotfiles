@@ -43,6 +43,7 @@ bootstrap:
 	@command -v stow >/dev/null 2>&1 || brew install stow
 	@$(MAKE) all
 	@$(MAKE) homebrew
+	@$(MAKE) tools
 ifneq ($(UNAME),Darwin)
 	@$(MAKE) fonts
 	@echo "Run 'sudo make linux-packages' to install desktop apps (Ghostty, Bitwarden, etc.)"
