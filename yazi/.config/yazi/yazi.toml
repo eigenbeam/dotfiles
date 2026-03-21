@@ -1,0 +1,9 @@
+# Yazi configuration — only non-default overrides
+# Docs: https://yazi-rs.github.io/docs/configuration/yazi/
+
+[mgr]
+show_hidden = true
+linemode = "size"
+
+[preview]
+wrap = "yes"

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Fuzzy-find a project directory and create/attach a tmux session for it
+
+selected=$(find ~/projects -mindepth 1 -maxdepth 1 -type d 2>/dev/null | fzf --reverse --header="Select project")
+
+[ -z "$selected" ] && exit 0
+
+name=$(basename "$selected" | tr './' '__')
+
+if ! tmux has-session -t="$name" 2>/dev/null; then
+    tmux new-session -ds "$name" -c "$selected"
+fi
+
+if [ -n "$TMUX" ]; then
+    tmux switch-client -t "$name"
+else
+    tmux attach-session -t "$name"
+fi

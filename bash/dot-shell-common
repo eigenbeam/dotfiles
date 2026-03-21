@@ -52,3 +52,15 @@ nvm() { _lazy_load_nvm; nvm "$@"; }
 node() { _lazy_load_nvm; node "$@"; }
 npm() { _lazy_load_nvm; npm "$@"; }
 npx() { _lazy_load_nvm; npx "$@"; }
+
+# ------------------
+# Yazi (cd-on-exit wrapper)
+# ------------------
+yy() {
+  tmp=$(mktemp -t "yazi-cwd.XXXXXX")
+  yazi --cwd-file="$tmp" "$@"
+  if cwd=$(cat -- "$tmp") && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    cd -- "$cwd" || return
+  fi
+  rm -f -- "$tmp"
+}

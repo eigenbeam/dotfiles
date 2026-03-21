@@ -46,12 +46,9 @@
 
 ## Medium Priority
 
-- [ ] **Tmux sessionizer** — No fuzzy project switcher for tmux sessions. Currently
-  you must manually create and name sessions. A sessionizer keybinding (e.g.,
-  `C-a f`) would fuzzy-find project directories and create/attach named sessions.
-  Combined with tmux-resurrect, each project gets a persistent workspace.
-  Options: write a custom script using fzf, or use a plugin like tmux-sessionx or
-  t-smart-tmux-session-manager.
+- [x] **Tmux sessionizer** — Fixed: `C-a f` opens fzf popup to fuzzy-find
+  `~/projects` dirs and create/attach named tmux sessions. Script at
+  `~/.local/bin/tmux-sessionizer`.
 
 - [x] **tmux allow-passthrough** — Fixed: added `set -g allow-passthrough on`.
 
@@ -72,17 +69,12 @@
 - [x] **Starship missing language modules** — Fixed: added `$java`, `$terraform`,
   and `$docker_context` to format string with matching sections.
 
-- [ ] **Yazi has no behavioral config** — Only a `theme.toml` exists. There is no
-  `yazi.toml` (show hidden files, sorting, preview settings, image preview) or
-  `keymap.toml` (custom keybindings). All behavior is default. Fix: add a
-  `yazi.toml` if you want to customize behavior — common settings include
-  `show_hidden = true`, image preview backend config, and custom opener rules.
+- [x] **Yazi has no behavioral config** — Fixed: added `yazi.toml` with
+  `show_hidden`, `linemode = "size"`, preview wrapping. Added tmux
+  `update-environment` for image preview. Added `yy` shell function (cd-on-exit).
 
-- [ ] **Shell utility functions** — The shell configs have aliases but no utility
-  functions. Common useful ones: `mkcd` (mkdir + cd), `extract` (universal archive
-  extractor), `gco` (fuzzy git branch switcher via fzf), `fkill` (fuzzy process
-  killer). Fix: add a shared functions file sourced by both bash and zsh, or add
-  them directly to each rc file.
+- [x] **Shell utility functions** — Skipped: user prefers existing CLI tools over
+  wrapper functions. Added `yy` (yazi cd-on-exit) as the one useful addition.
 
 - [x] **Duplicated shell config between bash and zsh** — Fixed: shared config
   extracted to `dot-shell-common`, sourced by both `.bashrc` and `.zshrc`.

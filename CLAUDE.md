@@ -22,20 +22,23 @@ Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](
 
 ## Architecture
 
-**Stow package convention:** Each top-level directory (bash, zsh, git, nvim, ghostty, etc.) is a stow package. Files mirror their target path under `$HOME`. For example, `nvim/dot-config/nvim/init.lua` becomes `~/.config/nvim/init.lua`.
+**Stow package convention:** Each top-level directory (bash, zsh, git, nvim, ghostty, etc.) is a stow package. Files mirror their target path under `$HOME`. For example, `nvim/.config/nvim/init.lua` becomes `~/.config/nvim/init.lua`. Files named `dot-*` become `.*` (e.g., `bash/dot-profile` → `~/.profile`).
 
 **Shell layering:**
 - `bash/dot-profile` — shared login environment (PATH, Homebrew, Rust, NVM, Java). Sourced by both `.zprofile` and `.bash_profile`.
-- `zsh/dot-zshrc` — interactive zsh config (aliases, completions, FZF, plugins, lazy-loaded NVM).
+- `bash/dot-shell-common` — shared interactive config (aliases, FZF vars, brew wrapper, NVM lazy-load, yazi `yy` function). Sourced by both `.bashrc` and `.zshrc`.
+- `zsh/dot-zshrc` — interactive zsh config (completions, plugins, tool integrations).
 - `bash/dot-bashrc` — interactive bash config.
 
-**Neovim** (`nvim/dot-config/nvim/init.lua`): Single-file config using lazy.nvim. Has a `vim.g.vscode` branch — when running inside VSCode Neovim extension, it loads a minimal keybinding-only config; otherwise it loads the full setup (Telescope, LSP via nvim-lspconfig, blink.cmp, Treesitter, conform, nvim-lint, nvim-dap, gitsigns, smart-splits, etc.). Theme: Zenbones Light.
+**Neovim** (`nvim/.config/nvim/init.lua`): Single-file config using lazy.nvim. Has a `vim.g.vscode` guard — in VSCode, lazy.nvim and all plugins are skipped entirely (keybindings-only config); otherwise loads the full setup (Telescope, LSP via nvim-lspconfig, blink.cmp, Treesitter, conform, nvim-lint, nvim-dap, gitsigns, smart-splits, etc.). Theme: Zenbones Light.
 
 **Tmux ↔ Neovim navigation:** smart-splits.nvim + tmux config use `@pane-is-vim` to seamlessly share `C-h/j/k/l` navigation and `M-h/j/k/l` resizing across nvim splits and tmux panes.
 
-**NVM lazy-loading:** NVM is lazy-loaded in `.zshrc` for startup performance — wrapper functions for `nvm`, `node`, `npm`, `npx` trigger the actual load on first use.
+**NVM lazy-loading:** NVM is lazy-loaded in `.shell-common` for startup performance — wrapper functions for `nvm`, `node`, `npm`, `npx` trigger the actual load on first use.
 
-**Brew auto-sync:** The `brew` command is wrapped in `.zshrc` to auto-dump `Brewfile` after any install/uninstall, keeping `homebrew/Brewfile` always current.
+**Brew auto-sync:** The `brew` command is wrapped in `.shell-common` to auto-dump `Brewfile` after any install/uninstall, keeping `homebrew/Brewfile` always current.
+
+**Tmux sessionizer:** `C-a f` opens fzf popup to fuzzy-find `~/projects` directories and create/attach named tmux sessions. Script at `bash/dot-local/bin/tmux-sessionizer`.
 
 **Git config** uses XDG layout (`~/.config/git/`), delta for diffs, and includes `~/.gitconfig-local` for machine-specific overrides. The `make all` target creates this file if missing.
 
