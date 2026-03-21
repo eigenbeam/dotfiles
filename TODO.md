@@ -189,6 +189,26 @@
   and "different config per machine" problems stow can't handle.
   https://www.chezmoi.io/
 
+- [ ] **AWS CLI toolkit** — Reduce reliance on the AWS web console with better CLI
+  tooling. **Quick wins:** set `cli_pager =` and `cli_auto_prompt = on-partial` in
+  `~/.aws/config`. Add fzf-powered shell aliases (profile switcher, SSM connect,
+  `awswho`). **Credential management (pick one):** `granted` for SSO/Identity Center
+  (`brew tap common-fate/granted && brew install granted`), or `aws-vault` for IAM
+  keys + MFA (`brew install aws-vault`). **Service tools:** `cw` for CloudWatch log
+  tailing, `s5cmd` for fast parallel S3 ops, `steampipe` for SQL queries against
+  live AWS resources, `chamber` for SSM Parameter Store secrets. **No good general
+  AWS TUI exists** — the fzf alias approach is what most power users do instead.
+  https://github.com/common-fate/granted
+  https://github.com/lucagrulla/cw
+  https://github.com/peak/s5cmd
+  https://github.com/turbot/steampipe
+
+- [ ] **sesh** — Upgraded tmux session manager replacing the current
+  `tmux-sessionizer` script. Adds zoxide-based frecency ranking, unified picker
+  showing existing sessions + potential new ones, per-session startup commands via
+  TOML config, and git worktree-aware naming. `brew install sesh`.
+  https://github.com/joshmedeski/sesh
+
 ## Done
 
 - [x] **direnv** — Per-project environment auto-loading via `.envrc`.
