@@ -1,0 +1,367 @@
+% SQL / PostgreSQL / PostGIS Reference Card
+\documentclass[9pt]{extarticle}
+\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
+            margin=0.4in]{geometry}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{needspace}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{helvet}
+\usepackage[scaled=0.82]{beramono}
+\renewcommand{\familydefault}{\sfdefault}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.3in}
+
+\newcommand{\cardtitle}[1]{%
+  {\Large\bfseries #1}\par\vspace{1pt}%
+  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
+}
+\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+
+\begin{document}\small
+
+\cardtitle{SQL / PostgreSQL}
+
+% ── Standard Tasks ─────────────────────────────────────────────────
+\begin{tabularx}{\linewidth}{@{}l@{\quad}l@{\quad}Y@{}}
+\textbf{Task}        & \textbf{Command}                                  & \textbf{Notes} \\[2pt]
+Install              & \texttt{brew install postgresql@16}                & \texttt{brew services start postgresql@16} \\
+CLI client           & \texttt{psql -d \textit{dbname}}                  & \texttt{-U user -h host -p port} \\
+Create database      & \texttt{createdb \textit{name}}                   & or \texttt{CREATE DATABASE name;} \\
+Drop database        & \texttt{dropdb \textit{name}}                     & or \texttt{DROP DATABASE name;} \\
+Dump                 & \texttt{pg\_dump \textit{db} > f.sql}            & \texttt{-Fc} for custom format \\
+Restore              & \texttt{pg\_restore -d \textit{db} f.dump}       & or \texttt{psql -f f.sql} \\
+GUI                  & \texttt{pgcli} / DBeaver                          & \texttt{brew install pgcli} \\
+\end{tabularx}
+
+\vspace{6pt}
+\rule{\linewidth}{0.2pt}
+
+\begin{multicols}{3}
+
+\sect{psql Meta-Commands}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{\textbackslash l}            & List databases \\
+\texttt{\textbackslash dt}           & List tables \\
+\texttt{\textbackslash d \textit{tbl}} & Describe table \\
+\texttt{\textbackslash di}           & List indexes \\
+\texttt{\textbackslash dv}           & List views \\
+\texttt{\textbackslash df}           & List functions \\
+\texttt{\textbackslash dn}           & List schemas \\
+\texttt{\textbackslash du}           & List roles \\
+\texttt{\textbackslash dx}           & List extensions \\
+\texttt{\textbackslash x}            & Toggle expanded output \\
+\texttt{\textbackslash timing}       & Toggle query timing \\
+\texttt{\textbackslash e}            & Edit in \$EDITOR \\
+\texttt{\textbackslash i f.sql}      & Execute file \\
+\texttt{\textbackslash copy}         & Client-side COPY \\
+\texttt{\textbackslash q}            & Quit \\
+\end{tabularx}
+
+\sect{SELECT Basics}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{SELECT * FROM t}            & All columns \\
+\texttt{SELECT a, b FROM t}         & Specific columns \\
+\texttt{WHERE cond}                  & Filter rows \\
+\texttt{ORDER BY col ASC|DESC}      & Sort \\
+\texttt{LIMIT n OFFSET m}           & Paginate \\
+\texttt{DISTINCT}                    & Unique rows \\
+\texttt{AS alias}                    & Column/table alias \\
+\end{tabularx}
+
+\sect{Filtering}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{= <> < > <= >=}             & Comparison \\
+\texttt{AND / OR / NOT}             & Logical \\
+\texttt{IN (a, b, c)}               & Set membership \\
+\texttt{BETWEEN a AND b}            & Range (inclusive) \\
+\texttt{LIKE '\%pat\%'}             & Pattern (\% = any, \_ = one) \\
+\texttt{ILIKE}                       & Case-insensitive LIKE \\
+\texttt{IS NULL / IS NOT NULL}      & Null check \\
+\texttt{EXISTS (subquery)}          & Existence test \\
+\texttt{ANY / ALL (subquery)}       & Quantified compare \\
+\end{tabularx}
+
+\sect{Joins}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{INNER JOIN t ON cond}       & Matching rows both \\
+\texttt{LEFT JOIN t ON cond}        & All left + matching right \\
+\texttt{RIGHT JOIN t ON cond}       & All right + matching left \\
+\texttt{FULL JOIN t ON cond}        & All rows both sides \\
+\texttt{CROSS JOIN t}               & Cartesian product \\
+\texttt{LATERAL (subquery)}         & Correlated subquery join \\
+\texttt{NATURAL JOIN t}             & Join on same-named cols \\
+\texttt{USING (col)}                & Join on named column \\
+\end{tabularx}
+
+\sect{Aggregation}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{COUNT(*) / COUNT(col)}      & Row / non-null count \\
+\texttt{SUM(col)}                    & Total \\
+\texttt{AVG(col)}                    & Average \\
+\texttt{MIN(col) / MAX(col)}        & Min / max \\
+\texttt{GROUP BY col}               & Group rows \\
+\texttt{HAVING cond}                & Filter groups \\
+\texttt{array\_agg(col)}            & Collect into array \\
+\texttt{string\_agg(col, ',')}      & Concatenate strings \\
+\texttt{jsonb\_agg(col)}            & Collect into JSON array \\
+\end{tabularx}
+
+\sect{Window Functions}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{OVER (PARTITION BY ...)}    & Window definition \\
+\texttt{OVER (ORDER BY ...)}        & Ordered window \\
+\texttt{ROW\_NUMBER()}              & Sequential number \\
+\texttt{RANK() / DENSE\_RANK()}     & Rank with/without gaps \\
+\texttt{LAG(col, n) / LEAD(col, n)} & Previous / next row \\
+\texttt{FIRST\_VALUE / LAST\_VALUE} & First / last in window \\
+\texttt{SUM(col) OVER (...)}        & Running total \\
+\texttt{NTILE(n)}                    & Divide into n buckets \\
+\end{tabularx}
+
+\sect{Subqueries \& CTEs}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{WITH cte AS (...)}          & Common table expression \\
+\texttt{WITH RECURSIVE ...}         & Recursive CTE \\
+\texttt{(SELECT ...) AS sub}        & Subquery in FROM \\
+\texttt{WHERE x IN (SELECT ...)}   & Subquery in WHERE \\
+\end{tabularx}
+
+\sect{Set Operations}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{UNION}                       & Combine (deduplicated) \\
+\texttt{UNION ALL}                   & Combine (keep dupes) \\
+\texttt{INTERSECT}                   & Common rows \\
+\texttt{EXCEPT}                      & Rows in first not second \\
+\end{tabularx}
+
+\sect{DML --- Data Modification}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{INSERT INTO t (cols) VALUES} & Insert row \\
+\texttt{INSERT ... RETURNING *}     & Return inserted \\
+\texttt{UPDATE t SET c=v WHERE}     & Update rows \\
+\texttt{DELETE FROM t WHERE}        & Delete rows \\
+\texttt{UPSERT: ON CONFLICT ...}   & Insert or update \\
+\texttt{DO UPDATE SET c=EXCLUDED.c} & Upsert action \\
+\texttt{DO NOTHING}                  & Skip conflicts \\
+\texttt{COPY t FROM 'f.csv' CSV}   & Bulk load \\
+\texttt{TRUNCATE t}                  & Fast delete all \\
+\end{tabularx}
+
+\sect{DDL --- Schema}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{CREATE TABLE t (...)}       & Create table \\
+\texttt{ALTER TABLE t ADD col type} & Add column \\
+\texttt{ALTER TABLE t DROP col}     & Drop column \\
+\texttt{ALTER TABLE t RENAME}       & Rename table/column \\
+\texttt{DROP TABLE t}               & Drop table \\
+\texttt{CREATE INDEX ON t (col)}    & B-tree index \\
+\texttt{CREATE UNIQUE INDEX}        & Unique constraint \\
+\texttt{CREATE VIEW v AS SELECT}   & Create view \\
+\texttt{CREATE MATERIALIZED VIEW}  & Cached query \\
+\texttt{REFRESH MATERIALIZED VIEW} & Rebuild cached \\
+\end{tabularx}
+
+\sect{Constraints}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{PRIMARY KEY}                 & Unique + not null \\
+\texttt{UNIQUE}                      & No duplicates \\
+\texttt{NOT NULL}                    & Required \\
+\texttt{CHECK (cond)}               & Custom constraint \\
+\texttt{REFERENCES t(col)}          & Foreign key \\
+\texttt{DEFAULT val}                 & Default value \\
+\texttt{GENERATED ALWAYS AS (expr)} & Computed column \\
+\end{tabularx}
+
+\end{multicols}
+
+\newpage
+
+\cardtitle{PostgreSQL --- Types, Functions \& PostGIS}
+
+\begin{multicols}{3}
+
+\sect{PostgreSQL Types}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{integer / bigint}           & 32/64-bit int \\
+\texttt{numeric(p,s)}               & Exact decimal \\
+\texttt{real / double precision}    & 32/64-bit float \\
+\texttt{text / varchar(n)}          & String \\
+\texttt{boolean}                     & true / false \\
+\texttt{date / time / timestamp}    & Date/time \\
+\texttt{timestamptz}                 & Timestamp + timezone \\
+\texttt{interval}                    & Time duration \\
+\texttt{uuid}                        & UUID \\
+\texttt{jsonb}                       & Binary JSON \\
+\texttt{int[] / text[]}              & Array types \\
+\texttt{bytea}                       & Binary data \\
+\texttt{serial / bigserial}         & Auto-increment \\
+\texttt{tsquery / tsvector}         & Full-text search \\
+\end{tabularx}
+
+\sect{JSONB Operations}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{j->>'key'}                   & Text value by key \\
+\texttt{j->'key'}                    & JSON value by key \\
+\texttt{j->>0}                       & Array element (text) \\
+\texttt{j \#> '\{a,b\}'}            & Nested path (JSON) \\
+\texttt{j \#>> '\{a,b\}'}           & Nested path (text) \\
+\texttt{j @> '\{"k":"v"\}'}         & Contains \\
+\texttt{j ? 'key'}                   & Key exists \\
+\texttt{jsonb\_set(j, path, val)}   & Update value \\
+\texttt{j || '\{"k":"v"\}'}         & Merge \\
+\texttt{jsonb\_each(j)}             & Key-value rows \\
+\texttt{jsonb\_array\_elements(j)}  & Array to rows \\
+\texttt{jsonb\_build\_object(k,v)}  & Build object \\
+\texttt{to\_jsonb(record)}          & Row to JSON \\
+\end{tabularx}
+
+\sect{Array Operations}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{a[1]}                        & Index (1-based) \\
+\texttt{a[1:3]}                      & Slice \\
+\texttt{array\_length(a, 1)}        & Length \\
+\texttt{a || b}                      & Concatenate \\
+\texttt{ANY(a)}                      & Any element matches \\
+\texttt{ALL(a)}                      & All elements match \\
+\texttt{unnest(a)}                   & Array to rows \\
+\texttt{array\_agg(col)}            & Rows to array \\
+\texttt{a @> b}                      & a contains b \\
+\end{tabularx}
+
+\sect{String Functions}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{length(s)}                   & String length \\
+\texttt{upper(s) / lower(s)}        & Case convert \\
+\texttt{trim(s)}                     & Trim whitespace \\
+\texttt{substring(s, i, n)}         & Extract substring \\
+\texttt{replace(s, from, to)}       & Replace \\
+\texttt{split\_part(s, d, n)}       & Split and take nth \\
+\texttt{regexp\_matches(s, pat)}    & Regex extract \\
+\texttt{regexp\_replace(s, p, r)}   & Regex replace \\
+\texttt{concat\_ws(',', a, b)}      & Join with separator \\
+\texttt{format('\%s is \%s', a, b)} & Printf-style \\
+\end{tabularx}
+
+\sect{Date / Time Functions}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{now() / current\_timestamp} & Current time \\
+\texttt{current\_date}               & Today \\
+\texttt{extract(year FROM ts)}      & Extract field \\
+\texttt{date\_trunc('month', ts)}   & Truncate to month \\
+\texttt{ts + interval '1 day'}      & Add interval \\
+\texttt{age(ts1, ts2)}              & Difference \\
+\texttt{to\_char(ts, 'YYYY-MM-DD')} & Format \\
+\texttt{generate\_series(a, b, step)} & Date range \\
+\end{tabularx}
+
+\sect{Indexes}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{B-tree}                      & Default (equality, range) \\
+\texttt{GIN}                         & jsonb, arrays, full-text \\
+\texttt{GiST}                        & Geometry, range, full-text \\
+\texttt{BRIN}                        & Large sorted tables \\
+\texttt{CREATE INDEX CONCURRENTLY}  & No table lock \\
+\texttt{WHERE cond}                  & Partial index \\
+\texttt{(expr)}                      & Expression index \\
+\texttt{INCLUDE (col)}              & Covering index \\
+\end{tabularx}
+
+\sect{Performance}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{EXPLAIN ANALYZE q}          & Query plan + timing \\
+\texttt{EXPLAIN (BUFFERS) q}        & I/O stats \\
+\texttt{pg\_stat\_statements}       & Query stats extension \\
+\texttt{VACUUM ANALYZE t}           & Update stats \\
+\texttt{pg\_stat\_user\_tables}     & Table stats \\
+\end{tabularx}
+
+\sect{Transactions}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{BEGIN}                       & Start transaction \\
+\texttt{COMMIT}                      & Save changes \\
+\texttt{ROLLBACK}                    & Undo changes \\
+\texttt{SAVEPOINT s}                 & Named savepoint \\
+\texttt{ROLLBACK TO s}              & Undo to savepoint \\
+\texttt{SET TRANSACTION ISOLATION}  & Read committed (default) \\
+\texttt{SERIALIZABLE}               & Strictest isolation \\
+\end{tabularx}
+
+\sect{PostGIS --- Setup}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{CREATE EXTENSION postgis}   & Enable PostGIS \\
+\texttt{geometry / geography}       & Spatial column types \\
+\texttt{SRID 4326}                   & WGS 84 (lon/lat) \\
+\texttt{SRID 3857}                   & Web Mercator \\
+\end{tabularx}
+
+\sect{PostGIS --- Constructors}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{ST\_Point(x, y)}            & Point geometry \\
+\texttt{ST\_MakeLine(a, b)}         & Line from points \\
+\texttt{ST\_MakePolygon(ring)}      & Polygon from ring \\
+\texttt{ST\_GeomFromText(wkt, srid)} & From WKT \\
+\texttt{ST\_GeomFromGeoJSON(j)}     & From GeoJSON \\
+\texttt{ST\_SetSRID(g, srid)}       & Set coordinate ref \\
+\end{tabularx}
+
+\sect{PostGIS --- Measurements}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{ST\_Distance(a, b)}         & Distance \\
+\texttt{ST\_Area(g)}                 & Area \\
+\texttt{ST\_Length(g)}               & Line length \\
+\texttt{ST\_Perimeter(g)}           & Perimeter \\
+\texttt{ST\_Centroid(g)}            & Centroid \\
+\texttt{ST\_Azimuth(a, b)}          & Bearing angle \\
+\end{tabularx}
+
+\sect{PostGIS --- Spatial Predicates}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{ST\_Contains(a, b)}         & a contains b \\
+\texttt{ST\_Within(a, b)}           & a within b \\
+\texttt{ST\_Intersects(a, b)}       & Any overlap \\
+\texttt{ST\_DWithin(a, b, d)}       & Within distance d \\
+\texttt{ST\_Crosses(a, b)}          & Crosses \\
+\texttt{ST\_Touches(a, b)}          & Touches boundary \\
+\texttt{ST\_Disjoint(a, b)}         & No intersection \\
+\texttt{ST\_Covers(a, b)}           & Covers \\
+\end{tabularx}
+
+\sect{PostGIS --- Operations}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{ST\_Buffer(g, d)}           & Buffer geometry \\
+\texttt{ST\_Intersection(a, b)}     & Intersection \\
+\texttt{ST\_Union(a, b)}            & Union \\
+\texttt{ST\_Difference(a, b)}       & Difference \\
+\texttt{ST\_Transform(g, srid)}     & Reproject \\
+\texttt{ST\_Simplify(g, tol)}       & Simplify geometry \\
+\texttt{ST\_Envelope(g)}            & Bounding box \\
+\texttt{ST\_ConvexHull(g)}          & Convex hull \\
+\texttt{ST\_Snap(a, b, tol)}        & Snap to geometry \\
+\end{tabularx}
+
+\sect{PostGIS --- Output}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{ST\_AsText(g)}              & WKT \\
+\texttt{ST\_AsGeoJSON(g)}           & GeoJSON \\
+\texttt{ST\_AsMVT(row)}             & Mapbox vector tile \\
+\texttt{ST\_X(pt) / ST\_Y(pt)}      & Extract coordinates \\
+\texttt{ST\_SRID(g)}                & Get SRID \\
+\texttt{ST\_GeometryType(g)}        & Type name \\
+\end{tabularx}
+
+\sect{PostGIS --- Spatial Indexes}
+\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\texttt{CREATE INDEX ON t USING GiST (geom)} & Spatial index \\
+\texttt{a \&\& b}                    & Bounding box overlap \\
+\texttt{ORDER BY g <-> ref}         & KNN distance order \\
+\end{tabularx}
+
+\end{multicols}
+
+\end{document}
