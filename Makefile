@@ -17,6 +17,7 @@ all: check
 		fi; \
 		echo "✓ Created ~/.gitconfig-local with credential helper"; \
 	fi
+	stow --dotfiles --no-folding -t $(HOME) ai
 	stow --dotfiles --no-folding -t $(HOME) bash
 	stow --dotfiles --no-folding -t $(HOME) ghostty
 	stow --dotfiles --no-folding -t $(HOME) git
@@ -32,7 +33,7 @@ endif
 	@echo "✓ Dotfiles installed successfully"
 
 uninstall:
-	stow --dotfiles --no-folding -D -t $(HOME) bash ghostty git lazygit nvim starship tmux yazi zsh
+	stow --dotfiles --no-folding -D -t $(HOME) ai bash ghostty git lazygit nvim starship tmux yazi zsh
 ifeq ($(UNAME),Darwin)
 	stow --dotfiles --no-folding -D -t $(HOME) keyboard
 endif
@@ -143,6 +144,7 @@ doctor:
 	link_ok "$(HOME)/.config/nvim/init.lua"       && ok "nvim/init.lua"        || nok "nvim/init.lua"; \
 	link_ok "$(HOME)/.config/starship.toml"       && ok "starship.toml"        || nok "starship.toml"; \
 	link_ok "$(HOME)/.config/yazi/yazi.toml"      && ok "yazi/yazi.toml"       || nok "yazi/yazi.toml"; \
+	link_ok "$(HOME)/.claude/CLAUDE.md"            && ok "claude/CLAUDE.md"     || nok "claude/CLAUDE.md"; \
 	link_ok "$(HOME)/.local/bin/tmux-sessionizer" && ok "tmux-sessionizer"     || nok "tmux-sessionizer"; \
 	if [ "$$(uname)" = "Darwin" ]; then \
 		link_ok "$(HOME)/Library/LaunchAgents/com.local.KeyRemapping.plist" \
