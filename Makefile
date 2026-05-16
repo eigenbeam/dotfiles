@@ -1,4 +1,4 @@
-.PHONY: all check bootstrap homebrew brewfile uninstall lint mac cards language-cards tools ssh sync fonts linux-packages ssm-plugin doctor
+.PHONY: all check bootstrap homebrew brewfile uninstall lint mac keyboard cards language-cards tools ssh sync fonts linux-packages ssm-plugin doctor
 
 UNAME := $(shell uname)
 
@@ -27,14 +27,14 @@ all: check
 	stow --dotfiles --no-folding -t $(HOME) tmux
 	stow --dotfiles --no-folding -t $(HOME) yazi
 	stow --dotfiles --no-folding -t $(HOME) zsh
-ifeq ($(UNAME),Darwin)
-	stow --dotfiles --no-folding -t $(HOME) keyboard
-endif
+	@$(MAKE) keyboard
 	@echo "✓ Dotfiles installed successfully"
 
 uninstall:
 	stow --dotfiles --no-folding -D -t $(HOME) ai bash ghostty git lazygit nvim starship tmux yazi zsh
 ifeq ($(UNAME),Darwin)
+	@launchctl bootout gui/$$(id -u)/com.local.KeyRemapping 2>/dev/null || true
+	@hidutil property --set '{"UserKeyMapping":[]}' >/dev/null 2>&1 || true
 	stow --dotfiles --no-folding -D -t $(HOME) keyboard
 endif
 	@echo "✓ Dotfiles uninstalled"
@@ -118,6 +118,16 @@ else
 	@echo "Skipped: macOS-only target"
 endif
 
+keyboard:
+ifeq ($(UNAME),Darwin)
+	stow --dotfiles --no-folding -t $(HOME) keyboard
+	@launchctl bootout gui/$$(id -u)/com.local.KeyRemapping 2>/dev/null || true
+	@launchctl bootstrap gui/$$(id -u) $(HOME)/Library/LaunchAgents/com.local.KeyRemapping.plist
+	@echo "✓ Keyboard remapping agent loaded (right-option → right-control)"
+else
+	@echo "Skipped: macOS-only target"
+endif
+
 doctor:
 	@pass=0; fail=0; warn=0; \
 	ok()  { pass=$$((pass + 1)); printf '  \033[32m✓\033[0m %s\n' "$$1"; }; \
@@ -149,6 +159,10 @@ doctor:
 	if [ "$$(uname)" = "Darwin" ]; then \
 		link_ok "$(HOME)/Library/LaunchAgents/com.local.KeyRemapping.plist" \
 			&& ok "keyboard remap plist" || nok "keyboard remap plist"; \
+		launchctl print "gui/$$(id -u)/com.local.KeyRemapping" >/dev/null 2>&1 \
+			&& ok "keyboard remap agent loaded" || nok "keyboard remap agent not loaded (run make keyboard)"; \
+		hidutil property --get UserKeyMapping 2>/dev/null | grep -q 30064771300 \
+			&& ok "right-option → right-control active" || nok "right-option remap inactive (run make keyboard)"; \
 	fi; \
 	echo ""; \
 	echo "Configs:"; \

@@ -4,14 +4,42 @@
 <dict>
     <key>Label</key>
     <string>com.local.KeyRemapping</string>
+
+    <!-- Remap right-Option (0x7000000E6) to right-Control (0x7000000E4).
+
+         hidutil key mappings do not survive a reboot, and an early-login run
+         can fire before the HID system is ready, in which case the --set
+         silently no-ops (exits 0 but the mapping never takes). The script
+         below applies the mapping, verifies it stuck via --get, and retries
+         for up to 30s to ride out that race.
+
+         StartInterval re-runs the script as a safety net in case the mapping
+         is dropped later (e.g. sleep/wake or a keyboard hot-plug). On those
+         periodic runs the mapping is already present, so the first attempt
+         verifies immediately and the script exits in well under a second. -->
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/bin/hidutil</string>
-        <string>property</string>
-        <string>--set</string>
-        <string>{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x7000000E6,"HIDKeyboardModifierMappingDst":0x7000000E4}]}</string>
+        <string>/bin/sh</string>
+        <string>-c</string>
+        <string>i=0
+while [ "$i" -lt 30 ]; do
+    /usr/bin/hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x7000000E6,"HIDKeyboardModifierMappingDst":0x7000000E4}]}' >/dev/null 2>/dev/null
+    if /usr/bin/hidutil property --get UserKeyMapping 2>/dev/null | grep -q 30064771300; then
+        exit 0
+    fi
+    i=$((i + 1))
+    sleep 1
+done
+exit 1</string>
     </array>
+
     <key>RunAtLoad</key>
     <true/>
+
+    <key>StartInterval</key>
+    <integer>60</integer>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/com.local.KeyRemapping.err</string>
 </dict>
 </plist>
