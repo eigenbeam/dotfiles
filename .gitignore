@@ -1,4 +1,4 @@
 nvim/nvim/plugin
 nvim/nvim/lazy-lock.json
 .DS_Store
-.claude/
+.claude/settings.local.json
