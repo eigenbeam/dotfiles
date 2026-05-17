@@ -47,6 +47,7 @@ brew "make"
 brew "maven"
 brew "node"
 brew "nvm"
+brew "pnpm"
 brew "uv"
 
 # Git & VCS
