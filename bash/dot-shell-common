@@ -27,7 +27,7 @@ export FZF_DEFAULT_OPTS='--color=bg+:#CBD9E3,fg:#2C363C,fg+:#2C363C,hl:#286486,h
 # JavaScript (lazy-loaded NVM)
 # ------------------
 _lazy_load_nvm() {
-  unset -f nvm node npm npx
+  unset -f _lazy_load_nvm
   if [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ]; then
     . "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"
     [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && . "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm"
@@ -36,10 +36,13 @@ _lazy_load_nvm() {
     [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
   fi
 }
-nvm() { _lazy_load_nvm; nvm "$@"; }
-node() { _lazy_load_nvm; node "$@"; }
-npm() { _lazy_load_nvm; npm "$@"; }
-npx() { _lazy_load_nvm; npx "$@"; }
+# Each wrapper drops the whole wrapper set up front, so if _lazy_load_nvm is
+# missing (e.g. a non-interactive shell that inherited the wrappers but not the
+# helper) the trailing call reaches the real command instead of recursing.
+nvm()  { unset -f nvm node npm npx 2>/dev/null; command -v _lazy_load_nvm >/dev/null 2>&1 && _lazy_load_nvm; nvm "$@"; }
+node() { unset -f nvm node npm npx 2>/dev/null; command -v _lazy_load_nvm >/dev/null 2>&1 && _lazy_load_nvm; node "$@"; }
+npm()  { unset -f nvm node npm npx 2>/dev/null; command -v _lazy_load_nvm >/dev/null 2>&1 && _lazy_load_nvm; npm "$@"; }
+npx()  { unset -f nvm node npm npx 2>/dev/null; command -v _lazy_load_nvm >/dev/null 2>&1 && _lazy_load_nvm; npx "$@"; }
 
 # ------------------
 # Yazi (cd-on-exit wrapper)
