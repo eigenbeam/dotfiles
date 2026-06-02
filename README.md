@@ -39,6 +39,7 @@ Only needed if not using `make bootstrap`:
 | `zsh`      | `~/`                 | `.zshrc`, `.zprofile`, `.zshenv`                             |
 | `git`      | `~/`                 | `~/.config/git/config`, `ignore`, `hooks/` (XDG layout)     |
 | `nvim`     | `~/`                 | Single-file `init.lua` with lazy.nvim (30+ plugins); VSCode-compatible |
+| `emacs`    | `~/` (no-folding)    | Modular config: basics, theme, packages, dev, org            |
 | `ghostty`  | `~/`                 | Terminal config: CommitMono Nerd Font, Zenbones Light theme   |
 | `keyboard` | `~/`                 | macOS-only: keyboard remapping via `hidutil` (right-option → control) |
 | `tmux`     | `~/`                 | Prefix `C-a`, vi keys, TPM plugins, session persistence      |
