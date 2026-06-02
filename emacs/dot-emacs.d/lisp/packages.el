@@ -41,53 +41,16 @@
          ("C-<" . mc/mark-previous-like-this)
          ("C-c C-<" . mc/mark-all-like-this)))
 
-;; https://github.com/Fuco1/smartparens
-(use-package smartparens
-  :defer 2
-  :diminish smartparens-mode
-  :config
-  (require 'smartparens-config)
-  (smartparens-global-mode 1)
-  (show-paren-mode t))
-
 ;; https://github.com/akermu/emacs-libvterm
+;; Plain terminal; also the terminal backend used by claude-code-ide below.
 (use-package vterm
-  :bind (("C-c t" . vterm)
-         ("C-c C" . my-claude-code)
-         ("C-c >" . my-send-region-to-claude))
+  :bind ("C-c t" . vterm)
   :config
-  (setq vterm-max-scrollback (* 32 1024))
+  (setq vterm-max-scrollback (* 32 1024)))
 
-  ;; Quick access to Claude Code in dedicated vterm
-  (defun my-claude-code ()
-    "Jump to or create Claude Code vterm buffer and start claude."
-    (interactive)
-    (let ((claude-buffer "*vterm-claude*"))
-      (if (get-buffer claude-buffer)
-          (pop-to-buffer claude-buffer)
-        (progn
-          (vterm claude-buffer)
-          ;; Wait for vterm to initialize, then start claude
-          (run-with-timer 0.5 nil
-                          (lambda ()
-                            (when (get-buffer "*vterm-claude*")
-                              (with-current-buffer "*vterm-claude*"
-                                (vterm-send-string "claude")
-                                (vterm-send-return)))))))))
-
-  ;; Send selected region to Claude Code
-  (defun my-send-region-to-claude ()
-    "Send selected region to Claude Code vterm for analysis."
-    (interactive)
-    (if (use-region-p)
-        (let ((text (buffer-substring-no-properties (region-beginning) (region-end))))
-          (my-claude-code)
-          (vterm-send-string text)
-          (vterm-send-return))
-      (message "No region selected"))))
-
-;; https://github.com/justbur/emacs-which-key/
+;; which-key is built-in as of Emacs 30
 (use-package which-key
+  :ensure nil
   :defer 1
   :diminish which-key-mode
   :custom
@@ -104,15 +67,9 @@
   :config
   (global-anzu-mode +1))
 
-;; https://gitlab.com/tsc25/undo-tree
-(use-package undo-tree
-  :diminish undo-tree-mode
-  :custom
-  (undo-tree-auto-save-history t)
-  (undo-tree-history-directory-alist
-   `(("." . ,(no-littering-expand-var-file-name "undo-tree-hist/"))))
-  :config
-  (global-undo-tree-mode))
+;; https://github.com/casouri/vundo -- visual undo tree over the built-in undo
+(use-package vundo
+  :bind ("C-x u" . vundo))
 
 ;; https://github.com/Fanael/rainbow-delimiters
 (use-package rainbow-delimiters
@@ -127,23 +84,50 @@
 
 
 ;; ----------------------------------------------------------
-;; Completions & Syntax Checking
+;; In-buffer completion (corfu + cape) & diagnostics (flymake)
 ;; ----------------------------------------------------------
 ;;
-;; https://company-mode.github.io/
-(use-package company
-  :diminish company-mode
-  :hook (after-init . global-company-mode)
-  :bind ("<C-tab>" . company-complete)
+;; https://github.com/minad/corfu
+(use-package corfu
+  :init
+  (global-corfu-mode)
   :custom
-  (company-tooltip-idle-delay 0.2)
-  (company-idle-delay 0.2)
-  (company-tooltip-align-annotations t))
+  (corfu-auto t)
+  (corfu-auto-delay 0.2)
+  (corfu-auto-prefix 2)
+  (corfu-cycle t)
+  (corfu-quit-no-match 'separator)
+  :config
+  (corfu-popupinfo-mode))
 
-;; http://www.flycheck.org/en/latest/
-(use-package flycheck
-  :diminish flycheck-mode
-  :hook (after-init . global-flycheck-mode))
+;; https://github.com/minad/cape
+(use-package cape
+  :init
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-dabbrev))
+
+;; Built-in flymake; eglot drives it automatically in LSP buffers.
+(use-package flymake
+  :ensure nil
+  :hook (prog-mode . flymake-mode)
+  :bind (:map flymake-mode-map
+         ("M-g n" . flymake-goto-next-error)
+         ("M-g p" . flymake-goto-prev-error)))
+
+
+;; ----------------------------------------------------------
+;; Minibuffer actions (embark)
+;; ----------------------------------------------------------
+;;
+;; https://github.com/oantolin/embark
+(use-package embark
+  :bind (("C-." . embark-act)
+         ("C-;" . embark-dwim)
+         ("C-h B" . embark-bindings)))
+
+(use-package embark-consult
+  :after (embark consult)
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 
 ;; ----------------------------------------------------------
@@ -167,13 +151,36 @@
 (use-package git-timemachine
   :defer t)
 
-;; https://github.com/bbatsov/projectile
-(use-package projectile
-  :diminish projectile-mode
+;; https://github.com/dgutov/diff-hl -- VC change bars in the (widened) fringe
+(use-package diff-hl
+  :hook ((prog-mode . diff-hl-mode)
+         (dired-mode . diff-hl-dired-mode)
+         (magit-pre-refresh . diff-hl-magit-pre-refresh)
+         (magit-post-refresh . diff-hl-magit-post-refresh))
   :config
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (setq projectile-switch-project-action 'projectile-dired)
-  (projectile-mode +1))
+  (diff-hl-flydiff-mode))
+
+;; Built-in project.el (replaces projectile).  C-c p keeps the old muscle memory.
+(use-package project
+  :ensure nil
+  :bind-keymap ("C-c p" . project-prefix-map)
+  :custom
+  (project-switch-commands 'project-dired))
+
+
+;; ----------------------------------------------------------
+;; Claude Code (claude-code-ide.el)
+;; ----------------------------------------------------------
+;;
+;; https://github.com/manzaltu/claude-code-ide.el
+;; Runs the Claude Code CLI in a vterm (default backend) and bridges Emacs to
+;; Claude over MCP: xref, diagnostics, treesit/imenu, project info, and
+;; ediff-based diff review.  project.el-native (one instance per project).
+(use-package claude-code-ide
+  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+  :bind ("C-c C-'" . claude-code-ide-menu)
+  :config
+  (claude-code-ide-emacs-tools-setup))
 
 
 ;; ----------------------------------------------------------

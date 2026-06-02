@@ -9,9 +9,9 @@ Quick reference for essential Eglot (LSP) and DAP (debugging) features.
 ### Install Language Servers
 
 ```bash
-# Python
-pip install python-lsp-server[all]
-pip install debugpy  # For debugging
+# Python (you use uv — install the LSP server as a uv tool)
+uv tool install "python-lsp-server[all]"
+# debugpy belongs in the project venv, e.g.: uv add --dev debugpy
 
 # JavaScript/TypeScript
 npm install -g typescript-language-server typescript
@@ -25,8 +25,7 @@ npm install -g bash-language-server
 # C/C++
 brew install llvm  # Includes clangd
 
-# Java
-# Eclipse JDT Language Server downloads automatically on first use
+# Java (jdtls is installed via Homebrew — see homebrew/Brewfile)
 ```
 
 ---
@@ -106,12 +105,12 @@ Press `C-c l a` → Select "Import 'os'"
 
 **Python:**
 ```bash
-pip install debugpy
+uv add --dev debugpy   # in the project venv
 ```
 
 **JavaScript/Node.js:**
-```bash
-npm install -g node-debug2
+```text
+dap-node-setup (in lisp/dev.el) downloads vscode-js-debug automatically
 ```
 
 **C/C++:**
@@ -305,11 +304,8 @@ M-x eglot
 
 **Check debugger installation:**
 ```bash
-# Python
-pip list | grep debugpy
-
-# Node.js
-npm list -g | grep node-debug2
+# Python (in the project venv)
+uv pip list | grep debugpy
 ```
 
 **Check debug template exists:**
@@ -323,7 +319,7 @@ If no templates appear, debugger isn't configured for that language.
 
 1. Check eglot is running: Mode line shows "eglot"
 2. Try manual completion: `C-M-i`
-3. Check company/corfu is installed: `M-x company-mode`
+3. Check corfu is active: `M-x global-corfu-mode`
 
 ### Performance issues
 
@@ -407,4 +403,4 @@ Once comfortable with basics, explore:
 
 ---
 
-*Generated for Emacs configuration - 2025*
+*Eglot & DAP reference. Keybindings are defined in `lisp/dev.el`.*

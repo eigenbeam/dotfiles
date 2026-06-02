@@ -17,8 +17,7 @@
 
 (setq package-archives
       (append package-archives
-              '(("melpa" . "https://melpa.org/packages/")
-                ("org" . "https://orgmode.org/elpa/"))))
+              '(("melpa" . "https://melpa.org/packages/"))))
 
 (package-initialize)
 

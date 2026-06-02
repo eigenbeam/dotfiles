@@ -8,13 +8,17 @@
 
 (use-package eglot
   :ensure nil  ; Built-in to Emacs 29+
+  ;; Hook BOTH the classic and tree-sitter major modes.  treesit-auto remaps
+  ;; files to *-ts-mode once a grammar is installed, and the ts variants do NOT
+  ;; run the classic mode's hook (they only declare it as an extra-parent), so
+  ;; hooking only python-mode/js-mode/... silently fails to start eglot there.
   :hook
-  ((python-mode . eglot-ensure)
-   (js-mode . eglot-ensure)
-   (java-mode . eglot-ensure)
-   (c-mode . eglot-ensure)
-   (c++-mode . eglot-ensure)
-   (sh-mode . eglot-ensure))
+  (((python-mode python-ts-mode
+     js-mode js-ts-mode
+     java-mode java-ts-mode
+     c-mode c-ts-mode
+     c++-mode c++-ts-mode
+     sh-mode bash-ts-mode) . eglot-ensure))
   :custom
   (eglot-autoshutdown t)  ; Shutdown server when last buffer is closed
   (eglot-events-buffer-size 0)  ; Disable event logging (improves performance)
@@ -110,11 +114,6 @@
 (use-package pyvenv
   :config
   (pyvenv-mode 1))
-
-(use-package poetry
-  :ensure t
-  :config
-  (setq poetry-tracking-strategy 'projectile))
 
 
 ;; ----------------------------------------------------------

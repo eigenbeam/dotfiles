@@ -33,6 +33,7 @@
 (setq scroll-margin 0)
 (setq scroll-conservatively 1000)
 (setq scroll-preserve-screen-position +1)
+(pixel-scroll-precision-mode 1)  ; smooth trackpad scrolling (Emacs 29+)
 
 (setq select-enable-clipboard t)
 
@@ -47,13 +48,26 @@
 
 (global-auto-revert-mode t)
 
+;; Remember minibuffer history, recent files, and cursor positions.  These make
+;; vertico/consult smarter (history-based sorting, recentf in consult-buffer)
+;; and reopen files where you left off.
+(savehist-mode 1)
+(recentf-mode 1)
+(setq recentf-max-saved-items 200)
+(save-place-mode 1)
+
+;; Built-in structural editing (replaces smartparens)
+(electric-pair-mode 1)
+(show-paren-mode 1)
+
 (setq custom-file (locate-user-emacs-file ".custom.el"))
 (load custom-file t t)
 
-; Mac-specific settings
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier nil)
-(setq mac-right-option-modifier 'control)
+;; Mac-specific settings.  emacs-plus is an NS build, so these are ns-*-modifier
+;; (the mac-*-modifier names belong to the emacs-mac port and are inert here).
+(setq ns-command-modifier 'meta)
+(setq ns-option-modifier nil)
+(setq ns-right-option-modifier 'control)
 (setq dired-use-ls-dired nil)
 
 
@@ -71,7 +85,10 @@
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+  ;; Let eglot completion use orderless too (it otherwise forces its own style).
+  (completion-category-overrides '((file (styles basic partial-completion))
+                                   (eglot (styles orderless))
+                                   (eglot-capf (styles orderless)))))
 
 ;; https://github.com/minad/marginalia
 (use-package marginalia
@@ -87,7 +104,9 @@
          ("M-g g" . consult-goto-line)
          ("M-g i" . consult-imenu)
          ("M-s g" . consult-grep)
-         ("M-s r" . consult-ripgrep)))
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-g f" . consult-flymake)))
 
 ;; Keep ibuffer for buffer management
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -100,10 +119,13 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (add-hook 'prog-mode-hook
-	  (lambda ()
-	    (set (make-local-variable 'comment-auto-fill-only-comments) t)
-	    (auto-fill-mode t)
-	    (add-hook 'before-save-hook 'delete-trailing-whitespace)))
+          (lambda ()
+            (setq-local comment-auto-fill-only-comments t)
+            (auto-fill-mode t)
+            ;; buffer-local (nil t) so we only strip trailing whitespace in prog
+            ;; buffers — not globally, which would clobber e.g. Markdown's
+            ;; trailing-space hard line breaks.
+            (add-hook 'before-save-hook #'delete-trailing-whitespace nil t)))
 
 
 ;; ----------------------------------------------------------
