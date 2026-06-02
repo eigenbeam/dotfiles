@@ -114,7 +114,9 @@ brew "snyk/tap/snyk"
 cask "bitwarden"
 cask "copilot-cli"
 cask "discord"
-cask "font-commit-mono-nerd-font"
+cask "font-atkinson-hyperlegible-mono"  # low-vision monospace (primary)
+cask "font-commit-mono-nerd-font"       # fallback / A-B alternative
+cask "font-symbols-only-nerd-font"      # Nerd-Font icon glyphs (Atkinson has none)
 cask "ghostty"
 cask "iterm2"
 cask "mactex-no-gui"

@@ -5,7 +5,9 @@ theme = Gruvbox Dark
 minimum-contrast = 1
 
 # Font
-font-family = CommitMono Nerd Font
+font-family = Atkinson Hyperlegible Mono
+font-family = Symbols Nerd Font Mono
+font-style = Medium
 font-size = 16
 adjust-cell-height = 7
 

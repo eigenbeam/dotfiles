@@ -60,6 +60,10 @@
 (electric-pair-mode 1)
 (show-paren-mode 1)
 
+;; A little extra line spacing aids readability and line-tracking (low vision /
+;; astigmatism / ADHD).
+(setq-default line-spacing 0.25)
+
 (setq custom-file (locate-user-emacs-file ".custom.el"))
 (load custom-file t t)
 
