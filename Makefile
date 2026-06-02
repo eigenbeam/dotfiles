@@ -1,5 +1,9 @@
 .PHONY: all check bootstrap homebrew brewfile uninstall lint mac keyboard cards language-cards tools ssh sync fonts linux-packages ssm-plugin doctor
 
+# `check` is defined first below; without this, bare `make` would run only
+# `check` instead of stowing anything.
+.DEFAULT_GOAL := all
+
 UNAME := $(shell uname)
 
 check:
@@ -9,6 +13,7 @@ check:
 all: check
 	@mkdir -p $(HOME)/.cache/zsh
 	@mkdir -p $(HOME)/.config
+	@find . -name .DS_Store -not -path './.git/*' -delete 2>/dev/null || true
 	@if [ ! -f $(HOME)/.gitconfig-local ]; then \
 		if [ "$$(uname)" = "Darwin" ]; then \
 			git config --file $(HOME)/.gitconfig-local credential.helper osxkeychain; \
@@ -19,6 +24,7 @@ all: check
 	fi
 	stow --dotfiles --no-folding -t $(HOME) ai
 	stow --dotfiles --no-folding -t $(HOME) bash
+	stow --dotfiles --no-folding -t $(HOME) emacs
 	stow --dotfiles --no-folding -t $(HOME) ghostty
 	stow --dotfiles --no-folding -t $(HOME) git
 	stow --dotfiles --no-folding -t $(HOME) lazygit
@@ -31,7 +37,7 @@ all: check
 	@echo "✓ Dotfiles installed successfully"
 
 uninstall:
-	stow --dotfiles --no-folding -D -t $(HOME) ai bash ghostty git lazygit nvim starship tmux yazi zsh
+	stow --dotfiles --no-folding -D -t $(HOME) ai bash emacs ghostty git lazygit nvim starship tmux yazi zsh
 ifeq ($(UNAME),Darwin)
 	@launchctl bootout gui/$$(id -u)/com.local.KeyRemapping 2>/dev/null || true
 	@hidutil property --set '{"UserKeyMapping":[]}' >/dev/null 2>&1 || true
@@ -148,6 +154,7 @@ doctor:
 	link_ok "$(HOME)/.zshenv"                     && ok ".zshenv"              || nok ".zshenv"; \
 	link_ok "$(HOME)/.tmux.conf"                  && ok ".tmux.conf"           || nok ".tmux.conf"; \
 	link_ok "$(HOME)/.config/ghostty/config"      && ok "ghostty/config"       || nok "ghostty/config"; \
+	link_ok "$(HOME)/.emacs.d/init.el"            && ok "emacs/init.el"        || nok "emacs/init.el"; \
 	link_ok "$(HOME)/.config/git/config"          && ok "git/config"           || nok "git/config"; \
 	link_ok "$(HOME)/.config/git/ignore"          && ok "git/ignore"           || nok "git/ignore"; \
 	link_ok "$(HOME)/.config/lazygit/config.yml"  && ok "lazygit/config.yml"   || nok "lazygit/config.yml"; \

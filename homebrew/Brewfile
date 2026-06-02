@@ -1,5 +1,6 @@
 tap "hashicorp/tap"
 tap "snyk/tap"
+tap "d12frosted/emacs-plus"  # macOS-only
 
 # Shell & terminal
 brew "bat"
@@ -29,6 +30,7 @@ brew "zsh-syntax-highlighting"
 
 # Editor & language servers
 brew "bash-language-server"
+brew "d12frosted/emacs-plus/emacs-plus", args: ["with-imagemagick"]  # macOS-only; icons now via ~/.config/emacs-plus/build.yml, not build flags
 brew "jdtls"
 brew "lua-language-server"
 brew "neovim"
