@@ -35,13 +35,15 @@ require("lazy").setup({
 
     -- ── Colorscheme ──────────────────────────────────────────────────────
     {
-        "zenbones-theme/zenbones.nvim",
-        dependencies = { "rktjmp/lush.nvim" },
+        "ellisonleao/gruvbox.nvim",
         lazy = false,
         priority = 1000,
         config = function()
-            vim.o.background = "light"
-            vim.cmd.colorscheme("zenbones")
+            require("gruvbox").setup({
+                contrast = "soft",
+            })
+            vim.o.background = "dark"
+            vim.cmd.colorscheme("gruvbox")
         end,
     },
 
