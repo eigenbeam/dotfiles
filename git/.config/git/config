@@ -51,12 +51,12 @@
 	navigate = true
 	side-by-side = true
 	line-numbers = true
-	syntax-theme = GitHub
-	light = true
-	minus-style = syntax "#EACED1"
-	minus-emph-style = syntax "#E0BFC3"
-	plus-style = syntax "#D5E0C5"
-	plus-emph-style = syntax "#CBDAB8"
+	syntax-theme = gruvbox-dark
+	light = false
+	minus-style = syntax "#3c2828"
+	minus-emph-style = syntax "#542e2e"
+	plus-style = syntax "#283c28"
+	plus-emph-style = syntax "#2e542e"
 [diff]
 	colorMoved = default
 	algorithm = histogram

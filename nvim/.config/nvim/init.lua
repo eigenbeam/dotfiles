@@ -4,7 +4,7 @@
 -- Kickstart-inspired single-file config with lazy.nvim plugin management
 -- Features: Telescope, LSP, Treesitter, blink.cmp, gitsigns, nvim-lint,
 --           nvim-dap, nvim-jdtls, quarto-nvim, lean.nvim, conform.nvim
--- Theme: Zenbones Light
+-- Theme: Gruvbox Dark
 -- VSCode Neovim extension supported (auto-detected)
 -- Requirements: Neovim 0.11+, git
 -- ============================================================================

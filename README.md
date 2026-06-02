@@ -40,12 +40,12 @@ Only needed if not using `make bootstrap`:
 | `git`      | `~/`                 | `~/.config/git/config`, `ignore`, `hooks/` (XDG layout)     |
 | `nvim`     | `~/`                 | Single-file `init.lua` with lazy.nvim (30+ plugins); VSCode-compatible |
 | `emacs`    | `~/` (no-folding)    | Modular config: basics, theme, packages, dev, org            |
-| `ghostty`  | `~/`                 | Terminal config: CommitMono Nerd Font, Zenbones Light theme   |
+| `ghostty`  | `~/`                 | Terminal config: CommitMono Nerd Font, Gruvbox Dark theme     |
 | `keyboard` | `~/`                 | macOS-only: keyboard remapping via `hidutil` (right-option → control) |
 | `tmux`     | `~/`                 | Prefix `C-a`, vi keys, TPM plugins, session persistence      |
 | `starship` | `~/`                 | `~/.config/starship.toml` prompt config                      |
-| `lazygit`  | `~/`                 | `~/.config/lazygit/config.yml` (Zenbones Light theme)        |
-| `yazi`     | `~/`                 | `~/.config/yazi/theme.toml` (Zenbones Light theme)           |
+| `lazygit`  | `~/`                 | `~/.config/lazygit/config.yml` (Gruvbox Dark theme)          |
+| `yazi`     | `~/`                 | `~/.config/yazi/theme.toml` (Gruvbox Dark theme)             |
 | `ssh`      | `~/`                 | `~/.ssh/config` (connection multiplexing, keepalive)         |
 
 Not stowed (reference/install scripts):

@@ -1,6 +1,6 @@
 # Starship prompt configuration
 # Docs: https://starship.rs/config/
-# Theme: Zenbones Light
+# Theme: Gruvbox Dark
 
 command_timeout = 1000
 add_newline = true
@@ -20,47 +20,47 @@ $line_break\
 $character"""
 
 [character]
-success_symbol = '[>](bold #2C363C)'
-error_symbol = '[>](bold #A8334C)'
+success_symbol = '[>](bold #ebdbb2)'
+error_symbol = '[>](bold #fb4934)'
 
 [directory]
-style = 'bold #286486'
+style = 'bold #83a598'
 truncation_length = 3
 truncate_to_repo = true
 
 [git_branch]
-style = 'bold #4F6C31'
+style = 'bold #b8bb26'
 format = '[$symbol$branch(:$remote_branch)]($style) '
 
 [git_status]
-style = '#A8334C'
+style = '#fb4934'
 format = '([$all_status$ahead_behind]($style) )'
 
 [cmd_duration]
 min_time = 2_000
-style = '#88507D'
+style = '#d3869b'
 format = '[$duration]($style) '
 
 [python]
-style = '#88507D'
+style = '#d3869b'
 format = '[$symbol$version]($style) '
 
 [nodejs]
-style = '#88507D'
+style = '#d3869b'
 format = '[$symbol$version]($style) '
 
 [java]
-style = '#88507D'
+style = '#d3869b'
 format = '[$symbol$version]($style) '
 
 [lua]
-style = '#88507D'
+style = '#d3869b'
 format = '[$symbol$version]($style) '
 
 [terraform]
-style = '#88507D'
+style = '#d3869b'
 format = '[$symbol$version]($style) '
 
 [docker_context]
-style = '#88507D'
+style = '#d3869b'
 format = '[$symbol$context]($style) '

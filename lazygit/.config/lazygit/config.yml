@@ -1,24 +1,24 @@
-# Lazygit configuration — Zenbones Light theme
+# Lazygit configuration — Gruvbox Dark theme
 gui:
   nerdFontsVersion: "3"
   theme:
     activeBorderColor:
-      - "#286486"
+      - "#83a598"
       - bold
     inactiveBorderColor:
-      - "#CFC1BA"
+      - "#504945"
     selectedLineBgColor:
-      - "#CBD9E3"
+      - "#3c3836"
     searchingActiveBorderColor:
-      - "#944927"
+      - "#fe8019"
       - bold
     optionsTextColor:
-      - "#286486"
+      - "#83a598"
     cherryPickedCommitBgColor:
-      - "#CBD9E3"
+      - "#3c3836"
     cherryPickedCommitFgColor:
-      - "#2C363C"
+      - "#ebdbb2"
     unstagedChangesColor:
-      - "#A8334C"
+      - "#fb4934"
     defaultFgColor:
-      - "#2C363C"
+      - "#ebdbb2"

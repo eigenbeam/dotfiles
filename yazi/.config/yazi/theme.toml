@@ -1,119 +1,119 @@
-# Yazi theme — Zenbones Light
-# Warm off-white background, muted accents
+# Yazi theme — Gruvbox Dark
+# Dark background, warm muted accents
 
 [manager]
-cwd = { fg = "#286486" }
+cwd = { fg = "#83a598" }
 
 hovered         = { reversed = true }
 preview_hovered = { underline = true }
 
 # Find
-find_keyword  = { fg = "#944927", bold = true }
-find_position = { fg = "#4F5E68", italic = true }
+find_keyword  = { fg = "#fe8019", bold = true }
+find_position = { fg = "#928374", italic = true }
 
 # Markers
-marker_copied   = { fg = "#4F6C31", bg = "#4F6C31" }
-marker_cut      = { fg = "#A8334C", bg = "#A8334C" }
-marker_selected = { fg = "#286486", bg = "#286486" }
-marker_marked   = { fg = "#944927", bg = "#944927" }
+marker_copied   = { fg = "#b8bb26", bg = "#b8bb26" }
+marker_cut      = { fg = "#fb4934", bg = "#fb4934" }
+marker_selected = { fg = "#83a598", bg = "#83a598" }
+marker_marked   = { fg = "#fe8019", bg = "#fe8019" }
 
 # Tabs
-tab_active   = { fg = "#F0EDEC", bg = "#2C363C" }
-tab_inactive = { fg = "#4F5E68", bg = "#E0E0E0" }
+tab_active   = { fg = "#282828", bg = "#a89984" }
+tab_inactive = { fg = "#928374", bg = "#3c3836" }
 tab_width    = 1
 
 # Count
-count_copied   = { fg = "#2C363C", bg = "#CBD9E3" }
-count_cut      = { fg = "#2C363C", bg = "#EACED1" }
-count_selected = { fg = "#2C363C", bg = "#CBD9E3" }
+count_copied   = { fg = "#ebdbb2", bg = "#504945" }
+count_cut      = { fg = "#282828", bg = "#fb4934" }
+count_selected = { fg = "#ebdbb2", bg = "#504945" }
 
 [status]
 separator_open  = ""
 separator_close = ""
 
-mode_normal = { fg = "#F0EDEC", bg = "#2C363C", bold = true }
-mode_select = { fg = "#F0EDEC", bg = "#A8334C", bold = true }
-mode_unset  = { fg = "#F0EDEC", bg = "#4F5E68", bold = true }
+mode_normal = { fg = "#282828", bg = "#a89984", bold = true }
+mode_select = { fg = "#282828", bg = "#fb4934", bold = true }
+mode_unset  = { fg = "#282828", bg = "#928374", bold = true }
 
-progress_label  = { fg = "#2C363C" }
-progress_normal = { fg = "#286486" }
-progress_error  = { fg = "#A8334C" }
+progress_label  = { fg = "#ebdbb2" }
+progress_normal = { fg = "#83a598" }
+progress_error  = { fg = "#fb4934" }
 
 [input]
-border   = { fg = "#CFC1BA" }
+border   = { fg = "#504945" }
 title    = {}
 value    = {}
 selected = { reversed = true }
 
 [pick]
-border   = { fg = "#CFC1BA" }
-active   = { fg = "#F0EDEC", bg = "#2C363C" }
+border   = { fg = "#504945" }
+active   = { fg = "#282828", bg = "#a89984" }
 inactive = {}
 
 [confirm]
-border  = { fg = "#CFC1BA" }
+border  = { fg = "#504945" }
 title   = {}
 content = {}
 list    = {}
-button_active  = { fg = "#F0EDEC", bg = "#2C363C", bold = true }
-button_default = { fg = "#2C363C" }
+button_active  = { fg = "#282828", bg = "#a89984", bold = true }
+button_default = { fg = "#ebdbb2" }
 
 [completion]
-border   = { fg = "#CFC1BA" }
+border   = { fg = "#504945" }
 active   = { reversed = true }
 inactive = {}
 
 [help]
-on      = { fg = "#286486" }
-run     = { fg = "#4F6C31" }
-desc    = { fg = "#4F5E68" }
+on      = { fg = "#83a598" }
+run     = { fg = "#b8bb26" }
+desc    = { fg = "#928374" }
 hovered = { reversed = true }
-footer  = { fg = "#4F5E68" }
+footer  = { fg = "#928374" }
 
 [notify]
-title_info  = { fg = "#286486" }
-title_warn  = { fg = "#944927" }
-title_error = { fg = "#A8334C" }
+title_info  = { fg = "#83a598" }
+title_warn  = { fg = "#fe8019" }
+title_error = { fg = "#fb4934" }
 
 [filetype]
 rules = [
-    { name = "*/", fg = "#286486", bold = true },
+    { name = "*/", fg = "#83a598", bold = true },
 
-    { mime = "image/*", fg = "#944927" },
-    { mime = "video/*", fg = "#944927" },
-    { mime = "audio/*", fg = "#944927" },
+    { mime = "image/*", fg = "#fe8019" },
+    { mime = "video/*", fg = "#fe8019" },
+    { mime = "audio/*", fg = "#fe8019" },
 
-    { mime = "application/zip",  fg = "#88507D" },
-    { mime = "application/gzip", fg = "#88507D" },
-    { mime = "application/x-tar", fg = "#88507D" },
-    { mime = "application/x-bzip2", fg = "#88507D" },
-    { mime = "application/x-7z-compressed", fg = "#88507D" },
-    { mime = "application/x-rar", fg = "#88507D" },
+    { mime = "application/zip",  fg = "#d3869b" },
+    { mime = "application/gzip", fg = "#d3869b" },
+    { mime = "application/x-tar", fg = "#d3869b" },
+    { mime = "application/x-bzip2", fg = "#d3869b" },
+    { mime = "application/x-7z-compressed", fg = "#d3869b" },
+    { mime = "application/x-rar", fg = "#d3869b" },
 
-    { mime = "application/pdf", fg = "#A8334C" },
-    { mime = "application/doc", fg = "#A8334C" },
+    { mime = "application/pdf", fg = "#fb4934" },
+    { mime = "application/doc", fg = "#fb4934" },
 
-    { name = "*.md", fg = "#4F6C31" },
-    { name = "*.txt", fg = "#4F6C31" },
-    { name = "*.json", fg = "#4F5E68" },
-    { name = "*.toml", fg = "#4F5E68" },
-    { name = "*.yaml", fg = "#4F5E68" },
-    { name = "*.yml", fg = "#4F5E68" },
+    { name = "*.md", fg = "#b8bb26" },
+    { name = "*.txt", fg = "#b8bb26" },
+    { name = "*.json", fg = "#928374" },
+    { name = "*.toml", fg = "#928374" },
+    { name = "*.yaml", fg = "#928374" },
+    { name = "*.yml", fg = "#928374" },
 
-    { name = "*.py", fg = "#3B8992" },
-    { name = "*.js", fg = "#944927" },
-    { name = "*.ts", fg = "#286486" },
-    { name = "*.lua", fg = "#88507D" },
-    { name = "*.rs", fg = "#A8334C" },
-    { name = "*.go", fg = "#3B8992" },
-    { name = "*.java", fg = "#944927" },
-    { name = "*.sh", fg = "#2C363C" },
+    { name = "*.py", fg = "#8ec07c" },
+    { name = "*.js", fg = "#fe8019" },
+    { name = "*.ts", fg = "#83a598" },
+    { name = "*.lua", fg = "#d3869b" },
+    { name = "*.rs", fg = "#fb4934" },
+    { name = "*.go", fg = "#8ec07c" },
+    { name = "*.java", fg = "#fe8019" },
+    { name = "*.sh", fg = "#ebdbb2" },
 
-    { name = "Makefile", fg = "#2C363C", bold = true },
-    { name = "Dockerfile", fg = "#286486", bold = true },
+    { name = "Makefile", fg = "#ebdbb2", bold = true },
+    { name = "Dockerfile", fg = "#83a598", bold = true },
 
-    { name = ".git*", fg = "#4F5E68" },
-    { name = ".env*", fg = "#A8334C", bold = true },
+    { name = ".git*", fg = "#928374" },
+    { name = ".env*", fg = "#fb4934", bold = true },
 
-    { name = "*", fg = "#2C363C" },
+    { name = "*", fg = "#ebdbb2" },
 ]

@@ -33,7 +33,7 @@ Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](
 - `zsh/dot-zshrc` — interactive zsh config (completions, plugins, tool integrations).
 - `bash/dot-bashrc` — interactive bash config.
 
-**Neovim** (`nvim/.config/nvim/init.lua`): Single-file config using lazy.nvim. Has a `vim.g.vscode` guard — in VSCode, lazy.nvim and all plugins are skipped entirely (keybindings-only config); otherwise loads the full setup (Telescope, LSP via nvim-lspconfig, blink.cmp, Treesitter, conform, nvim-lint, nvim-dap, gitsigns, smart-splits, etc.). Theme: Zenbones Light.
+**Neovim** (`nvim/.config/nvim/init.lua`): Single-file config using lazy.nvim. Has a `vim.g.vscode` guard — in VSCode, lazy.nvim and all plugins are skipped entirely (keybindings-only config); otherwise loads the full setup (Telescope, LSP via nvim-lspconfig, blink.cmp, Treesitter, conform, nvim-lint, nvim-dap, gitsigns, smart-splits, etc.). Theme: Gruvbox Dark.
 
 **Tmux ↔ Neovim navigation:** smart-splits.nvim + tmux config use `@pane-is-vim` to seamlessly share `C-h/j/k/l` navigation and `M-h/j/k/l` resizing across nvim splits and tmux panes.
 
@@ -49,4 +49,4 @@ Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](
 - **Line endings:** LF only.
 - **Shell linting:** `shellcheck` on bash files (`make lint`). Zsh files are not linted.
 - **Neovim formatting:** conform.nvim with stylua (Lua), ruff (Python), prettier (JS/TS/JSON/YAML/MD), terraform_fmt, taplo (TOML). Format-on-save is enabled.
-- **Light theme throughout:** Zenbones Light for nvim/ghostty/lazygit/yazi, GitHub syntax theme for delta, FZF colors matched to Zenbones.
+- **Dark theme throughout:** Gruvbox Dark for nvim/ghostty/tmux/lazygit/yazi, gruvbox-dark syntax theme for delta, FZF colors matched to Gruvbox.

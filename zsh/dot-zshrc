@@ -85,7 +85,7 @@ eval "$(direnv hook zsh)"
 # ------------------
 # Plugins (autosuggestions before syntax-highlighting, which must be last)
 # ------------------
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#CFC1BA"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#665c54"
 for _dir in "${HOMEBREW_PREFIX}/share" "/usr/share"; do
   [ -f "$_dir/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
     { source "$_dir/zsh-autosuggestions/zsh-autosuggestions.zsh"; break; }
