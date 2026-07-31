@@ -426,7 +426,6 @@ require("lazy").setup({
                 "javascript",
                 "json",
                 "julia",
-                "lean",
                 "lua",
                 "luadoc",
                 "markdown",
