@@ -2,7 +2,8 @@
 # Docs: https://starship.rs/config/
 # Theme: Gruvbox Dark
 
-command_timeout = 1000
+# Caps the damage from any single slow module (git_status in huge repos).
+command_timeout = 500
 add_newline = true
 
 format = """
