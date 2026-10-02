@@ -38,11 +38,15 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # ------------------
 # macOS-specific
 # ------------------
-if [ "$(uname)" = "Darwin" ]; then
-  export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-  if /usr/libexec/java_home &>/dev/null; then
-    JAVA_HOME=$(/usr/libexec/java_home)
-    export JAVA_HOME
-  fi
-  [ -d /Library/TeX/texbin ] && export PATH="/Library/TeX/texbin:$PATH"
-fi
+# $OSTYPE (set by bash and zsh) instead of $(uname): every subprocess here runs
+# for each new shell/tmux pane, and endpoint security makes each one costly.
+case "$OSTYPE" in
+  darwin*)
+    export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+    if _java_home=$(/usr/libexec/java_home 2>/dev/null); then
+      export JAVA_HOME="$_java_home"
+    fi
+    unset _java_home
+    [ -d /Library/TeX/texbin ] && export PATH="/Library/TeX/texbin:$PATH"
+    ;;
+esac

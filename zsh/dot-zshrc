@@ -45,7 +45,10 @@ setopt INC_APPEND_HISTORY
 # Options
 # ------------------
 setopt correct
-typeset -U path
+# fpath too: brew shellenv prepends and exports FPATH, so without -U every
+# nested shell (tmux pane, etc.) adds duplicates. Duplicate dirs change
+# compinit's file count, which forces a full (multi-second) dump rebuild.
+typeset -U path fpath
 
 # ------------------
 # Completions
@@ -55,12 +58,19 @@ if type brew &>/dev/null; then
   fpath+=("$HOMEBREW_PREFIX/share/zsh-completions")
 fi
 
+# Full compinit (with compaudit) only when the dump is >24h old. Globbing in an
+# array assignment, not [[ ]], so the qualifier works without extendedglob
+# (which would break things like `git show HEAD^`). compinit leaves an
+# unchanged dump untouched, so touch it or it stays "stale" forever.
 autoload -Uz compinit
-if [[ -n ~/.cache/zsh/zcompdump(#qN.mh+24) ]]; then
+_stale_dump=(~/.cache/zsh/zcompdump(N.mh+24))
+if (( $#_stale_dump )); then
   compinit -d ~/.cache/zsh/zcompdump
+  touch ~/.cache/zsh/zcompdump
 else
   compinit -C -d ~/.cache/zsh/zcompdump
 fi
+unset _stale_dump
 
 zstyle ':completion:*' menu select
 zmodload zsh/complist

@@ -10,11 +10,10 @@
 	safecrlf = false
 	pager = delta
 	excludesFile = ~/.config/git/ignore
-	# Performance: keeps `git status` (and the starship prompt) fast in large
-	# repos. fsmonitor spawns a background `git fsmonitor--daemon` per repo and
-	# is a no-op on network filesystems. Requires git 2.37+.
-	fsmonitor = true
 	untrackedCache = true
+	# fsmonitor is deliberately not global: in small repos it makes `git status`
+	# slower (it spawns a daemon on first use). Enable per-repo for huge ones:
+	#   git config core.fsmonitor true
 	# Uncomment to use global hooks (overrides per-repo hooks):
 	# hooksPath = ~/.config/git/hooks
 [alias]
