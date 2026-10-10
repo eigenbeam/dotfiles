@@ -78,9 +78,12 @@ language-cards:
 	@rm -f reference-cards/*-card.aux reference-cards/*-card.log
 	@echo "✓ Language cards built"
 
+# Use Homebrew's npm so globals land in $(brew --prefix)/bin, which is always on
+# PATH. nvm's bin dir is only on PATH after nvm lazy-loads, so globals installed
+# there are invisible to nvim (LSPs, prettier) and to `make doctor`.
 tools:
-	@command -v node >/dev/null 2>&1 || (echo "Error: node not found. Run 'nvm install --lts' first." && exit 1)
-	npm install -g typescript typescript-language-server dockerfile-language-server-nodejs prettier
+	@test -x "$$(brew --prefix)/bin/npm" || (echo "Error: Homebrew node not found. Run 'make homebrew' first." && exit 1)
+	"$$(brew --prefix)/bin/npm" install -g typescript typescript-language-server dockerfile-language-server-nodejs prettier
 	uv tool install ipython
 	@echo "✓ Tools installed"
 
