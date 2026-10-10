@@ -1,71 +1,55 @@
-;;; packages --- basic set of packages
+;;; packages.el --- General-purpose packages and Claude Code  -*- lexical-binding: t -*-
 ;;; Commentary:
+;; Editing, navigation, completion, git, terminal, tree-sitter, Claude Code.
+;; Language tooling (eglot, apheleia, dape, Julia) lives in dev.el.
 ;;; Code:
 
-;; Required for :diminish keyword in use-package
-(use-package diminish)
-
 ;; https://github.com/purcell/exec-path-from-shell
-;; Needed for GUI-launched Emacs (Dock, Spotlight) which doesn't inherit shell env vars
+;; GUI-launched Emacs (Dock, Spotlight) does not inherit the shell environment.
+;; Not deferred: eglot/vterm/magit need PATH as soon as the first file opens.
+;; SSH_AUTH_SOCK lets magit push over ssh from a GUI launch.
 (use-package exec-path-from-shell
   :if (display-graphic-p)
-  :defer 0.1
   :custom
   (exec-path-from-shell-arguments '("-l"))
+  (exec-path-from-shell-variables '("PATH" "MANPATH" "SSH_AUTH_SOCK"))
   :config
   (exec-path-from-shell-initialize))
 
 
 ;; ----------------------------------------------------------
-;; Navigation enhancements
+;; Editing & navigation
 ;; ----------------------------------------------------------
 
-;; https://github.com/bbatsov/crux
-(use-package crux
-  :defer t
-  :bind (("M-p" . crux-smart-open-line-above)
-         ("M-n" . crux-smart-open-line)))
+(defun kwb/open-line-below ()
+  "Open an indented line below the current one and move there."
+  (interactive)
+  (end-of-line)
+  (newline-and-indent))
+
+(defun kwb/open-line-above ()
+  "Open an indented line above the current one and move there."
+  (interactive)
+  (beginning-of-line)
+  (newline-and-indent)
+  (forward-line -1)
+  (indent-according-to-mode))
+
+(global-set-key (kbd "M-n") #'kwb/open-line-below)
+(global-set-key (kbd "M-p") #'kwb/open-line-above)
 
 ;; https://github.com/abo-abo/ace-window
 (use-package ace-window
-  :defer t
   :bind ("M-o" . ace-window)
   :custom
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 ;; https://github.com/magnars/multiple-cursors.el
 (use-package multiple-cursors
-  :defer t
   :bind (("C-S-c C-S-c" . mc/edit-lines)
          ("C->" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)
          ("C-c C-<" . mc/mark-all-like-this)))
-
-;; https://github.com/akermu/emacs-libvterm
-;; Plain terminal; also the terminal backend used by claude-code-ide below.
-(use-package vterm
-  :bind ("C-c t" . vterm)
-  :config
-  (setq vterm-max-scrollback (* 32 1024)))
-
-;; which-key is built-in as of Emacs 30
-(use-package which-key
-  :ensure nil
-  :defer 1
-  :diminish which-key-mode
-  :custom
-  (which-key-idle-delay 0.5)
-  :config
-  (which-key-mode +1)
-  (which-key-setup-side-window-right))
-
-;; https://github.com/emacsorphanage/anzu
-(use-package anzu
-  :diminish anzu-mode
-  :bind (("M-%" . anzu-query-replace)
-         ("C-M-%" . anzu-query-replace-regexp))
-  :config
-  (global-anzu-mode +1))
 
 ;; https://github.com/casouri/vundo -- visual undo tree over the built-in undo
 (use-package vundo
@@ -82,11 +66,46 @@
          ("<tab>" . dired-subtree-toggle)
          ("<backtab>" . dired-subtree-remove)))
 
+;; Built in since Emacs 30.
+(use-package which-key
+  :ensure nil
+  :defer 1
+  :custom
+  (which-key-idle-delay 0.5)
+  :config
+  (which-key-mode 1)
+  (which-key-setup-side-window-right))
+
+
+;; ----------------------------------------------------------
+;; Terminal
+;; ----------------------------------------------------------
+;; https://github.com/akermu/emacs-libvterm
+;; Plain terminal, and the backend claude-code-ide runs Claude in.  Compiles a
+;; native module on first use: needs cmake + libvterm (both in the Brewfile).
+(use-package vterm
+  :bind ("C-c t" . vterm)
+  :custom
+  (vterm-always-compile-module t)   ; build on first use without prompting
+  (vterm-max-scrollback 32768)
+  (vterm-kill-buffer-on-exit t))
+
+
+;; ----------------------------------------------------------
+;; Tree-sitter (built in; Emacs 31 options replace treesit-auto)
+;; ----------------------------------------------------------
+;; `treesit-enabled-modes' t remaps every classic mode that has a *-ts-mode
+;; twin (python -> python-ts-mode, c -> c-ts-mode, ...).  Grammars for every
+;; language used here ship as sources in Emacs 31 and compile on first open
+;; (needs git + a C compiler) into ~/.emacs.d/tree-sitter/.
+(require 'treesit)
+(setopt treesit-enabled-modes t
+        treesit-auto-install-grammar 'always)
+
 
 ;; ----------------------------------------------------------
 ;; In-buffer completion (corfu + cape) & diagnostics (flymake)
 ;; ----------------------------------------------------------
-;;
 ;; https://github.com/minad/corfu
 (use-package corfu
   :init
@@ -98,7 +117,8 @@
   (corfu-cycle t)
   (corfu-quit-no-match 'separator)
   :config
-  (corfu-popupinfo-mode))
+  (corfu-popupinfo-mode)
+  (corfu-history-mode))   ; recent picks first; persisted by savehist
 
 ;; https://github.com/minad/cape
 (use-package cape
@@ -118,7 +138,6 @@
 ;; ----------------------------------------------------------
 ;; Minibuffer actions (embark)
 ;; ----------------------------------------------------------
-;;
 ;; https://github.com/oantolin/embark
 (use-package embark
   :bind (("C-." . embark-act)
@@ -131,21 +150,11 @@
 
 
 ;; ----------------------------------------------------------
-;; Git & Project Management
+;; Git & projects
 ;; ----------------------------------------------------------
-;;
 ;; https://magit.vc/
 (use-package magit
-  :bind
-  ("C-c g" . magit-status))
-
-;; https://github.com/dandavison/magit-delta
-(use-package magit-delta
-  :after magit
-  :hook (magit-mode . magit-delta-mode))
-
-(use-package forge
-  :after magit)
+  :bind ("C-c g" . magit-status))
 
 ;; https://github.com/emacsmirror/git-timemachine
 (use-package git-timemachine
@@ -160,7 +169,7 @@
   :config
   (diff-hl-flydiff-mode))
 
-;; Built-in project.el (replaces projectile).  C-c p keeps the old muscle memory.
+;; Built-in project.el.  C-c p keeps the old projectile muscle memory.
 (use-package project
   :ensure nil
   :bind-keymap ("C-c p" . project-prefix-map)
@@ -171,51 +180,30 @@
 ;; ----------------------------------------------------------
 ;; Claude Code (claude-code-ide.el)
 ;; ----------------------------------------------------------
-;;
 ;; https://github.com/manzaltu/claude-code-ide.el
-;; Runs the Claude Code CLI in a vterm (default backend) and bridges Emacs to
-;; Claude over MCP: xref, diagnostics, treesit/imenu, project info, and
-;; ediff-based diff review.  project.el-native (one instance per project).
+;; Runs the Claude Code CLI in a vterm and bridges Emacs to Claude over MCP:
+;; xref, flymake diagnostics, treesit/imenu, project info, current selection,
+;; and ediff-based review of proposed edits.  project.el-native.  Not on MELPA;
+;; installed with package-vc (`M-x package-vc-upgrade' to update).
 (use-package claude-code-ide
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind ("C-c C-'" . claude-code-ide-menu)
+  :custom
+  (claude-code-ide-terminal-backend 'vterm)
   :config
   (claude-code-ide-emacs-tools-setup))
 
 
 ;; ----------------------------------------------------------
-;; Language-specific modes
+;; File-type modes without a built-in tree-sitter mode
 ;; ----------------------------------------------------------
-;;
 ;; https://github.com/jrblevin/markdown-mode
 (use-package markdown-mode
-  :pin melpa
   :mode "\\.md\\'")
-
-;; https://github.com/pashky/restclient.el
-(use-package restclient
-  :defer t)
 
 ;; https://github.com/emacsorphanage/terraform-mode
 (use-package terraform-mode
   :defer t)
-
-;; https://github.com/yaml/yaml-mode
-(use-package yaml-mode
-  :defer t)
-
-
-;; ----------------------------------------------------------
-;; Tree-sitter (Emacs 29+)
-;; ----------------------------------------------------------
-;;
-;; https://github.com/renzmann/treesit-auto
-(use-package treesit-auto
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
 
 
 (provide 'packages)
