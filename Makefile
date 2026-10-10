@@ -229,6 +229,20 @@ doctor:
 	has session-manager-plugin    && ok "session-manager-plugin"     || wrn "session-manager-plugin (run make ssm-plugin)"; \
 	has claude                    && ok "claude"                      || wrn "claude (curl -fsSL https://claude.ai/install.sh | bash)"; \
 	echo ""; \
+	echo "Emacs:"; \
+	has emacs && ok "emacs $$(emacs --version | head -1 | awk '{print $$3}')" || wrn "emacs not found"; \
+	has cmake && [ -d "$$(brew --prefix 2>/dev/null)/opt/libvterm" ] \
+		&& ok "cmake + libvterm (vterm build deps)" || wrn "cmake/libvterm missing (run make homebrew)"; \
+	ls "$(HOME)"/.emacs.d/elpa/vterm-*/vterm-module.so >/dev/null 2>&1 \
+		&& ok "vterm module compiled" || wrn "vterm module not compiled yet (first C-c t in Emacs)"; \
+	for cmd in clangd pyright-langserver ruff jdtls bash-language-server yaml-language-server lua-language-server docker-langserver julia; do \
+		has "$$cmd" && ok "$$cmd" || wrn "$$cmd not found"; \
+	done; \
+	ls "$(EMACS_ADAPTERS)"/java-debug/com.microsoft.java.debug.plugin-*.jar >/dev/null 2>&1 \
+		&& ok "java-debug adapter" || wrn "java-debug adapter (run make emacs-adapters)"; \
+	[ -f "$(EMACS_ADAPTERS)/js-debug/src/dapDebugServer.js" ] \
+		&& ok "js-debug adapter" || wrn "js-debug adapter (run make emacs-adapters)"; \
+	echo ""; \
 	echo "Homebrew:"; \
 	brew bundle check --file=homebrew/Brewfile >/dev/null 2>&1 \
 		&& ok "Brewfile packages installed" || wrn "some Brewfile packages missing (run make homebrew)"; \

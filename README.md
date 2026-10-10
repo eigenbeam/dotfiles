@@ -67,7 +67,7 @@ Not stowed:
 | `make` / `make all`   | Symlink all stow packages (runs `make keyboard` on macOS)     |
 | `make bootstrap`      | Full setup from scratch (Homebrew + Stow + all + homebrew + tools) |
 | `make uninstall`      | Remove all stow symlinks                                      |
-| `make doctor`         | Verify symlinks, tools, configs, and shell setup              |
+| `make doctor`         | Verify symlinks, tools, configs, shell, and Emacs toolchain   |
 | `make homebrew`       | Install core packages from `Brewfile`                         |
 | `make brewfile`       | Dump current Homebrew state to `Brewfile`                     |
 | `make tools`          | Install npm globals (LSPs, prettier) and uv tools             |

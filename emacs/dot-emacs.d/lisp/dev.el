@@ -10,8 +10,9 @@
 ;; Eglot - built-in LSP client
 ;; ----------------------------------------------------------
 ;; Servers come from eglot's defaults: clangd (Xcode CLT), pyright (brew),
-;; jdtls (brew), typescript-language-server (make tools),
-;; bash-language-server (brew), and LanguageServer.jl via eglot-jl below.
+;; jdtls (brew), typescript-language-server and docker-langserver (make
+;; tools), bash-language-server, yaml-language-server and lua-language-server
+;; (brew), and LanguageServer.jl via eglot-jl below.
 (use-package eglot
   :ensure nil
   ;; Hook BOTH the classic and tree-sitter major modes.  `treesit-enabled-modes'
@@ -24,6 +25,7 @@
      java-mode java-ts-mode
      c-mode c-ts-mode c++-mode c++-ts-mode
      sh-mode bash-ts-mode
+     yaml-ts-mode dockerfile-ts-mode lua-mode lua-ts-mode
      julia-mode) . eglot-ensure))
   :custom
   (eglot-autoshutdown t)                  ; stop the server with its last buffer
