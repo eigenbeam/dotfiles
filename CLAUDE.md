@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](https://www.gnu.org/software/stow/) using `--dotfiles` mode — files and directories named `dot-*` become `.*` when symlinked. All stow packages target `$HOME`. Package management uses Homebrew on both platforms (Linuxbrew on Linux). The `keyboard` package is macOS-only and automatically skipped on Linux.
 
-Make targets are documented in `README.md`. `make doctor` verifies a machine's setup; `make lint` runs shellcheck on the bash files.
+Make targets are documented in `README.md`. `make doctor` verifies a machine's setup; `make lint` runs shellcheck on the bash files and a paren check on the Emacs elisp.
 
 ## Architecture
 
@@ -20,6 +20,8 @@ Make targets are documented in `README.md`. `make doctor` verifies a machine's s
 
 **Neovim** (`nvim/.config/nvim/init.lua`): Single-file config using lazy.nvim. Has a `vim.g.vscode` guard — in VSCode, lazy.nvim and all plugins are skipped entirely (keybindings-only config); otherwise loads the full setup (Telescope, LSP via nvim-lspconfig, blink.cmp, Treesitter, conform, nvim-lint, nvim-dap, gitsigns, smart-splits, etc.). Theme: Gruvbox Dark.
 
+**Emacs** (`emacs/dot-emacs.d/`): Targets the Emacs 31 `emacs-plus-app` cask. `early-init.el` holds startup tuning; `init.el` sets up package.el + built-in `use-package`, then loads `lisp/` modules in order: `basics` (no-littering first, defaults, vertico/consult/orderless/marginalia), `theme` (per-monitor font sizing, mood-line, gruvbox-dark-hard), `packages` (editing, vterm, built-in tree-sitter via `treesit-enabled-modes`, corfu/cape, embark, magit/diff-hl/project.el, claude-code-ide), `dev` (eglot, apheleia format-on-save mirroring nvim's conform table, flymake-ruff, envrc, dape, Julia), `org-config`. Runtime state lives in gitignored `var/` and `etc/` (no-littering; `custom.el` is in `etc/`). `claude-code-ide` is installed with `:vc` from GitHub, not MELPA. Keybindings and per-language toolchain are documented in `emacs/dot-emacs.d/README.md`.
+
 **Tmux ↔ Neovim navigation:** smart-splits.nvim + tmux config use `@pane-is-vim` to seamlessly share `C-h/j/k/l` navigation and `M-h/j/k/l` resizing across nvim splits and tmux panes.
 
 **NVM lazy-loading:** NVM is lazy-loaded in `.shell-common` for startup performance — wrapper functions for `nvm`, `node`, `npm`, `npx` trigger the actual load on first use. `make tools` deliberately uses Homebrew's npm, not nvm's, so globals land on PATH before nvm loads.
@@ -32,6 +34,6 @@ Make targets are documented in `README.md`. `make doctor` verifies a machine's s
 
 - **Indent:** 4 spaces (2 for YAML). Tabs only in Makefiles. See `.editorconfig`.
 - **Line endings:** LF only.
-- **Shell linting:** `shellcheck` on bash files (`make lint`). Zsh files are not linted.
+- **Shell linting:** `shellcheck` on bash files (`make lint`). Zsh files are not linted. The same target runs `check-parens` over the Emacs elisp; it deliberately does not byte-compile, because expanding the `:vc` use-package form installs packages.
 - **Neovim formatting:** conform.nvim with stylua (Lua), ruff (Python), prettier (JS/TS/JSON/YAML/MD), terraform_fmt, taplo (TOML). Format-on-save is enabled.
 - **Dark theme throughout:** Gruvbox Dark for nvim/ghostty/tmux/lazygit/yazi, gruvbox-dark syntax theme for delta, FZF colors matched to Gruvbox.

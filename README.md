@@ -43,7 +43,7 @@ All packages stow to `$HOME`.
 | `zsh`      | `.zshrc`, `.zprofile`, `.zshenv`                                      |
 | `git`      | `~/.config/git/config`, `ignore` (XDG layout)                         |
 | `nvim`     | Single-file `init.lua` with lazy.nvim (30+ plugins); VSCode-compatible |
-| `emacs`    | Modular config: basics, theme, packages, dev, org                     |
+| `emacs`    | Emacs 31: eglot, apheleia, dape, corfu/vertico, Claude Code (see its README) |
 | `ghostty`  | Terminal config: CommitMono Nerd Font, Gruvbox Dark theme             |
 | `keyboard` | macOS-only: right-option → right-control via `hidutil` launch agent   |
 | `tmux`     | Prefix `C-a`, vi keys, TPM plugins, session persistence               |
@@ -73,7 +73,7 @@ Not stowed:
 | `make tools`          | Install npm globals (LSPs, prettier) and uv tools             |
 | `make ssh`            | Deploy SSH config (manual — not in `make all`)                |
 | `make keyboard`       | Stow and load the key-remap launch agent (macOS only)         |
-| `make lint`           | Run shellcheck on bash config files                           |
+| `make lint`           | Shellcheck the bash files; paren-check the Emacs elisp        |
 | `make fonts`          | Install CommitMono Nerd Font (Linux: downloads from GitHub, macOS: use cask) |
 | `make linux-packages` | Install desktop apps via apt (requires sudo)                  |
 | `make ssm-plugin`     | Install AWS Session Manager Plugin from AWS (requires sudo)   |

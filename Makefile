@@ -65,6 +65,7 @@ brewfile:
 
 lint:
 	cd bash && shellcheck -x -e SC1091 dot-bashrc dot-bash_profile dot-profile dot-shell-common
+	emacs -Q --batch --eval '(dolist (f (append (file-expand-wildcards "emacs/dot-emacs.d/*.el") (file-expand-wildcards "emacs/dot-emacs.d/lisp/*.el"))) (with-temp-buffer (insert-file-contents f) (emacs-lisp-mode) (condition-case err (check-parens) (error (message "%s: %s" f err) (kill-emacs 1)))))'
 
 cards:
 	pdflatex -interaction=nonstopmode -output-directory=reference-cards reference-cards/reference-cards.tex
