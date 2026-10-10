@@ -135,4 +135,3 @@ cask "zotero"
 
 # uv tools
 uv "ipython"
-# uv "marimo"

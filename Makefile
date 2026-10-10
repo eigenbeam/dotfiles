@@ -82,7 +82,6 @@ tools:
 	@command -v node >/dev/null 2>&1 || (echo "Error: node not found. Run 'nvm install --lts' first." && exit 1)
 	npm install -g typescript typescript-language-server dockerfile-language-server-nodejs prettier
 	uv tool install ipython
-	uv tool install marimo
 	@echo "✓ Tools installed"
 
 ssh:
@@ -208,7 +207,6 @@ doctor:
 	has typescript-language-server && ok "typescript-language-server" || wrn "typescript-language-server (run make tools)"; \
 	has prettier                  && ok "prettier"                   || wrn "prettier (run make tools)"; \
 	has ipython                   && ok "ipython"                    || wrn "ipython (run make tools)"; \
-	has marimo                    && ok "marimo"                     || wrn "marimo (run make tools)"; \
 	has session-manager-plugin    && ok "session-manager-plugin"     || wrn "session-manager-plugin (run make ssm-plugin)"; \
 	has claude                    && ok "claude"                      || wrn "claude (curl -fsSL https://claude.ai/install.sh | bash)"; \
 	echo ""; \
