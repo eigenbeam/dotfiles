@@ -37,7 +37,18 @@
          ("C-c l a" . eglot-code-actions)
          ("C-c l f" . eglot-format)
          ("C-c l d" . eldoc)
-         ("C-c l h" . eldoc-doc-buffer)))
+         ("C-c l h" . eldoc-doc-buffer))
+  :config
+  ;; Java debugging: dape's `jdtls' config needs jdtls to load the java-debug
+  ;; plugin (it then advertises vscode.java.resolveClasspath).  The jar comes
+  ;; from `make emacs-adapters'; without it the default plain jdtls entry is used.
+  (when-let* ((jar (car (file-expand-wildcards
+                         (expand-file-name
+                          "debug-adapters/java-debug/com.microsoft.java.debug.plugin-*.jar"
+                          user-emacs-directory)))))
+    (add-to-list 'eglot-server-programs
+                 `((java-mode java-ts-mode)
+                   . ("jdtls" :initializationOptions (:bundles [,jar]))))))
 
 ;; Larger reads from server processes (LSP responses are big).
 (setq read-process-output-max (* 1024 1024))
@@ -96,8 +107,8 @@
 ;; Adapters, by language:
 ;;   Python  debugpy        per project: uv add --dev debugpy
 ;;   C/C++   lldb-dap       ships with the Xcode Command Line Tools (below)
-;;   JS/TS   js-debug-node  one-time download, see README
-;;   Java    jdtls          needs the java-debug bundle wired into eglot; not done
+;;   JS/TS   js-debug-node  make emacs-adapters
+;;   Java    jdtls          make emacs-adapters + the eglot bundle entry above
 ;; `M-x dape' prompts for a config name; `C-c d' is the command map.
 (use-package dape
   :bind-keymap ("C-c d" . dape-global-map)

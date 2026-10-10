@@ -18,13 +18,14 @@ well-adopted packages on top. Dark Gruvbox like the rest of the dotfiles.
 | `lisp/dev.el` | eglot, apheleia, flymake-ruff, envrc, dape, Julia |
 | `lisp/org-config.el` | org, org-modern, org-appear |
 
-Runtime state goes to `var/` and generated config (including `custom.el`) to
-`etc/`; both are gitignored, as are `elpa/`, `eln-cache/`, `tree-sitter/`,
-and `debug-adapters/`.
+Runtime state goes to `var/` (including tree-sitter grammars and the eln
+cache) and generated config (including `custom.el`) to `etc/`; both are
+gitignored, as are `elpa/` and `debug-adapters/`.
 
 ## First launch
 
 1. `brew bundle --file homebrew/Brewfile` (vterm needs `cmake` and `libvterm`).
+   `make emacs-adapters` downloads the Java and JS debug adapters for dape.
 2. Start Emacs. Packages install from MELPA/ELPA; `claude-code-ide` is cloned
    from GitHub with package-vc.
 3. Open a file in each language once. Tree-sitter grammars compile on first
@@ -81,8 +82,8 @@ Format on save is apheleia (`M-x apheleia-mode` to toggle per buffer).
 |---|---|---|---|---|
 | C / C++ | `c-ts-mode`, `c++-ts-mode` | clangd (Xcode CLT) | off, like nvim | `lldb-dap` (CLT, found via `xcrun`) |
 | Python | `python-ts-mode` | pyright (brew) + ruff diagnostics | ruff | `debugpy`: `uv add --dev debugpy` |
-| Java | `java-ts-mode` | jdtls (brew) | off | not wired (needs the java-debug bundle in jdtls init) |
-| JS / TS | `js-ts-mode`, `typescript-ts-mode`, `tsx-ts-mode` | typescript-language-server (`make tools`) | prettier | `js-debug-node` (download below) |
+| Java | `java-ts-mode` | jdtls (brew) + java-debug plugin | off | `jdtls` config (`make emacs-adapters`) |
+| JS / TS | `js-ts-mode`, `typescript-ts-mode`, `tsx-ts-mode` | typescript-language-server (`make tools`) | prettier | `js-debug-node` (`make emacs-adapters`) |
 | Julia | `julia-mode` | LanguageServer.jl via eglot-jl | off | none; REPL: `C-c C-z`, send region `C-c C-c` (julia-repl in vterm) |
 | Shell | `bash-ts-mode` | bash-language-server (brew) | off | |
 | JSON / YAML / TOML / Markdown / Terraform | ts modes, markdown-mode, terraform-mode | | prettier / prettier / taplo / prettier / terraform fmt | |
@@ -91,9 +92,12 @@ Format on save is apheleia (`M-x apheleia-mode` to toggle per buffer).
 clangd needs a `compile_commands.json`: `cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON`
 or `bear -- make`.
 
-JS debugging, one-time: download `js-debug-dap-v*.tar.gz` from
-<https://github.com/microsoft/vscode-js-debug/releases> and extract it so that
-`~/.emacs.d/debug-adapters/js-debug/src/dapDebugServer.js` exists.
+Debug adapters live in `~/.emacs.d/debug-adapters/` (gitignored):
+`make emacs-adapters` fetches the java-debug plugin jar from Maven Central and
+the latest `js-debug-dap` release. When the jar is present, eglot starts jdtls
+with it as a bundle, which is what makes dape's `jdtls` config work; `C-c d d`
+`jdtls` then prompts for the main class file. Without the jar, Java LSP still
+works and only debugging is unavailable.
 
 Per-project environment (`.venv`, `node_modules/.bin`, secrets) comes from
 `.envrc` via direnv (envrc package). pyright finds `.venv` on its own.

@@ -1,10 +1,15 @@
-.PHONY: all check bootstrap homebrew brewfile uninstall lint tex keyboard cards language-cards tools ssh sync fonts linux-packages ssm-plugin doctor
+.PHONY: all check bootstrap homebrew brewfile uninstall lint tex keyboard cards language-cards tools emacs-adapters ssh sync fonts linux-packages ssm-plugin doctor
 
 # `check` is defined first below; without this, bare `make` would run only
 # `check` instead of stowing anything.
 .DEFAULT_GOAL := all
 
 UNAME := $(shell uname)
+
+# Debug adapters for Emacs dape (make emacs-adapters).  java-debug's newest tag is
+# not published to Maven Central; bump when it is.
+JAVA_DEBUG_VERSION := 0.53.1
+EMACS_ADAPTERS := $(HOME)/.emacs.d/debug-adapters
 
 check:
 	@command -v stow >/dev/null 2>&1 || (echo "Error: GNU Stow not found. Please install it first." && exit 1)
@@ -87,6 +92,16 @@ tools:
 	"$$(brew --prefix)/bin/npm" install -g typescript typescript-language-server dockerfile-language-server-nodejs prettier
 	uv tool install ipython
 	@echo "✓ Tools installed"
+
+emacs-adapters:
+	@command -v jq >/dev/null 2>&1 || (echo "Error: jq not found. Run 'make homebrew' first." && exit 1)
+	mkdir -p "$(EMACS_ADAPTERS)/java-debug"
+	curl -fsSL -o "$(EMACS_ADAPTERS)/java-debug/com.microsoft.java.debug.plugin-$(JAVA_DEBUG_VERSION).jar" \
+		"https://repo1.maven.org/maven2/com/microsoft/java/com.microsoft.java.debug.plugin/$(JAVA_DEBUG_VERSION)/com.microsoft.java.debug.plugin-$(JAVA_DEBUG_VERSION).jar"
+	v=$$(curl -fsSL https://api.github.com/repos/microsoft/vscode-js-debug/releases/latest | jq -r .tag_name); \
+		rm -rf "$(EMACS_ADAPTERS)/js-debug"; \
+		curl -fsSL "https://github.com/microsoft/vscode-js-debug/releases/download/$$v/js-debug-dap-$$v.tar.gz" | tar xz -C "$(EMACS_ADAPTERS)"
+	@echo "✓ Debug adapters installed in $(EMACS_ADAPTERS) (java-debug $(JAVA_DEBUG_VERSION), js-debug)"
 
 ssh:
 	@mkdir -p $(HOME)/.ssh/sockets
