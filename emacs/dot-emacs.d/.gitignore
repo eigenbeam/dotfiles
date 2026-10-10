@@ -1,17 +1,13 @@
-auto-save-list
+# package.el / package-vc checkouts and native-comp output
+elpa/
+eln-cache/
+# tree-sitter grammars (auto-installed) and dape debug adapters
+tree-sitter/
+debug-adapters/
+# no-littering: runtime state (var/) and generated config incl. custom.el (etc/)
+var/
+etc/
+auto-save-list/
+transient/
+# Claude Code run from ~/.emacs.d
 .claude/
-eln-cache
-elpa
-var
-
-.lsp-session*
-.mc-lists.el
-archive
-backups/*
-elpy
-eshell
-ido.last
-mspyls
-projectile-bookmarks.eld
-transient
-url

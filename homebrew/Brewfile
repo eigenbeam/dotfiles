@@ -42,9 +42,11 @@ brew "taplo"
 brew "yaml-language-server"
 
 # Languages, runtimes & build tools
+brew "cmake"     # also builds the Emacs vterm module
 brew "elan-init"
 brew "juliaup"
 brew "just"
+brew "libvterm"  # Emacs vterm module
 brew "make"
 brew "maven"
 brew "node"
