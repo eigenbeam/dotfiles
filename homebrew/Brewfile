@@ -1,6 +1,6 @@
-tap "hashicorp/tap"
-tap "snyk/tap"
-tap "d12frosted/emacs-plus"  # macOS-only
+# tap "hashicorp/tap"
+# tap "snyk/tap"
+# tap "d12frosted/emacs-plus"  # macOS-only
 
 # Shell & terminal
 brew "bat"
@@ -30,7 +30,7 @@ brew "zsh-syntax-highlighting"
 
 # Editor & language servers
 brew "bash-language-server"
-brew "d12frosted/emacs-plus/emacs-plus", args: ["with-imagemagick"]  # macOS-only; icons now via ~/.config/emacs-plus/build.yml, not build flags
+# brew "d12frosted/emacs-plus/emacs-plus", args: ["with-imagemagick"]  # macOS-only; icons now via ~/.config/emacs-plus/build.yml, not build flags
 brew "jdtls"
 brew "lua-language-server"
 brew "neovim"
@@ -71,9 +71,9 @@ brew "dive"
 brew "flyctl"
 brew "infracost"
 brew "lazydocker"
-brew "tflint"
-brew "hashicorp/tap/terraform"
-brew "hashicorp/tap/terraform-ls"
+# brew "tflint"
+# brew "hashicorp/tap/terraform"
+# brew "hashicorp/tap/terraform-ls"
 
 # Networking
 brew "autossh"
@@ -108,7 +108,7 @@ brew "age"
 brew "bitwarden-cli"
 brew "gnupg"
 brew "ykman"
-brew "snyk/tap/snyk"
+# brew "snyk/tap/snyk"
 
 # Casks (GUI apps & fonts, macOS)
 cask "bitwarden"
@@ -119,7 +119,7 @@ cask "font-commit-mono-nerd-font"       # fallback / A-B alternative
 cask "font-symbols-only-nerd-font"      # Nerd-Font icon glyphs (Atkinson has none)
 cask "ghostty"
 cask "iterm2"
-cask "mactex-no-gui"
+# cask "mactex-no-gui"
 cask "panoply"
 cask "paraview"
 cask "pgadmin4"
@@ -133,19 +133,19 @@ cask "yubico-authenticator"
 cask "zotero"
 
 # VS Code extensions
-vscode "anthropic.claude-code"
-vscode "asvetliakov.vscode-neovim"
-vscode "github.copilot-chat"
-vscode "ms-python.black-formatter"
-vscode "ms-python.debugpy"
-vscode "ms-python.python"
-vscode "ms-python.vscode-pylance"
-vscode "ms-python.vscode-python-envs"
-vscode "ms-vscode-remote.remote-containers"
-vscode "ms-vscode-remote.remote-wsl"
-vscode "randomfractalsinc.geo-data-viewer"
-vscode "rpbritton.zenbones"
+# vscode "anthropic.claude-code"
+# vscode "asvetliakov.vscode-neovim"
+# vscode "github.copilot-chat"
+# vscode "ms-python.black-formatter"
+# vscode "ms-python.debugpy"
+# vscode "ms-python.python"
+# vscode "ms-python.vscode-pylance"
+# vscode "ms-python.vscode-python-envs"
+# vscode "ms-vscode-remote.remote-containers"
+# vscode "ms-vscode-remote.remote-wsl"
+# vscode "randomfractalsinc.geo-data-viewer"
+# vscode "rpbritton.zenbones"
 
 # uv tools
 uv "ipython"
-uv "marimo"
+# uv "marimo"
