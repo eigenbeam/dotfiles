@@ -69,8 +69,8 @@ Not stowed (reference/install scripts):
 | `make lint`        | Run shellcheck on bash config files                    |
 | `make fonts`       | Install CommitMono Nerd Font (Linux: downloads from GitHub, macOS: use cask) |
 | `make linux-packages` | Install desktop apps via apt (requires sudo)        |
-| `make mac`         | Set macOS-specific defaults (VSCode key repeat)        |
 | `make sync`        | Pull latest, install Homebrew packages, re-stow        |
+| `make tex`         | Install TeX packages for `make cards` (macOS, sudo)    |
 | `make cards`       | Build `reference-cards/reference-cards.pdf` via pdflatex |
 | `make brewfile`    | Dump current Homebrew state to `Brewfile`              |
 

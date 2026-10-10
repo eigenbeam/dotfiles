@@ -21,6 +21,7 @@ Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](
 | `make keyboard` | Stow and load the right-option→right-control remap launch agent (macOS-only, run by `make all`) |
 | `make doctor` | Verify symlinks, tools, configs, and shell setup on current machine |
 | `make ssm-plugin` | Install AWS Session Manager Plugin directly from AWS (requires sudo) |
+| `make tex` | Install the TeX packages `make cards` needs via tlmgr (macOS, requires sudo; run once after BasicTeX) |
 | `make cards` | Build `reference-cards/reference-cards.pdf` via pdflatex |
 
 ## Architecture

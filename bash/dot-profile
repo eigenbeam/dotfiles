@@ -42,7 +42,6 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # for each new shell/tmux pane, and endpoint security makes each one costly.
 case "$OSTYPE" in
   darwin*)
-    export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
     if _java_home=$(/usr/libexec/java_home 2>/dev/null); then
       export JAVA_HOME="$_java_home"
     fi

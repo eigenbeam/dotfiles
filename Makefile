@@ -1,4 +1,4 @@
-.PHONY: all check bootstrap homebrew brewfile uninstall lint mac keyboard cards language-cards tools ssh sync fonts linux-packages ssm-plugin doctor
+.PHONY: all check bootstrap homebrew brewfile uninstall lint tex keyboard cards language-cards tools ssh sync fonts linux-packages ssm-plugin doctor
 
 # `check` is defined first below; without this, bare `make` would run only
 # `check` instead of stowing anything.
@@ -117,11 +117,14 @@ else
 	@echo "✓ CommitMono Nerd Font installed"
 endif
 
-mac:
+tex:
 ifeq ($(UNAME),Darwin)
-	defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+	@command -v tlmgr >/dev/null 2>&1 || (echo "Error: tlmgr not found. Run 'brew install --cask basictex' first (needs sudo)." && exit 1)
+	sudo tlmgr update --self
+	sudo tlmgr install bera geometry microtype multicol needspace psnfss tools
+	@echo "✓ TeX packages for reference-cards installed"
 else
-	@echo "Skipped: macOS-only target"
+	@echo "Skipped: on Linux, 'sudo make linux-packages' installs TeX Live via apt"
 endif
 
 keyboard:

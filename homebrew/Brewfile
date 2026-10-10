@@ -1,6 +1,7 @@
-# tap "hashicorp/tap"
-# tap "snyk/tap"
-# tap "d12frosted/emacs-plus"  # macOS-only
+tap "hashicorp/tap", trusted: true
+tap "snyk/tap", trusted: true
+tap "terraform-linters/tap", trusted: true  # tflint left homebrew-core (BUSL license)
+tap "d12frosted/emacs-plus", trusted: true  # macOS-only
 
 # Shell & terminal
 brew "bat"
@@ -30,7 +31,6 @@ brew "zsh-syntax-highlighting"
 
 # Editor & language servers
 brew "bash-language-server"
-# brew "d12frosted/emacs-plus/emacs-plus", args: ["with-imagemagick"]  # macOS-only; icons now via ~/.config/emacs-plus/build.yml, not build flags
 brew "jdtls"
 brew "lua-language-server"
 brew "neovim"
@@ -69,11 +69,11 @@ brew "circleci"
 brew "devcontainer"
 brew "dive"
 brew "flyctl"
+brew "hashicorp/tap/terraform"
+brew "hashicorp/tap/terraform-ls"
 brew "infracost"
 brew "lazydocker"
-# brew "tflint"
-# brew "hashicorp/tap/terraform"
-# brew "hashicorp/tap/terraform-ls"
+cask "tflint"  # cask, not formula, since it moved to the terraform-linters tap; macOS-only
 
 # Networking
 brew "autossh"
@@ -107,19 +107,20 @@ brew "typst"
 brew "age"
 brew "bitwarden-cli"
 brew "gnupg"
+brew "snyk/tap/snyk"
 brew "ykman"
-# brew "snyk/tap/snyk"
 
 # Casks (GUI apps & fonts, macOS)
+cask "basictex"  # pdflatex for reference-cards; run `make tex` once for extra packages
 cask "bitwarden"
 cask "copilot-cli"
 cask "discord"
+cask "emacs-plus-app"  # prebuilt Emacs 31; icons via ~/.config/emacs-plus/build.yml
 cask "font-atkinson-hyperlegible-mono"  # low-vision monospace (primary)
 cask "font-commit-mono-nerd-font"       # fallback / A-B alternative
 cask "font-symbols-only-nerd-font"      # Nerd-Font icon glyphs (Atkinson has none)
 cask "ghostty"
 cask "iterm2"
-# cask "mactex-no-gui"
 cask "panoply"
 cask "paraview"
 cask "pgadmin4"
@@ -131,20 +132,6 @@ cask "temurin@21"
 cask "virtualbox"
 cask "yubico-authenticator"
 cask "zotero"
-
-# VS Code extensions
-# vscode "anthropic.claude-code"
-# vscode "asvetliakov.vscode-neovim"
-# vscode "github.copilot-chat"
-# vscode "ms-python.black-formatter"
-# vscode "ms-python.debugpy"
-# vscode "ms-python.python"
-# vscode "ms-python.vscode-pylance"
-# vscode "ms-python.vscode-python-envs"
-# vscode "ms-vscode-remote.remote-containers"
-# vscode "ms-vscode-remote.remote-wsl"
-# vscode "randomfractalsinc.geo-data-viewer"
-# vscode "rpbritton.zenbones"
 
 # uv tools
 uv "ipython"
