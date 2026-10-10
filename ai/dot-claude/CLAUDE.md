@@ -66,9 +66,3 @@ more than honest pushback — when in doubt, err toward directness.
 - Before committing, run `git status` and `git diff --staged` to verify ONLY intended changes are staged
 - Never include previously-staged unrelated changes in a commit; unstage them first
 - Commit and push at logical checkpoints, not just at session end
-
-# Skills
-
-## Active skills
-
-- workflow-guide: check at session start and on language context switch
