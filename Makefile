@@ -123,7 +123,7 @@ tex:
 ifeq ($(UNAME),Darwin)
 	@command -v tlmgr >/dev/null 2>&1 || (echo "Error: tlmgr not found. Run 'brew install --cask basictex' first (needs sudo)." && exit 1)
 	sudo tlmgr update --self
-	sudo tlmgr install bera geometry microtype multicol needspace psnfss tools
+	sudo tlmgr install bera extsizes geometry helvetic microtype needspace psnfss tools
 	@echo "✓ TeX packages for reference-cards installed"
 else
 	@echo "Skipped: on Linux, 'sudo make linux-packages' installs TeX Live via apt"
