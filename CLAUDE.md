@@ -4,33 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](https://www.gnu.org/software/stow/) using `--dotfiles` mode — files named `dot-*` become `.*` when symlinked. All stow packages target `$HOME`. Package management uses Homebrew on both platforms (Linuxbrew on Linux). The `keyboard` package is macOS-only and automatically skipped on Linux.
+Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](https://www.gnu.org/software/stow/) using `--dotfiles` mode — files and directories named `dot-*` become `.*` when symlinked. All stow packages target `$HOME`. Package management uses Homebrew on both platforms (Linuxbrew on Linux). The `keyboard` package is macOS-only and automatically skipped on Linux.
 
-## Common Commands
-
-| Command | Purpose |
-|---------|---------|
-| `make` | Symlink all stow packages to `$HOME` |
-| `make bootstrap` | Full setup from scratch (Homebrew + Stow + configs + packages) |
-| `make uninstall` | Remove all stow symlinks |
-| `make homebrew` | Install core packages from `homebrew/Brewfile` |
-| `make lint` | Run shellcheck on bash config files |
-| `make sync` | Pull latest, install Homebrew packages, re-stow |
-| `make tools` | Install npm globals (LSPs, prettier) and uv tools |
-| `make ssh` | Deploy SSH config (excluded from `make all` — must be run manually) |
-| `make keyboard` | Stow and load the right-option→right-control remap launch agent (macOS-only, run by `make all`) |
-| `make doctor` | Verify symlinks, tools, configs, and shell setup on current machine |
-| `make ssm-plugin` | Install AWS Session Manager Plugin directly from AWS (requires sudo) |
-| `make tex` | Install the TeX packages `make cards` needs via tlmgr (macOS, requires sudo; run once after BasicTeX) |
-| `make cards` | Build `reference-cards/reference-cards.pdf` via pdflatex |
+Make targets are documented in `README.md`. `make doctor` verifies a machine's setup; `make lint` runs shellcheck on the bash files.
 
 ## Architecture
 
-**Stow package convention:** Each top-level directory (bash, zsh, git, nvim, ghostty, etc.) is a stow package. Files mirror their target path under `$HOME`. For example, `nvim/.config/nvim/init.lua` becomes `~/.config/nvim/init.lua`. Files named `dot-*` become `.*` (e.g., `bash/dot-profile` → `~/.profile`).
+**Stow package convention:** Every top-level directory except `homebrew`, `linux`, and `reference-cards` is a stow package (ai, bash, zsh, git, nvim, emacs, ghostty, keyboard, tmux, starship, lazygit, yazi, ssh). Files mirror their target path under `$HOME`. For example, `nvim/.config/nvim/init.lua` becomes `~/.config/nvim/init.lua`, and `bash/dot-profile` becomes `~/.profile`. `ssh` is stowed only by `make ssh`, never by `make all`.
 
 **Shell layering:**
 - `bash/dot-profile` — shared login environment (PATH, Homebrew, Rust, NVM, Java). Sourced by both `.zprofile` and `.bash_profile`.
-- `bash/dot-shell-common` — shared interactive config (aliases, FZF vars, brew wrapper, NVM lazy-load, yazi `yy` function). Sourced by both `.bashrc` and `.zshrc`.
+- `bash/dot-shell-common` — shared interactive config (aliases, FZF vars, NVM lazy-load, yazi `yy` function). Sourced by both `.bashrc` and `.zshrc`.
 - `zsh/dot-zshrc` — interactive zsh config (completions, plugins, tool integrations).
 - `bash/dot-bashrc` — interactive bash config.
 
@@ -38,7 +22,7 @@ Personal dotfiles for macOS and Linux. Config files are managed with [GNU Stow](
 
 **Tmux ↔ Neovim navigation:** smart-splits.nvim + tmux config use `@pane-is-vim` to seamlessly share `C-h/j/k/l` navigation and `M-h/j/k/l` resizing across nvim splits and tmux panes.
 
-**NVM lazy-loading:** NVM is lazy-loaded in `.shell-common` for startup performance — wrapper functions for `nvm`, `node`, `npm`, `npx` trigger the actual load on first use.
+**NVM lazy-loading:** NVM is lazy-loaded in `.shell-common` for startup performance — wrapper functions for `nvm`, `node`, `npm`, `npx` trigger the actual load on first use. `make tools` deliberately uses Homebrew's npm, not nvm's, so globals land on PATH before nvm loads.
 
 **Tmux sessionizer:** `C-a f` opens fzf popup to fuzzy-find `~/projects` directories and create/attach named tmux sessions. Script at `bash/dot-local/bin/tmux-sessionizer`.
 

@@ -7,7 +7,7 @@
 [[ -z "$HOMEBREW_PREFIX" ]] && [ -f "$HOME/.profile" ] && . "$HOME/.profile"
 
 # ------------------
-# Shared config (aliases, FZF vars, brew wrapper, NVM lazy-load)
+# Shared config (aliases, FZF vars, NVM lazy-load)
 # ------------------
 # shellcheck source=dot-shell-common
 [ -f "$HOME/.shell-common" ] && . "$HOME/.shell-common"

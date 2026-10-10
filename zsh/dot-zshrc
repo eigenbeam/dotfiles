@@ -2,7 +2,7 @@
 # zmodload zsh/zprof
 
 # ------------------
-# Shared config (aliases, FZF vars, brew wrapper, NVM lazy-load)
+# Shared config (aliases, FZF vars, NVM lazy-load)
 # ------------------
 [ -f "$HOME/.shell-common" ] && . "$HOME/.shell-common"
 

@@ -22,6 +22,7 @@ Or step by step:
 ```
 $ make              # Symlink all configs via stow
 $ make homebrew     # Install core Homebrew packages
+$ make doctor       # Verify symlinks, tools, and shell setup
 ```
 
 ### Prerequisites
@@ -29,62 +30,70 @@ $ make homebrew     # Install core Homebrew packages
 Only needed if not using `make bootstrap`:
 
 * GNU Make
-* [GNU Stow](https://www.gnu.org/software/stow/) (2.3+, for `--dotfiles` and `--no-folding`)
+* [GNU Stow](https://www.gnu.org/software/stow/) 2.4+ (`--dotfiles` on directories)
 
 ## What's Included
 
-| Package    | Stow target          | What it sets up                                              |
-|------------|----------------------|--------------------------------------------------------------|
-| `bash`     | `~/`                 | `.bashrc`, `.bash_profile`, `.profile` (shared with zsh)     |
-| `zsh`      | `~/`                 | `.zshrc`, `.zprofile`, `.zshenv`                             |
-| `git`      | `~/`                 | `~/.config/git/config`, `ignore`, `hooks/` (XDG layout)     |
-| `nvim`     | `~/`                 | Single-file `init.lua` with lazy.nvim (30+ plugins); VSCode-compatible |
-| `emacs`    | `~/` (no-folding)    | Modular config: basics, theme, packages, dev, org            |
-| `ghostty`  | `~/`                 | Terminal config: CommitMono Nerd Font, Gruvbox Dark theme     |
-| `keyboard` | `~/`                 | macOS-only: keyboard remapping via `hidutil` (right-option → control) |
-| `tmux`     | `~/`                 | Prefix `C-a`, vi keys, TPM plugins, session persistence      |
-| `starship` | `~/`                 | `~/.config/starship.toml` prompt config                      |
-| `lazygit`  | `~/`                 | `~/.config/lazygit/config.yml` (Gruvbox Dark theme)          |
-| `yazi`     | `~/`                 | `~/.config/yazi/theme.toml` (Gruvbox Dark theme)             |
-| `ssh`      | `~/`                 | `~/.ssh/config` (connection multiplexing, keepalive)         |
+All packages stow to `$HOME`.
 
-Not stowed (reference/install scripts):
+| Package    | What it sets up                                                       |
+|------------|-----------------------------------------------------------------------|
+| `ai`       | `~/.claude/CLAUDE.md` — global Claude Code instructions               |
+| `bash`     | `.bashrc`, `.bash_profile`, `.profile` (shared with zsh), `.shell-common`, `~/.local/bin/tmux-sessionizer` |
+| `zsh`      | `.zshrc`, `.zprofile`, `.zshenv`                                      |
+| `git`      | `~/.config/git/config`, `ignore` (XDG layout)                         |
+| `nvim`     | Single-file `init.lua` with lazy.nvim (30+ plugins); VSCode-compatible |
+| `emacs`    | Modular config: basics, theme, packages, dev, org                     |
+| `ghostty`  | Terminal config: CommitMono Nerd Font, Gruvbox Dark theme             |
+| `keyboard` | macOS-only: right-option → right-control via `hidutil` launch agent   |
+| `tmux`     | Prefix `C-a`, vi keys, TPM plugins, session persistence               |
+| `starship` | `~/.config/starship.toml` prompt config                               |
+| `lazygit`  | `~/.config/lazygit/config.yml` (Gruvbox Dark theme)                   |
+| `yazi`     | `~/.config/yazi/` (Gruvbox Dark theme, behavior config)               |
+| `ssh`      | `~/.ssh/config` (connection multiplexing, keepalive)                  |
 
-| Directory  | Purpose                                                       |
-|------------|---------------------------------------------------------------|
-| `homebrew` | `Brewfile` (core) and `Brewfile.extras` (niche/optional)      |
-| `linux`    | `packages.sh` — apt-based installs for Linux (Docker, Bitwarden, TeX Live, Quarto, Temurin JDK, Zotero, AWS SSM plugin) |
+Not stowed:
+
+| Directory         | Purpose                                                            |
+|-------------------|--------------------------------------------------------------------|
+| `homebrew`        | `Brewfile` (core packages)                                         |
+| `linux`           | `packages.sh` — apt-based installs for Linux (Docker, Bitwarden, TeX Live, Quarto, Temurin JDK, Zotero, AWS SSM plugin) |
+| `reference-cards` | LaTeX sources for keybinding/language reference cards              |
 
 ## Make Targets
 
-| Target             | Description                                            |
-|--------------------|--------------------------------------------------------|
-| `make` / `make all`| Symlink all stow packages                              |
-| `make bootstrap`   | Full setup from scratch (Homebrew + Stow + all + pkgs) |
-| `make uninstall`   | Remove all stow symlinks                               |
-| `make homebrew`    | Install core packages from `Brewfile`                  |
-| `make homebrew-extras` | Install optional packages from `Brewfile.extras`   |
-| `make tools`       | Install npm globals (LSPs, prettier) and uv tools      |
-| `make ssh`         | Deploy SSH config (manual — not in `make all`)         |
-| `make lint`        | Run shellcheck on bash config files                    |
-| `make fonts`       | Install CommitMono Nerd Font (Linux: downloads from GitHub, macOS: use cask) |
-| `make linux-packages` | Install desktop apps via apt (requires sudo)        |
-| `make sync`        | Pull latest, install Homebrew packages, re-stow        |
-| `make tex`         | Install TeX packages for `make cards` (macOS, sudo)    |
-| `make cards`       | Build `reference-cards/reference-cards.pdf` via pdflatex |
-| `make brewfile`    | Dump current Homebrew state to `Brewfile`              |
+| Target                | Description                                                   |
+|-----------------------|---------------------------------------------------------------|
+| `make` / `make all`   | Symlink all stow packages (runs `make keyboard` on macOS)     |
+| `make bootstrap`      | Full setup from scratch (Homebrew + Stow + all + homebrew + tools) |
+| `make uninstall`      | Remove all stow symlinks                                      |
+| `make doctor`         | Verify symlinks, tools, configs, and shell setup              |
+| `make homebrew`       | Install core packages from `Brewfile`                         |
+| `make brewfile`       | Dump current Homebrew state to `Brewfile`                     |
+| `make tools`          | Install npm globals (LSPs, prettier) and uv tools             |
+| `make ssh`            | Deploy SSH config (manual — not in `make all`)                |
+| `make keyboard`       | Stow and load the key-remap launch agent (macOS only)         |
+| `make lint`           | Run shellcheck on bash config files                           |
+| `make fonts`          | Install CommitMono Nerd Font (Linux: downloads from GitHub, macOS: use cask) |
+| `make linux-packages` | Install desktop apps via apt (requires sudo)                  |
+| `make ssm-plugin`     | Install AWS Session Manager Plugin from AWS (requires sudo)   |
+| `make sync`           | Pull latest, install Homebrew packages, re-stow               |
+| `make tex`            | Install TeX packages for `make cards` (macOS, sudo)           |
+| `make cards`          | Build `reference-cards/reference-cards.pdf` via pdflatex      |
+| `make language-cards` | Build the per-language cards in `reference-cards/`            |
 
 ## Shell Setup
 
 Both bash and zsh share a common `~/.profile` for login environment
 (PATH, Homebrew, Rust, NVM). On Linux, `.bashrc` sources `.profile`
 automatically for non-login interactive shells (how most Linux
-terminals open). Interactive features (aliases, completions, FZF,
-prompt) are in the respective rc files.
+terminals open). Shared interactive config (aliases, FZF, NVM
+lazy-load) lives in `~/.shell-common`; shell-specific features
+(completions, plugins, prompt) are in the respective rc files.
 
 Key features:
 * **Starship** prompt (both shells)
-* **NVM** lazy-loaded (~300ms startup savings)
+* **NVM** lazy-loaded on first use of `nvm`/`node`/`npm`/`npx`
 * **FZF** with ripgrep backend
 * **zsh-syntax-highlighting** and **zsh-autosuggestions**
 * **bat** as MANPAGER and aliased to `cat`
@@ -100,20 +109,10 @@ Key features:
 
 ## Multi-Machine Sync
 
-The `brew` command is wrapped in zsh to auto-update the Brewfile after
-any `brew install` or `brew uninstall`. On another machine, pull and
-reconcile everything with:
+After installing or removing packages, run `make brewfile` to dump the
+installed state to `homebrew/Brewfile` and commit it. On another
+machine:
 
 ```
 $ make sync         # git pull + brew bundle install + re-stow
 ```
-
-## Reproducibility
-
-To pin exact Homebrew package versions:
-
-```
-$ brew bundle lock --file=homebrew/Brewfile
-```
-
-This generates `Brewfile.lock.json` for deterministic installs.
