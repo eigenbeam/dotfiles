@@ -1,132 +1,155 @@
-;;; dev --- development modes setup
+;;; dev.el --- Language servers, formatting, debugging, languages  -*- lexical-binding: t -*-
 ;;; Commentary:
+;; Built-in eglot for LSP, apheleia for format-on-save (mirrors nvim's
+;; conform table), flymake-ruff for Python lint parity, envrc for per-project
+;; environments, dape for DAP debugging, and Julia.  Mathematica is not
+;; configured (notebooks live in the Wolfram front end).
 ;;; Code:
 
 ;; ----------------------------------------------------------
-;; Eglot - Built-in LSP Client
+;; Eglot - built-in LSP client
 ;; ----------------------------------------------------------
-
+;; Servers come from eglot's defaults: clangd (Xcode CLT), pyright (brew),
+;; jdtls (brew), typescript-language-server (make tools),
+;; bash-language-server (brew), and LanguageServer.jl via eglot-jl below.
 (use-package eglot
-  :ensure nil  ; Built-in to Emacs 29+
-  ;; Hook BOTH the classic and tree-sitter major modes.  treesit-auto remaps
-  ;; files to *-ts-mode once a grammar is installed, and the ts variants do NOT
-  ;; run the classic mode's hook (they only declare it as an extra-parent), so
-  ;; hooking only python-mode/js-mode/... silently fails to start eglot there.
+  :ensure nil
+  ;; Hook BOTH the classic and tree-sitter major modes.  `treesit-enabled-modes'
+  ;; remaps files to *-ts-mode, and the ts variants do NOT run the classic
+  ;; mode's hook (they only declare it as an extra parent), so hooking only
+  ;; python-mode/js-mode/... silently fails to start eglot there.
   :hook
   (((python-mode python-ts-mode
-     js-mode js-ts-mode
+     js-mode js-ts-mode typescript-ts-mode tsx-ts-mode
      java-mode java-ts-mode
-     c-mode c-ts-mode
-     c++-mode c++-ts-mode
-     sh-mode bash-ts-mode) . eglot-ensure))
+     c-mode c-ts-mode c++-mode c++-ts-mode
+     sh-mode bash-ts-mode
+     julia-mode) . eglot-ensure))
   :custom
-  (eglot-autoshutdown t)  ; Shutdown server when last buffer is closed
-  (eglot-events-buffer-size 0)  ; Disable event logging (improves performance)
-  (eglot-sync-connect nil)  ; Async connection
+  (eglot-autoshutdown t)                  ; stop the server with its last buffer
+  (eglot-sync-connect nil)                ; connect asynchronously
+  (eglot-connect-timeout 120)             ; eglot-jl's first run installs LanguageServer.jl
+  (eglot-events-buffer-config '(:size 0 :format short))   ; no event log (perf)
+  (eglot-code-action-indications '(eldoc-hint))           ; no fringe/margin lightbulbs
+  (eglot-ignored-server-capabilities '(:inlayHintProvider)) ; M-x eglot-inlay-hints-mode to opt in
   :bind (:map eglot-mode-map
          ("C-c l r" . eglot-rename)
          ("C-c l a" . eglot-code-actions)
          ("C-c l f" . eglot-format)
          ("C-c l d" . eldoc)
-         ("C-c l h" . eldoc-doc-buffer))
+         ("C-c l h" . eldoc-doc-buffer)))
+
+;; Larger reads from server processes (LSP responses are big).
+(setq read-process-output-max (* 1024 1024))
+
+
+;; ----------------------------------------------------------
+;; Formatting - apheleia (format on save, async, cursor-stable)
+;; ----------------------------------------------------------
+;; https://github.com/radian-software/apheleia
+;; Table matches nvim's conform.nvim: ruff (Python), prettier (JS/TS/JSON/
+;; YAML/Markdown), stylua (Lua), taplo (TOML), terraform fmt.  Like nvim,
+;; C/C++ are left alone; Java and shell have no installed formatter.
+(use-package apheleia
   :config
-  ;; Increase process output for better performance
-  (setq read-process-output-max (* 1024 1024)))
+  (dolist (m '(python-mode python-ts-mode))
+    (setf (alist-get m apheleia-mode-alist) 'ruff))
+  (setf (alist-get 'terraform-mode apheleia-mode-alist) 'terraform)
+  (dolist (m '(markdown-mode gfm-mode markdown-ts-mode))
+    (setf (alist-get m apheleia-mode-alist) 'prettier-markdown))
+  (dolist (m '(c-mode c++-mode c-ts-mode c++-ts-mode
+               java-mode java-ts-mode sh-mode bash-ts-mode))
+    (setf (alist-get m apheleia-mode-alist nil 'remove) nil))
+  (apheleia-global-mode 1))
 
 
 ;; ----------------------------------------------------------
-;; DAP - Debug Adapter Protocol
+;; Linting - ruff diagnostics alongside pyright
 ;; ----------------------------------------------------------
+;; https://github.com/erickgnavar/flymake-ruff
+;; eglot replaces the buffer's flymake backends with its own, so add ruff
+;; from `eglot-managed-mode-hook' (after eglot has set up), Python only.
+(use-package flymake-ruff
+  :preface
+  (defun kwb/flymake-ruff-maybe ()
+    "Add the ruff flymake backend in Python buffers managed by eglot."
+    (when (derived-mode-p 'python-base-mode)
+      (flymake-ruff-load)))
+  :hook (eglot-managed-mode . kwb/flymake-ruff-maybe))
 
-(use-package dap-mode
-  :bind (;; General debugging
-         ("C-c d d" . dap-debug)
-         ("C-c d l" . dap-debug-last)
-         ("C-c d r" . dap-debug-recent)
-         ;; Breakpoints
-         ("C-c d b" . dap-breakpoint-toggle)
-         ("C-c d B" . dap-breakpoint-delete-all)
-         ;; Stepping
-         ("C-c d n" . dap-next)
-         ("C-c d i" . dap-step-in)
-         ("C-c d o" . dap-step-out)
-         ("C-c d c" . dap-continue)
-         ;; UI panels
-         ("C-c d u l" . dap-ui-locals)
-         ("C-c d u s" . dap-ui-sessions)
-         ("C-c d u b" . dap-ui-breakpoints)
-         ("C-c d u r" . dap-ui-repl)
-         ;; Java test running
-         ("C-c d t m" . dap-java-run-test-method)
-         ("C-c d t c" . dap-java-run-test-class))
+
+;; ----------------------------------------------------------
+;; Per-project environments - envrc (direnv)
+;; ----------------------------------------------------------
+;; https://github.com/purcell/envrc
+;; Buffer-local environment from each project's .envrc: uv/.venv activation,
+;; node_modules/.bin on PATH, secrets.  direnv is in the Brewfile.  pyright
+;; finds .venv on its own; this is for everything that runs a binary.
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
+
+
+;; ----------------------------------------------------------
+;; Debugging - dape (Debug Adapter Protocol)
+;; ----------------------------------------------------------
+;; https://github.com/svaante/dape  (GNU ELPA)
+;; Adapters, by language:
+;;   Python  debugpy        per project: uv add --dev debugpy
+;;   C/C++   lldb-dap       ships with the Xcode Command Line Tools (below)
+;;   JS/TS   js-debug-node  one-time download, see README
+;;   Java    jdtls          needs the java-debug bundle wired into eglot; not done
+;; `M-x dape' prompts for a config name; `C-c d' is the command map.
+(use-package dape
+  :bind-keymap ("C-c d" . dape-global-map)
   :custom
-  (dap-auto-configure-features '(sessions locals breakpoints expressions controls tooltip))
+  (dape-key-prefix nil)                   ; bound above instead of gud's C-x C-a
+  (dape-buffer-window-arrangement 'right)
+  (dape-inlay-hints t)
   :config
-  ;; Enable UI features
-  (dap-ui-mode 1)
-  (dap-tooltip-mode 1)
-  (tooltip-mode 1)
-
-  ;; Python debugging with debugpy
-  (require 'dap-python)
-  (setq dap-python-debugger 'debugpy)
-
-  ;; Java debugging
-  (require 'dap-java)
-
-  ;; Node.js debugging (JavaScript/TypeScript)
-  (require 'dap-node)
-  (dap-node-setup)
-
-  ;; C/C++ debugging (LLDB for macOS)
-  (require 'dap-lldb))
+  (dape-breakpoint-global-mode)
+  (add-hook 'dape-compile-hook #'kill-buffer)
+  ;; lldb-dap lives in the CLT/Xcode toolchain, not on PATH.  Append its
+  ;; directory to `exec-path' so it is found without shadowing Homebrew.
+  (let ((lldb (ignore-errors
+                (string-trim (shell-command-to-string "xcrun -f lldb-dap 2>/dev/null")))))
+    (when (and lldb (file-executable-p lldb))
+      (add-to-list 'exec-path (file-name-directory lldb) t))))
 
 
 ;; ----------------------------------------------------------
-;; C & C++
+;; Julia
 ;; ----------------------------------------------------------
+;; https://github.com/JuliaEditorSupport/julia-emacs
+(use-package julia-mode)
 
-;; ----------------------------------------------------------
-;; JavaScript & TypeScript
-;; ----------------------------------------------------------
-
-;; https://github.com/codesuki/add-node-modules-path
-(use-package add-node-modules-path
+;; https://github.com/non-Jedi/eglot-jl
+;; Teaches eglot to run LanguageServer.jl from its own depot environment.  The
+;; first `eglot' in a Julia buffer downloads and precompiles the server (slow;
+;; watch *EGLOT ... stderr*); later starts are quick.
+(use-package eglot-jl
+  :after eglot
   :config
-  (add-hook 'js-mode-hook 'add-node-modules-path))
+  (eglot-jl-init))
 
-
-;; ----------------------------------------------------------
-;; Java
-;; ----------------------------------------------------------
-
-;; JSP support
-(use-package web-mode
+;; https://github.com/tpapp/julia-repl  (C-c C-z REPL, C-c C-c send region)
+(use-package julia-repl
+  :hook (julia-mode . julia-repl-mode)
   :config
-  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode)))
+  (julia-repl-set-terminal-backend 'vterm))
 
 
 ;; ----------------------------------------------------------
-;; Python
+;; Compilation & misc
 ;; ----------------------------------------------------------
 
-;; https://github.com/jorgenschaefer/pyvenv
-(use-package pyvenv
-  :config
-  (pyvenv-mode 1))
+;; Render ANSI color in *compilation* (built in since Emacs 28).
+(add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
+(setq compilation-scroll-output 'first-error)
 
-
-;; ----------------------------------------------------------
-;; Miscellaneous
-;; ----------------------------------------------------------
-
-;; Fix escape codes so they show up as color
-(add-hook 'compilation-filter-hook
-          (lambda () (ansi-color-apply-on-region compilation-filter-start (point))))
-
-(defun kwb-dev-mode-hook ()
-  (subword-mode))
-(add-hook 'prog-mode-hook 'kwb-dev-mode-hook)
+(defun kwb/dev-mode-hook ()
+  "Settings shared by all programming modes."
+  (subword-mode 1))   ; camelCase-aware word motion
+(add-hook 'prog-mode-hook #'kwb/dev-mode-hook)
 
 
 (provide 'dev)
