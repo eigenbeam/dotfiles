@@ -1,5 +1,7 @@
-;;; theme --- sets up the color theme
+;;; theme.el --- Font, mode line, and color theme  -*- lexical-binding: t -*-
 ;;; Commentary:
+;; Gruvbox dark throughout, matching ghostty/tmux/nvim.  The built-in modus
+;; themes remain available via `M-x load-theme' for a high-contrast day.
 ;;; Code:
 
 ;; ----------------------------------------------------------
@@ -60,24 +62,18 @@ A no-op (leaving the default face) when the font is unavailable."
   (set-frame-size (selected-frame) 120 60))
 
 ;; Atkinson Hyperlegible Mono carries no Nerd-Font glyphs, so map the icon
-;; codepoint ranges to Symbols Nerd Font Mono for any literal glyphs in buffers.
+;; codepoint ranges to Symbols Nerd Font Mono for literal glyphs in buffers
+;; (starship/tmux configs, Claude's TUI output in vterm, ...).
 (when (and (display-graphic-p)
            (find-font (font-spec :name "Symbols Nerd Font Mono")))
   (dolist (range '((#xe000 . #xf8ff)      ; BMP Private Use Area (most Nerd glyphs)
                    (#xf0000 . #xfffff)))   ; supplementary PUA-A (Material Design, etc.)
     (set-fontset-font t range (font-spec :family "Symbols Nerd Font Mono") nil 'prepend)))
 
-(use-package nerd-icons
-  :custom
-  ;; Atkinson Hyperlegible Mono has no icon glyphs; render nerd-icons with the
-  ;; dedicated symbols font instead.
-  (nerd-icons-font-family "Symbols Nerd Font Mono"))
-
 
 ;; ----------------------------------------------------------
-;; Modeline - Simple and Clean
+;; Mode line - simple and clean (hides minor modes, so no diminish needed)
 ;; ----------------------------------------------------------
-
 ;; https://gitlab.com/jessieh/mood-line
 (use-package mood-line
   :config
@@ -85,65 +81,16 @@ A no-op (leaving the default face) when the font is unavailable."
 
 
 ;; ----------------------------------------------------------
-;; Color Themes - Scientifically Eye-Friendly
+;; Color theme
 ;; ----------------------------------------------------------
-
-;; Modus Themes - WCAG AAA Compliant (Highest Accessibility)
-;; https://protesilaos.com/emacs/modus-themes
-(use-package modus-themes
-  :defer t)
-  ;; To use: M-x load-theme RET modus-operandi
-  ;;     or: M-x load-theme RET modus-vivendi
-
-;; Solarized - Color Theory Based, Perceptually Uniform
-;; https://github.com/bbatsov/solarized-emacs
-(use-package solarized-theme
-  :defer t)
-  ;; To use: M-x load-theme RET solarized-light
-  ;;     or: M-x load-theme RET solarized-dark
-
-;; Zenburn - Low Contrast, Warm Colors, Long-Session Optimized
-;; https://github.com/bbatsov/zenburn-emacs
-(use-package zenburn-theme
-  :defer t)
-  ;; To use: M-x load-theme RET zenburn
-
-;; Gruvbox - Retro, Warm, Balanced Contrast (default)
 ;; https://github.com/greduan/emacs-theme-gruvbox
+;; dark-hard: warm, a bit more contrast than soft for legibility.  The
+;; background is near-black; if text seems to smear (astigmatism halation),
+;; fall back to gruvbox-dark-soft or -medium.  Built-in alternatives:
+;; modus-vivendi / modus-operandi (WCAG AAA).
 (use-package gruvbox-theme
   :init
-  ;; dark-hard: warm, a bit more contrast than soft for legibility.  The
-  ;; background is darker (near-black); if text seems to smear (astigmatism
-  ;; halation), fall back to gruvbox-dark-soft or -medium.
   (load-theme 'gruvbox-dark-hard t))
-  ;; Alternative variants:
-  ;;   M-x load-theme RET gruvbox-dark-soft
-  ;;   M-x load-theme RET gruvbox-dark-medium
-  ;;   M-x load-theme RET gruvbox-light-soft
-
-
-;; ----------------------------------------------------------
-;; Theme Switching Quick Reference
-;; ----------------------------------------------------------
-;;
-;; Switch themes with: M-x load-theme RET <theme-name>
-;;
-;; Available themes:
-;;   gruvbox-dark-soft    - Dark, retro, warm, gentle (default)
-;;   gruvbox-dark-hard    - Dark, retro, warm, higher contrast
-;;   gruvbox-light-soft   - Light, retro, warm, gentle
-;;   gruvbox-light-hard   - Light, retro, warm, higher contrast
-;;   modus-operandi       - Light, WCAG AAA, high contrast
-;;   modus-vivendi        - Dark, WCAG AAA, high contrast
-;;   solarized-light      - Light, warm, medium contrast
-;;   solarized-dark       - Dark, warm, medium contrast (popular)
-;;   zenburn              - Dark, warm, low contrast (long sessions)
-;;
-;; Disable current theme first (if switching):
-;;   M-x disable-theme RET <current-theme>
-;;
-;; Or use: M-x load-theme (it will ask to disable current theme)
-;; ----------------------------------------------------------
 
 
 (provide 'theme)

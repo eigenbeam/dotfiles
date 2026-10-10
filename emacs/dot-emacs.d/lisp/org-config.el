@@ -1,4 +1,4 @@
-;;; org-config --- org-mode configuration
+;;; org-config.el --- Org-mode configuration  -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
 
@@ -7,7 +7,7 @@
 ;; ----------------------------------------------------------
 
 (use-package org
-  :ensure nil  ; Built-in, but updates from org archive
+  :ensure nil  ; built in (Org 9.8 in Emacs 31)
   :custom
   ;; Directory settings
   (org-directory "~/org")
@@ -35,7 +35,18 @@
   :bind
   (("C-c a" . org-agenda)
    ("C-c c" . org-capture)
-   ("C-c l" . org-store-link)))
+   ("C-c l" . org-store-link))
+
+  :config
+  ;; electric-pair-mode is global; don't pair `<' so `<s TAB' structure
+  ;; templates still work.
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (setq-local electric-pair-inhibit-predicate
+                          (lambda (c)
+                            (if (char-equal c ?<)
+                                t
+                              (electric-pair-default-inhibit c)))))))
 
 
 ;; ----------------------------------------------------------

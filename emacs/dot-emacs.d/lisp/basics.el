@@ -1,52 +1,78 @@
-;;; basics --- basic configuration
+;;; basics.el --- Core settings, files, and the minibuffer stack  -*- lexical-binding: t -*-
 ;;; Commentary:
+;; Loaded first.  no-littering must precede every mode that persists state
+;; (savehist, recentf, save-place, custom), so it leads the file.
 ;;; Code:
+
+;; ----------------------------------------------------------
+;; Keep ~/.emacs.d clean
+;; ----------------------------------------------------------
+;; https://github.com/emacscollective/no-littering
+;; Runtime state goes to var/, generated config to etc/ (both gitignored).
+(use-package no-littering
+  :demand t
+  :config
+  ;; Backups and auto-saves under var/ instead of next to the file.
+  (no-littering-theme-backups)
+  ;; Customize output stays out of git; themes load with NO-CONFIRM so no
+  ;; `custom-safe-themes' list is needed.
+  (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
+  (load custom-file t t))
+
+(setq create-lockfiles nil)
+(setq make-backup-files t
+      backup-by-copying t
+      version-control t
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2)
+
 
 ;; ----------------------------------------------------------
 ;; Sane defaults
 ;; ----------------------------------------------------------
 
-;; Suppress annoying compilation buffers
-(setq native-comp-async-report-warnings-errors nil)  ; Native comp warnings
-(setq byte-compile-warnings '(not obsolete))          ; Reduce byte-compile warnings
-(setq warning-minimum-level :error)                   ; Only show errors, not warnings
+;; Warnings stay visible (a hidden *Warnings* buffer hides package-install
+;; failures); only the noisy *Compile-Log* is suppressed below.
+(setq warning-minimum-level :warning)
+(setq byte-compile-warnings '(not obsolete))
 
-; Minimalistic UI settings
-(setq inhibit-startup-screen t)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
+;; Menu/tool/scroll bars are disabled in early-init.el via `default-frame-alist'.
 (tooltip-mode -1)
 (set-fringe-mode 20)
 (setq ring-bell-function 'ignore)
 (blink-cursor-mode 1)
 (setq blink-cursor-blinks 0)
-(column-number-mode t)
-(global-display-line-numbers-mode)
-(dolist (mode '(org-mode-hook vterm-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+(column-number-mode 1)
+(global-display-line-numbers-mode 1)
+(dolist (hook '(org-mode-hook vterm-mode-hook))
+  (add-hook hook (lambda () (display-line-numbers-mode 0))))
 
-; ESC will quit like C-g
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+;; ESC quits like C-g.
+(global-set-key (kbd "<escape>") #'keyboard-escape-quit)
 
-; Nicer scrolling behavior
-(setq scroll-margin 0)
-(setq scroll-conservatively 1000)
-(setq scroll-preserve-screen-position +1)
-(pixel-scroll-precision-mode 1)  ; smooth trackpad scrolling (Emacs 29+)
-
-(setq select-enable-clipboard t)
+;; Scrolling
+(setq scroll-margin 0
+      scroll-conservatively 1000
+      scroll-preserve-screen-position t)
+(pixel-scroll-precision-mode 1)   ; smooth trackpad scrolling
 
 (setq uniquify-buffer-name-style 'forward)
-(when window-system
-  (setq frame-title-format '(buffer-file-name "%f" ("%b"))))
+(setq frame-title-format '(buffer-file-name "%f" ("%b")))
 
-(set-default 'indent-tabs-mode nil)
-(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil
+              tab-width 4)
+(setq tab-always-indent 'complete)   ; TAB indents, then completes (corfu)
+(setq use-short-answers t)           ; y/n instead of yes/no
+(setq isearch-lazy-count t)          ; "3/17" while searching
+(setq xref-search-program 'ripgrep)
+;; No aspell is installed; keep ispell out of completion-at-point in text modes.
+(setq text-mode-ispell-word-completion nil)
 
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-(global-auto-revert-mode t)
+;; Files edited outside Emacs (Claude Code, git, formatters) reload on their own.
+(global-auto-revert-mode 1)
+(setq global-auto-revert-non-file-buffers t   ; dired too
+      auto-revert-check-vc-info t)            ; branch in the mode line stays current
 
 ;; Remember minibuffer history, recent files, and cursor positions.  These make
 ;; vertico/consult smarter (history-based sorting, recentf in consult-buffer)
@@ -56,22 +82,29 @@
 (setq recentf-max-saved-items 200)
 (save-place-mode 1)
 
-;; Built-in structural editing (replaces smartparens)
+;; Built-in structural editing
 (electric-pair-mode 1)
 (show-paren-mode 1)
+
+;; The repo .editorconfig governs indentation (built in since Emacs 30).
+(editorconfig-mode 1)
+
+;; Repeatable commands: C-x o o o, C-x { { {, dape stepping.
+(repeat-mode 1)
 
 ;; A little extra line spacing aids readability and line-tracking (low vision /
 ;; astigmatism / ADHD).
 (setq-default line-spacing 0.25)
 
-(setq custom-file (locate-user-emacs-file ".custom.el"))
-(load custom-file t t)
+;; ediff in one frame, side by side.  claude-code-ide reviews edits in ediff.
+(setq ediff-window-setup-function #'ediff-setup-windows-plain
+      ediff-split-window-function #'split-window-horizontally)
 
 ;; Mac-specific settings.  emacs-plus is an NS build, so these are ns-*-modifier
 ;; (the mac-*-modifier names belong to the emacs-mac port and are inert here).
-(setq ns-command-modifier 'meta)
-(setq ns-option-modifier nil)
-(setq ns-right-option-modifier 'control)
+(setq ns-command-modifier 'meta
+      ns-option-modifier nil
+      ns-right-option-modifier 'control)
 (setq dired-use-ls-dired nil)
 
 
@@ -113,47 +146,22 @@
          ("M-g f" . consult-flymake)))
 
 ;; Keep ibuffer for buffer management
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-b") #'ibuffer)
 
 
 ;; ----------------------------------------------------------
 ;; Tidy up text
 ;; ----------------------------------------------------------
 
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'text-mode-hook #'turn-on-auto-fill)
 
 (add-hook 'prog-mode-hook
           (lambda ()
             (setq-local comment-auto-fill-only-comments t)
-            (auto-fill-mode t)
-            ;; buffer-local (nil t) so we only strip trailing whitespace in prog
-            ;; buffers — not globally, which would clobber e.g. Markdown's
-            ;; trailing-space hard line breaks.
+            (auto-fill-mode 1)
+            ;; Buffer-local so trailing whitespace is stripped only in prog
+            ;; buffers, not in Markdown (trailing-space hard breaks) or Org.
             (add-hook 'before-save-hook #'delete-trailing-whitespace nil t)))
-
-
-;; ----------------------------------------------------------
-;; Tidy up files
-;; ----------------------------------------------------------
-
-(use-package no-littering)
-
-(setq create-lockfiles nil)
-
-;; Enable backups with version control in no-littering directory
-(setq make-backup-files t)
-(setq backup-by-copying t)
-(setq version-control t)
-(setq delete-old-versions t)
-(setq kept-new-versions 6)
-(setq kept-old-versions 2)
-(setq backup-directory-alist
-      `(("." . ,(no-littering-expand-var-file-name "backup/"))))
-
-;; Enable auto-save in no-littering directory
-(setq auto-save-default t)
-(setq auto-save-file-name-transforms
-	  `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 
 ;; ----------------------------------------------------------
@@ -161,17 +169,12 @@
 ;; ----------------------------------------------------------
 
 (require 'server)
-(if (not (server-running-p))
-    (server-start))
+(unless (server-running-p)
+  (server-start))
 
-;; Hide compilation buffers automatically
+;; Hide the byte-compile log; warnings themselves still surface.
 (add-to-list 'display-buffer-alist
              '("\\*Compile-Log\\*"
-               (display-buffer-no-window)
-               (allow-no-window . t)))
-
-(add-to-list 'display-buffer-alist
-             '("\\*Warnings\\*"
                (display-buffer-no-window)
                (allow-no-window . t)))
 
