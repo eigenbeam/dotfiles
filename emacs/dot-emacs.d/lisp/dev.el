@@ -43,11 +43,12 @@
   :config
   ;; Java debugging: dape's `jdtls' config needs jdtls to load the java-debug
   ;; plugin (it then advertises vscode.java.resolveClasspath).  The jar comes
-  ;; from `make emacs-adapters'; without it the default plain jdtls entry is used.
+  ;; from `make debug-adapters' (shared with nvim-dap); without it the default
+  ;; plain jdtls entry is used.
   (when-let* ((jar (car (file-expand-wildcards
                          (expand-file-name
                           "debug-adapters/java-debug/com.microsoft.java.debug.plugin-*.jar"
-                          user-emacs-directory)))))
+                          "~/.local/share/")))))
     (add-to-list 'eglot-server-programs
                  `((java-mode java-ts-mode)
                    . ("jdtls" :initializationOptions (:bundles [,jar]))))))
@@ -109,13 +110,15 @@
 ;; Adapters, by language:
 ;;   Python  debugpy        per project: uv add --dev debugpy
 ;;   C/C++   lldb-dap       ships with the Xcode Command Line Tools (below)
-;;   JS/TS   js-debug-node  make emacs-adapters
-;;   Java    jdtls          make emacs-adapters + the eglot bundle entry above
+;;   JS/TS   js-debug-node  make debug-adapters
+;;   Java    jdtls          make debug-adapters + the eglot bundle entry above
+;; Adapters live in ~/.local/share/debug-adapters, shared with nvim-dap.
 ;; `M-x dape' prompts for a config name; `C-c d' is the command map.
 (use-package dape
   :bind-keymap ("C-c d" . dape-global-map)
   :custom
   (dape-key-prefix nil)                   ; bound above instead of gud's C-x C-a
+  (dape-adapter-dir (expand-file-name "~/.local/share/debug-adapters/"))
   (dape-buffer-window-arrangement 'right)
   (dape-inlay-hints t)
   :config

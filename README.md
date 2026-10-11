@@ -71,7 +71,7 @@ Not stowed:
 | `make homebrew`       | Install core packages from `Brewfile`                         |
 | `make brewfile`       | Dump current Homebrew state to `Brewfile`                     |
 | `make tools`          | Install npm globals (LSPs, prettier) and uv tools             |
-| `make emacs-adapters` | Download the Java and JS debug adapters for Emacs dape        |
+| `make debug-adapters` | Download the Java and JS debug adapters (Emacs dape, nvim-dap) |
 | `make ssh`            | Deploy SSH config (manual — not in `make all`)                |
 | `make keyboard`       | Stow and load the key-remap launch agent (macOS only)         |
 | `make lint`           | Shellcheck the bash files; paren-check the Emacs elisp        |

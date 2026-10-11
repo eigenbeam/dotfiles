@@ -20,12 +20,13 @@ well-adopted packages on top. Dark Gruvbox like the rest of the dotfiles.
 
 Runtime state goes to `var/` (including tree-sitter grammars and the eln
 cache) and generated config (including `custom.el`) to `etc/`; both are
-gitignored, as are `elpa/` and `debug-adapters/`.
+gitignored, as is `elpa/`.
 
 ## First launch
 
 1. `brew bundle --file homebrew/Brewfile` (vterm needs `cmake` and `libvterm`).
-   `make emacs-adapters` downloads the Java and JS debug adapters for dape.
+   `make debug-adapters` downloads the Java and JS debug adapters for dape
+   (shared with Neovim).
 2. Start Emacs. Packages install from MELPA/ELPA; `claude-code-ide` is cloned
    from GitHub with package-vc.
 3. Open a file in each language once. Tree-sitter grammars compile on first
@@ -82,8 +83,8 @@ Format on save is apheleia (`M-x apheleia-mode` to toggle per buffer).
 |---|---|---|---|---|
 | C / C++ | `c-ts-mode`, `c++-ts-mode` | clangd (Xcode CLT) | off, like nvim | `lldb-dap` (CLT, found via `xcrun`) |
 | Python | `python-ts-mode` | pyright (brew) + ruff diagnostics | ruff | `debugpy`: `uv add --dev debugpy` |
-| Java | `java-ts-mode` | jdtls (brew) + java-debug plugin | off | `jdtls` config (`make emacs-adapters`) |
-| JS / TS | `js-ts-mode`, `typescript-ts-mode`, `tsx-ts-mode` | typescript-language-server (`make tools`) | prettier | `js-debug-node` (`make emacs-adapters`) |
+| Java | `java-ts-mode` | jdtls (brew) + java-debug plugin | off | `jdtls` config (`make debug-adapters`) |
+| JS / TS | `js-ts-mode`, `typescript-ts-mode`, `tsx-ts-mode` | typescript-language-server (`make tools`) | prettier | `js-debug-node` (`make debug-adapters`) |
 | Julia | `julia-mode` | LanguageServer.jl via eglot-jl | off | none; REPL: `C-c C-z`, send region `C-c C-c` (julia-repl in vterm) |
 | Shell | `bash-ts-mode` | bash-language-server (brew) | off | |
 | JSON / YAML / TOML / Markdown / Terraform | ts modes, markdown-mode, terraform-mode | | prettier / prettier / taplo / prettier / terraform fmt | |
@@ -92,9 +93,9 @@ Format on save is apheleia (`M-x apheleia-mode` to toggle per buffer).
 clangd needs a `compile_commands.json`: `cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON`
 or `bear -- make`.
 
-Debug adapters live in `~/.emacs.d/debug-adapters/` (gitignored):
-`make emacs-adapters` fetches the java-debug plugin jar from Maven Central and
-the latest `js-debug-dap` release. When the jar is present, eglot starts jdtls
+Debug adapters live in `~/.local/share/debug-adapters/`, shared with
+nvim-dap: `make debug-adapters` fetches the java-debug plugin jar from Maven
+Central and the latest `js-debug-dap` release. When the jar is present, eglot starts jdtls
 with it as a bundle, which is what makes dape's `jdtls` config work; `C-c d d`
 `jdtls` then prompts for the main class file. Without the jar, Java LSP still
 works and only debugging is unavailable.

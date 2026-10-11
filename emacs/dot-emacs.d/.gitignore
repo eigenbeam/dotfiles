@@ -1,9 +1,8 @@
 # package.el / package-vc checkouts and native-comp output
 elpa/
 eln-cache/
-# tree-sitter grammars (auto-installed) and dape debug adapters
+# tree-sitter grammars (auto-installed)
 tree-sitter/
-debug-adapters/
 # no-littering: runtime state (var/) and generated config incl. custom.el (etc/)
 var/
 etc/
