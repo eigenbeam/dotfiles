@@ -42,7 +42,7 @@ All packages stow to `$HOME`.
 | `bash`     | `.bashrc`, `.bash_profile`, `.profile` (shared with zsh), `.shell-common`, `~/.local/bin/tmux-sessionizer` |
 | `zsh`      | `.zshrc`, `.zprofile`, `.zshenv`                                      |
 | `git`      | `~/.config/git/config`, `ignore` (XDG layout)                         |
-| `nvim`     | Single-file `init.lua` with lazy.nvim (30+ plugins); VSCode-compatible |
+| `nvim`     | Neovim 0.12, `vim.pack`, `lua/kwb/` modules, LSP/DAP, Claude Code (see its README) |
 | `emacs`    | Emacs 31: eglot, apheleia, dape, corfu/vertico, Claude Code (see its README) |
 | `ghostty`  | Terminal config: CommitMono Nerd Font, Gruvbox Dark theme             |
 | `keyboard` | macOS-only: right-option → right-control via `hidutil` launch agent   |
@@ -67,14 +67,14 @@ Not stowed:
 | `make` / `make all`   | Symlink all stow packages (runs `make keyboard` on macOS)     |
 | `make bootstrap`      | Full setup from scratch (Homebrew + Stow + all + homebrew + tools) |
 | `make uninstall`      | Remove all stow symlinks                                      |
-| `make doctor`         | Verify symlinks, tools, configs, shell, and Emacs toolchain   |
+| `make doctor`         | Verify symlinks, tools, configs, shell, and the editor toolchains |
 | `make homebrew`       | Install core packages from `Brewfile`                         |
 | `make brewfile`       | Dump current Homebrew state to `Brewfile`                     |
 | `make tools`          | Install npm globals (LSPs, prettier) and uv tools             |
 | `make debug-adapters` | Download the Java and JS debug adapters (Emacs dape, nvim-dap) |
 | `make ssh`            | Deploy SSH config (manual — not in `make all`)                |
 | `make keyboard`       | Stow and load the key-remap launch agent (macOS only)         |
-| `make lint`           | Shellcheck the bash files; paren-check the Emacs elisp        |
+| `make lint`           | Shellcheck bash; paren-check elisp; stylua + syntax-check the nvim Lua |
 | `make fonts`          | Install CommitMono Nerd Font (Linux: downloads from GitHub, macOS: use cask) |
 | `make linux-packages` | Install desktop apps via apt (requires sudo)                  |
 | `make ssm-plugin`     | Install AWS Session Manager Plugin from AWS (requires sudo)   |

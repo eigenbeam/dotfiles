@@ -226,11 +226,29 @@ doctor:
 	for cmd in node npm uv python3 aws terraform; do \
 		has "$$cmd" && ok "$$cmd" || wrn "$$cmd not found"; \
 	done; \
-	has typescript-language-server && ok "typescript-language-server" || wrn "typescript-language-server (run make tools)"; \
 	has prettier                  && ok "prettier"                   || wrn "prettier (run make tools)"; \
 	has ipython                   && ok "ipython"                    || wrn "ipython (run make tools)"; \
 	has session-manager-plugin    && ok "session-manager-plugin"     || wrn "session-manager-plugin (run make ssm-plugin)"; \
 	has claude                    && ok "claude"                      || wrn "claude (curl -fsSL https://claude.ai/install.sh | bash)"; \
+	echo ""; \
+	echo "Language servers (Emacs eglot and Neovim):"; \
+	for cmd in clangd pyright-langserver ruff jdtls bash-language-server yaml-language-server lua-language-server taplo terraform-ls julia; do \
+		has "$$cmd" && ok "$$cmd" || wrn "$$cmd not found"; \
+	done; \
+	has typescript-language-server && ok "typescript-language-server" || wrn "typescript-language-server (run make tools)"; \
+	has docker-langserver          && ok "docker-langserver"          || wrn "docker-langserver (run make tools)"; \
+	echo ""; \
+	echo "Debug adapters (Emacs dape and nvim-dap):"; \
+	ls "$(DEBUG_ADAPTERS)"/java-debug/com.microsoft.java.debug.plugin-*.jar >/dev/null 2>&1 \
+		&& ok "java-debug adapter" || wrn "java-debug adapter (run make debug-adapters)"; \
+	[ -f "$(DEBUG_ADAPTERS)/js-debug/src/dapDebugServer.js" ] \
+		&& ok "js-debug adapter" || wrn "js-debug adapter (run make debug-adapters)"; \
+	if [ "$(UNAME)" = Darwin ]; then \
+		xcrun -f lldb-dap >/dev/null 2>&1 && ok "lldb-dap (Xcode CLT)" || wrn "lldb-dap (xcode-select --install)"; \
+	else \
+		has lldb-dap && ok "lldb-dap" || wrn "lldb-dap (install the lldb package)"; \
+	fi; \
+	ok "debugpy is per project: uv add --dev debugpy"; \
 	echo ""; \
 	echo "Emacs:"; \
 	has emacs && ok "emacs $$(emacs --version | head -1 | awk '{print $$3}')" || wrn "emacs not found"; \
@@ -238,19 +256,18 @@ doctor:
 		&& ok "cmake + libvterm (vterm build deps)" || wrn "cmake/libvterm missing (run make homebrew)"; \
 	ls "$(HOME)"/.emacs.d/elpa/vterm-*/vterm-module.so >/dev/null 2>&1 \
 		&& ok "vterm module compiled" || wrn "vterm module not compiled yet (first C-c t in Emacs)"; \
-	for cmd in clangd pyright-langserver ruff jdtls bash-language-server yaml-language-server lua-language-server docker-langserver julia; do \
-		has "$$cmd" && ok "$$cmd" || wrn "$$cmd not found"; \
-	done; \
-	ls "$(DEBUG_ADAPTERS)"/java-debug/com.microsoft.java.debug.plugin-*.jar >/dev/null 2>&1 \
-		&& ok "java-debug adapter" || wrn "java-debug adapter (run make debug-adapters)"; \
-	[ -f "$(DEBUG_ADAPTERS)/js-debug/src/dapDebugServer.js" ] \
-		&& ok "js-debug adapter" || wrn "js-debug adapter (run make debug-adapters)"; \
 	echo ""; \
 	echo "Neovim:"; \
 	has nvim && ok "nvim $$(nvim --version | head -1 | awk '{print $$2}')" || wrn "nvim not found"; \
+	has stylua && ok "stylua" || wrn "stylua (run make homebrew; make lint needs it)"; \
 	has tree-sitter && ok "tree-sitter CLI" || wrn "tree-sitter CLI (run make homebrew; parsers will not compile)"; \
 	ls "$(HOME)"/.local/share/nvim/site/parser/*.so >/dev/null 2>&1 \
 		&& ok "tree-sitter parsers compiled" || wrn "no tree-sitter parsers yet (start nvim once with the CLI installed)"; \
+	ls "$(HOME)"/.local/share/nvim/site/pack/core/opt/*/ >/dev/null 2>&1 \
+		&& ok "vim.pack plugins installed" || wrn "no vim.pack plugins yet (start nvim once)"; \
+	for d in lazy mason site/pack/packer; do \
+		[ -e "$(HOME)/.local/share/nvim/$$d" ] && wrn "stale ~/.local/share/nvim/$$d (rm -rf it; see nvim/.config/nvim/README.md)"; \
+	done; \
 	echo ""; \
 	echo "Homebrew:"; \
 	brew bundle check --file=homebrew/Brewfile >/dev/null 2>&1 \
