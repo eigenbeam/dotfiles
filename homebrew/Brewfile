@@ -39,6 +39,7 @@ brew "ruff"
 brew "shellcheck"
 brew "stylua"
 brew "taplo"
+brew "tree-sitter-cli"  # nvim-treesitter compiles parsers with the CLI
 brew "yaml-language-server"
 
 # Languages, runtimes & build tools

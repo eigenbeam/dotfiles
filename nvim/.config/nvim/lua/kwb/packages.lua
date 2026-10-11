@@ -64,13 +64,19 @@ keymap("n", "<leader>/", function()
 end, { desc = "Fuzzy find in buffer" })
 
 -- ── Treesitter ───────────────────────────────────────────────────────────
-local filetypes = {
+-- Parsers compile with the tree-sitter CLI (brew "tree-sitter-cli") into
+-- ~/.local/share/nvim/site/parser. install() is async and a no-op when
+-- everything is current; the PackChanged hook in init.lua recompiles on
+-- plugin update.
+local parsers = {
     "bash",
     "c",
     "cpp",
     "css",
     "diff",
     "dockerfile",
+    "git_rebase",
+    "gitcommit",
     "hcl",
     "html",
     "java",
@@ -79,11 +85,13 @@ local filetypes = {
     "julia",
     "lua",
     "luadoc",
+    "make",
     "markdown",
     "markdown_inline",
     "python",
     "query",
     "sql",
+    "ssh_config",
     "terraform",
     "toml",
     "tsx",
@@ -92,11 +100,30 @@ local filetypes = {
     "vimdoc",
     "yaml",
 }
-require("nvim-treesitter").install(filetypes)
+require("nvim-treesitter").install(parsers)
+
+-- Quarto documents are markdown with code cells (otter handles the cells).
+vim.treesitter.language.register("markdown", "quarto")
+
+-- Start highlighting, folds, and indentation for any filetype that has a
+-- parser. get_lang() maps filetype to parser (sh -> bash, typescriptreact
+-- -> tsx, help -> vimdoc); a missing parser falls back to regex syntax.
+-- Treesitter indentation is experimental; Vim's own indent scripts win for
+-- the listed filetypes.
+local no_ts_indent = { python = true, yaml = true }
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = filetypes,
-    callback = function()
-        vim.treesitter.start()
+    group = vim.api.nvim_create_augroup("kwb-treesitter", { clear = true }),
+    callback = function(args)
+        local lang = vim.treesitter.language.get_lang(args.match)
+        if not lang or not vim.treesitter.language.add(lang) then
+            return
+        end
+        vim.treesitter.start(args.buf, lang)
+        vim.wo[0][0].foldmethod = "expr"
+        vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        if not no_ts_indent[args.match] then
+            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
     end,
 })
 

@@ -246,6 +246,12 @@ doctor:
 	[ -f "$(EMACS_ADAPTERS)/js-debug/src/dapDebugServer.js" ] \
 		&& ok "js-debug adapter" || wrn "js-debug adapter (run make emacs-adapters)"; \
 	echo ""; \
+	echo "Neovim:"; \
+	has nvim && ok "nvim $$(nvim --version | head -1 | awk '{print $$2}')" || wrn "nvim not found"; \
+	has tree-sitter && ok "tree-sitter CLI" || wrn "tree-sitter CLI (run make homebrew; parsers will not compile)"; \
+	ls "$(HOME)"/.local/share/nvim/site/parser/*.so >/dev/null 2>&1 \
+		&& ok "tree-sitter parsers compiled" || wrn "no tree-sitter parsers yet (start nvim once with the CLI installed)"; \
+	echo ""; \
 	echo "Homebrew:"; \
 	brew bundle check --file=homebrew/Brewfile >/dev/null 2>&1 \
 		&& ok "Brewfile packages installed" || wrn "some Brewfile packages missing (run make homebrew)"; \
