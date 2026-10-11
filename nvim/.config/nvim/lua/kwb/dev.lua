@@ -166,8 +166,101 @@ keymap("n", "<leader>ll", function()
 end, { desc = "Lint current file" })
 
 -- ── Debug Adapter Protocol (nvim-dap) ────────────────────────────────────
+-- Adapters, by language (same set as dape in emacs/lisp/dev.el):
+--   Python  debugpy    per project: uv add --dev debugpy
+--   C/C++   lldb-dap   ships with the Xcode Command Line Tools (via xcrun)
+--   JS/TS   pwa-node   js-debug from make debug-adapters
+--   Java    java       jdtls + java-debug bundle, wired in ftplugin/java.lua
+-- Adapter paths resolve when a session starts, not at startup, so direnv
+-- and the project's .venv win.
 local dap = require("dap")
 local dapui = require("dapui")
+local adapters_dir = vim.fs.normalize("~/.local/share/debug-adapters")
+
+local function project_python()
+    if vim.env.VIRTUAL_ENV then
+        return vim.env.VIRTUAL_ENV .. "/bin/python"
+    end
+    local root = vim.fs.root(0, { "pyproject.toml", ".git" })
+    if root and vim.fn.executable(root .. "/.venv/bin/python") == 1 then
+        return root .. "/.venv/bin/python"
+    end
+    return vim.fn.exepath("python3")
+end
+
+dap.adapters.debugpy = function(callback)
+    callback({ type = "executable", command = project_python(), args = { "-m", "debugpy.adapter" } })
+end
+dap.configurations.python = {
+    {
+        type = "debugpy",
+        request = "launch",
+        name = "Launch file",
+        program = "${file}",
+        cwd = "${workspaceFolder}",
+        console = "integratedTerminal",
+        python = project_python,
+    },
+}
+
+local function lldb_dap()
+    if vim.fn.has("mac") == 1 then
+        local out = vim.fn.system({ "xcrun", "-f", "lldb-dap" })
+        if vim.v.shell_error == 0 then
+            return vim.trim(out)
+        end
+    end
+    return vim.fn.exepath("lldb-dap")
+end
+
+dap.adapters.lldb = function(callback)
+    callback({ type = "executable", name = "lldb", command = lldb_dap() })
+end
+dap.configurations.c = {
+    {
+        type = "lldb",
+        request = "launch",
+        name = "Launch",
+        program = function()
+            return vim.fn.input("Executable: ", vim.fn.getcwd() .. "/", "file")
+        end,
+        cwd = "${workspaceFolder}",
+        stopOnEntry = false,
+        args = {},
+    },
+}
+dap.configurations.cpp = dap.configurations.c
+
+-- The host argument matters: without it js-debug binds ::1 on recent Node
+-- and nvim-dap's IPv4 connection is refused.
+dap.adapters["pwa-node"] = {
+    type = "server",
+    host = "127.0.0.1",
+    port = "${port}",
+    executable = {
+        command = "node",
+        args = { adapters_dir .. "/js-debug/src/dapDebugServer.js", "${port}", "127.0.0.1" },
+    },
+}
+for _, ft in ipairs({ "javascript", "typescript" }) do
+    dap.configurations[ft] = {
+        {
+            type = "pwa-node",
+            request = "launch",
+            name = "Launch file",
+            program = "${file}",
+            cwd = "${workspaceFolder}",
+        },
+        {
+            type = "pwa-node",
+            request = "attach",
+            name = "Attach to process",
+            processId = require("dap.utils").pick_process,
+            cwd = "${workspaceFolder}",
+        },
+    }
+end
+
 dapui.setup()
 dap.listeners.after.event_initialized["dapui_config"] = function()
     dapui.open()
@@ -178,10 +271,18 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
     dapui.close()
 end
+
 keymap("n", "<leader>Db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
-keymap("n", "<leader>Dc", dap.continue, { desc = "Continue" })
+keymap("n", "<leader>DB", function()
+    dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+end, { desc = "Conditional breakpoint" })
+keymap("n", "<leader>Dc", dap.continue, { desc = "Continue / start" })
 keymap("n", "<leader>Do", dap.step_over, { desc = "Step over" })
 keymap("n", "<leader>Di", dap.step_into, { desc = "Step into" })
+keymap("n", "<leader>DO", dap.step_out, { desc = "Step out" })
+keymap("n", "<leader>Dr", dap.repl.toggle, { desc = "Toggle REPL" })
+keymap("n", "<leader>Dl", dap.run_last, { desc = "Run last" })
+keymap("n", "<leader>Dt", dap.terminate, { desc = "Terminate" })
 keymap("n", "<leader>Du", dapui.toggle, { desc = "Toggle DAP UI" })
 
 -- ── Quarto ───────────────────────────────────────────────────────────────
