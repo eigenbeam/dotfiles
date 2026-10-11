@@ -14,6 +14,7 @@ require("kwb.pack")({
     "folke/todo-comments.nvim",
     "folke/zen-mode.nvim",
     "NMAC427/guess-indent.nvim",
+    "coder/claudecode.nvim",
 })
 
 local keymap = vim.keymap.set
@@ -201,7 +202,35 @@ require("which-key").setup({
         { "<leader>s", group = "Search", mode = { "n", "v" } },
         { "<leader>t", group = "Toggle" },
         { "<leader>D", group = "Debug" },
+        { "<leader>a", group = "Claude", mode = { "n", "v" } },
     },
+})
+
+-- ── Claude Code ──────────────────────────────────────────────────────────
+-- claudecode.nvim speaks the same WebSocket MCP protocol as the VS Code
+-- extension: Claude sees the selection, open files, and diagnostics, and
+-- proposed edits open as a diff to accept (:w / <leader>aa) or reject
+-- (:q / <leader>ad). The native terminal provider avoids a snacks.nvim
+-- dependency. One instance per nvim; auto_start opens the socket so a
+-- `claude` launched in the split attaches to this editor.
+require("claudecode").setup({
+    terminal = { provider = "native", split_side = "right", split_width_percentage = 0.35 },
+    diff_opts = { layout = "vertical" },
+})
+keymap("n", "<leader>ac", "<cmd>ClaudeCode<cr>", { desc = "Toggle Claude" })
+keymap("n", "<leader>af", "<cmd>ClaudeCodeFocus<cr>", { desc = "Focus Claude" })
+keymap("n", "<leader>ar", "<cmd>ClaudeCode --resume<cr>", { desc = "Resume Claude" })
+keymap("n", "<leader>aC", "<cmd>ClaudeCode --continue<cr>", { desc = "Continue Claude" })
+keymap("n", "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", { desc = "Select Claude model" })
+keymap("n", "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", { desc = "Add current buffer" })
+keymap("v", "<leader>as", "<cmd>ClaudeCodeSend<cr>", { desc = "Send selection to Claude" })
+keymap("n", "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", { desc = "Accept diff" })
+keymap("n", "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", { desc = "Deny diff" })
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "netrw",
+    callback = function(args)
+        keymap("n", "<leader>as", "<cmd>ClaudeCodeTreeAdd<cr>", { buf = args.buf, desc = "Add file to Claude" })
+    end,
 })
 
 -- ── Misc ─────────────────────────────────────────────────────────────────
