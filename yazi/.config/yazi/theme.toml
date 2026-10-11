@@ -1,119 +1,41 @@
-# Yazi theme — Gruvbox Dark
-# Dark background, warm muted accents
+# Yazi theme — ANSI-only overlay on Yazi's built-in light/dark preset
+# (picked from the terminal mode). ratatui names: gray = ANSI 7 (= Zenwritten
+# fg), darkgray = 8 (dim grey), white = 15 (mid grey), black = 0 (= background).
+# Schema: https://yazi-rs.github.io/docs/configuration/theme
 
-[manager]
-cwd = { fg = "#83a598" }
+[mgr]
+cwd           = { fg = "blue", bold = true }
+find_keyword  = { fg = "yellow", bold = true }
+find_position = { fg = "magenta", bg = "reset" }
+border_style  = { fg = "darkgray" }
+count_copied   = { fg = "black", bg = "green" }
+count_cut      = { fg = "black", bg = "red" }
+count_selected = { fg = "black", bg = "yellow" }
 
-hovered         = { reversed = true }
-preview_hovered = { underline = true }
+[tabs]
+active   = { fg = "black", bg = "blue", bold = true }
+inactive = { fg = "white", bg = "reset" }
 
-# Find
-find_keyword  = { fg = "#fe8019", bold = true }
-find_position = { fg = "#928374", italic = true }
-
-# Markers
-marker_copied   = { fg = "#b8bb26", bg = "#b8bb26" }
-marker_cut      = { fg = "#fb4934", bg = "#fb4934" }
-marker_selected = { fg = "#83a598", bg = "#83a598" }
-marker_marked   = { fg = "#fe8019", bg = "#fe8019" }
-
-# Tabs
-tab_active   = { fg = "#282828", bg = "#a89984" }
-tab_inactive = { fg = "#928374", bg = "#3c3836" }
-tab_width    = 1
-
-# Count
-count_copied   = { fg = "#ebdbb2", bg = "#504945" }
-count_cut      = { fg = "#282828", bg = "#fb4934" }
-count_selected = { fg = "#ebdbb2", bg = "#504945" }
+[mode]
+normal_main = { fg = "black", bg = "blue", bold = true }
+normal_alt  = { fg = "blue", bg = "reset" }
+select_main = { fg = "black", bg = "red", bold = true }
+select_alt  = { fg = "red", bg = "reset" }
+unset_main  = { fg = "black", bg = "red", bold = true }
+unset_alt   = { fg = "red", bg = "reset" }
 
 [status]
-separator_open  = ""
-separator_close = ""
+perm_sep        = { fg = "darkgray" }
+progress_normal = { fg = "black", bg = "blue" }
+progress_error  = { fg = "black", bg = "red" }
 
-mode_normal = { fg = "#282828", bg = "#a89984", bold = true }
-mode_select = { fg = "#282828", bg = "#fb4934", bold = true }
-mode_unset  = { fg = "#282828", bg = "#928374", bold = true }
-
-progress_label  = { fg = "#ebdbb2" }
-progress_normal = { fg = "#83a598" }
-progress_error  = { fg = "#fb4934" }
-
-[input]
-border   = { fg = "#504945" }
-title    = {}
-value    = {}
-selected = { reversed = true }
-
-[pick]
-border   = { fg = "#504945" }
-active   = { fg = "#282828", bg = "#a89984" }
-inactive = {}
-
-[confirm]
-border  = { fg = "#504945" }
-title   = {}
-content = {}
-list    = {}
-button_active  = { fg = "#282828", bg = "#a89984", bold = true }
-button_default = { fg = "#ebdbb2" }
-
-[completion]
-border   = { fg = "#504945" }
-active   = { reversed = true }
-inactive = {}
-
-[help]
-on      = { fg = "#83a598" }
-run     = { fg = "#b8bb26" }
-desc    = { fg = "#928374" }
-hovered = { reversed = true }
-footer  = { fg = "#928374" }
-
-[notify]
-title_info  = { fg = "#83a598" }
-title_warn  = { fg = "#fe8019" }
-title_error = { fg = "#fb4934" }
+[which]
+rest            = { fg = "white" }
+separator_style = { fg = "darkgray" }
 
 [filetype]
 rules = [
-    { name = "*/", fg = "#83a598", bold = true },
-
-    { mime = "image/*", fg = "#fe8019" },
-    { mime = "video/*", fg = "#fe8019" },
-    { mime = "audio/*", fg = "#fe8019" },
-
-    { mime = "application/zip",  fg = "#d3869b" },
-    { mime = "application/gzip", fg = "#d3869b" },
-    { mime = "application/x-tar", fg = "#d3869b" },
-    { mime = "application/x-bzip2", fg = "#d3869b" },
-    { mime = "application/x-7z-compressed", fg = "#d3869b" },
-    { mime = "application/x-rar", fg = "#d3869b" },
-
-    { mime = "application/pdf", fg = "#fb4934" },
-    { mime = "application/doc", fg = "#fb4934" },
-
-    { name = "*.md", fg = "#b8bb26" },
-    { name = "*.txt", fg = "#b8bb26" },
-    { name = "*.json", fg = "#928374" },
-    { name = "*.toml", fg = "#928374" },
-    { name = "*.yaml", fg = "#928374" },
-    { name = "*.yml", fg = "#928374" },
-
-    { name = "*.py", fg = "#8ec07c" },
-    { name = "*.js", fg = "#fe8019" },
-    { name = "*.ts", fg = "#83a598" },
-    { name = "*.lua", fg = "#d3869b" },
-    { name = "*.rs", fg = "#fb4934" },
-    { name = "*.go", fg = "#8ec07c" },
-    { name = "*.java", fg = "#fe8019" },
-    { name = "*.sh", fg = "#ebdbb2" },
-
-    { name = "Makefile", fg = "#ebdbb2", bold = true },
-    { name = "Dockerfile", fg = "#83a598", bold = true },
-
-    { name = ".git*", fg = "#928374" },
-    { name = ".env*", fg = "#fb4934", bold = true },
-
-    { name = "*", fg = "#ebdbb2" },
+    { url = "*", is = "orphan", fg = "red" },
+    { url = "*", is = "exec", fg = "green" },
+    { url = "*/", fg = "blue", bold = true },
 ]

@@ -1,8 +1,12 @@
 # Ghostty terminal configuration
 
-# Theme
-theme = Gruvbox Dark
+# Theme — Zenwritten Light. Every non-editor tool uses ANSI slots, so this
+# line, nvim's `background`, and the Emacs theme are the whole light/dark
+# switch. Auto-switch later: theme = light:Zenwritten Light,dark:Zenwritten Dark
+theme = Zenwritten Light
 minimum-contrast = 1
+# Uncomment if strokes look thin on the light background (macOS only):
+# font-thicken = true
 
 # Font
 font-family = Atkinson Hyperlegible Mono

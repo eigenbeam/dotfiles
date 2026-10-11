@@ -1,7 +1,8 @@
 ;;; theme.el --- Font, mode line, and color theme  -*- lexical-binding: t -*-
 ;;; Commentary:
-;; Gruvbox dark throughout, matching ghostty/tmux/nvim.  The built-in modus
-;; themes remain available via `M-x load-theme' for a high-contrast day.
+;; Zenwritten Light throughout: ghostty sets the terminal palette, nvim uses
+;; zenwritten, and Emacs pins the built-in modus-operandi-tinted to the same
+;; values (no Emacs port of zenbones exists).
 ;;; Code:
 
 ;; ----------------------------------------------------------
@@ -83,14 +84,47 @@ A no-op (leaving the default face) when the font is unavailable."
 ;; ----------------------------------------------------------
 ;; Color theme
 ;; ----------------------------------------------------------
-;; https://github.com/greduan/emacs-theme-gruvbox
-;; dark-hard: warm, a bit more contrast than soft for legibility.  The
-;; background is near-black; if text seems to smear (astigmatism halation),
-;; fall back to gruvbox-dark-soft or -medium.  Built-in alternatives:
-;; modus-vivendi / modus-operandi (WCAG AAA).
-(use-package gruvbox-theme
-  :init
-  (load-theme 'gruvbox-dark-hard t))
+;; Built-in modus-operandi-tinted (Emacs 31 ships modus-themes 4.x), loaded
+;; with `require-theme' (it lives in etc/themes, not ELPA).  "faint" preset
+;; for low noise, then neutrals, accents and syntax slots pinned to
+;; Zenwritten Light (ghostty theme + nvim colors/zenwritten.vim) so Emacs
+;; matches ghostty/nvim.  Theme-specific overrides beat the common (faint)
+;; ones.  Dark later: same shape in `modus-vivendi-tinted-palette-overrides',
+;; then `modus-themes-toggle'.
+(require-theme 'modus-themes)
+
+(setq modus-themes-italic-constructs t   ; comments/docstrings italic, as zenwritten
+      modus-themes-bold-constructs t     ; keywords bold, as zenwritten's Statement
+      modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted)
+      modus-themes-common-palette-overrides modus-themes-preset-overrides-faint)
+
+(setq modus-operandi-tinted-palette-overrides
+      '(;; neutrals
+        (bg-main "#eeeeee") (fg-main "#353535")
+        (bg-dim "#e5e5e5") (fg-dim "#5c5c5c") (fg-alt "#636363")
+        (bg-active "#d7d7d7") (bg-inactive "#dddddd")
+        (bg-region "#d7d7d7") (fg-region unspecified)
+        (bg-hl-line "#e5e5e5")
+        (border "#989898")
+        (cursor "#353535")                      ; tinted default is red
+        (bg-mode-line-active "#cfcfcf") (fg-mode-line-active "#353535")
+        (border-mode-line-active "#cfcfcf")
+        (bg-mode-line-inactive "#dddddd") (fg-mode-line-inactive "#686868")
+        (border-mode-line-inactive "#dddddd")
+        (fg-line-number-inactive "#989898") (fg-line-number-active "#353535")
+        ;; accents = terminal ANSI 1-6
+        (red "#a8334c") (green "#4f6c31") (yellow "#944927")
+        (blue "#286486") (magenta "#88507d") (cyan "#3b8992")
+        ;; zenwritten's near-monochrome syntax
+        (comment "#8b8b8b") (docstring "#636363")
+        (string "#636363") (constant "#636363")
+        (keyword fg-main) (builtin fg-main) (fnname fg-main)
+        (variable "#505050") (type "#735057") (preprocessor "#5c5c5c")
+        ;; diffs and paren match
+        (bg-added "#cbe5b8") (bg-removed "#ebd8da") (bg-changed "#d4dee7")
+        (bg-paren-match "#deb9d6")))
+
+(modus-themes-load-theme 'modus-operandi-tinted)
 
 
 (provide 'theme)

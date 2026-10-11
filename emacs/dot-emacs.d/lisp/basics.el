@@ -41,8 +41,7 @@
 (tooltip-mode -1)
 (set-fringe-mode 20)
 (setq ring-bell-function 'ignore)
-(blink-cursor-mode 1)
-(setq blink-cursor-blinks 0)
+(blink-cursor-mode -1)   ; steady block, like ghostty's cursor-style-blink = false
 (column-number-mode 1)
 (global-display-line-numbers-mode 1)
 (dolist (hook '(org-mode-hook vterm-mode-hook))

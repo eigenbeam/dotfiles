@@ -1,24 +1,19 @@
-# Lazygit configuration — Gruvbox Dark theme
+# Lazygit configuration — ANSI names only; colours come from the terminal palette.
+# Avoid white (= ANSI 15 mid grey) and black (= ANSI 0, the background).
+# Light/dark is detected from the terminal (gui.colorScheme: auto); set
+# colorScheme: light if that fails inside tmux.
 gui:
   nerdFontsVersion: "3"
   theme:
-    activeBorderColor:
-      - "#83a598"
-      - bold
-    inactiveBorderColor:
-      - "#504945"
-    selectedLineBgColor:
-      - "#3c3836"
-    searchingActiveBorderColor:
-      - "#fe8019"
-      - bold
-    optionsTextColor:
-      - "#83a598"
-    cherryPickedCommitBgColor:
-      - "#3c3836"
-    cherryPickedCommitFgColor:
-      - "#ebdbb2"
-    unstagedChangesColor:
-      - "#fb4934"
-    defaultFgColor:
-      - "#ebdbb2"
+    activeBorderColor: [blue, bold]
+    inactiveBorderColor: [default]
+    searchingActiveBorderColor: [yellow, bold]
+    optionsTextColor: [blue]
+    selectedLineBgColor: [default] # bold-only selection, no bar
+    inactiveViewSelectedLineBgColor: [default]
+    cherryPickedCommitFgColor: [magenta]
+    cherryPickedCommitBgColor: [default]
+    markedBaseCommitFgColor: [magenta]
+    markedBaseCommitBgColor: [default]
+    unstagedChangesColor: [red]
+    defaultFgColor: [default]

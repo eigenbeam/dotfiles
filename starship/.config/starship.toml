@@ -1,6 +1,7 @@
 # Starship prompt configuration
 # Docs: https://starship.rs/config/
-# Theme: Gruvbox Dark
+# ANSI colour names only; the terminal palette is the theme.
+# Zenwritten slots: bright-white = 15 (secondary grey), bright-black = 8 (faint).
 
 # Caps the damage from any single slow module (git_status in huge repos).
 command_timeout = 500
@@ -11,57 +12,33 @@ $directory\
 $git_branch\
 $git_status\
 $python\
-$nodejs\
-$java\
-$lua\
-$terraform\
-$docker_context\
 $cmd_duration\
 $line_break\
 $character"""
 
 [character]
-success_symbol = '[>](bold #ebdbb2)'
-error_symbol = '[>](bold #fb4934)'
+success_symbol = '[>](bold)'
+error_symbol = '[>](bold red)'
 
 [directory]
-style = 'bold #83a598'
+style = 'bold blue'
 truncation_length = 3
 truncate_to_repo = true
 
 [git_branch]
-style = 'bold #b8bb26'
+style = 'bright-white'
 format = '[$symbol$branch(:$remote_branch)]($style) '
 
 [git_status]
-style = '#fb4934'
+style = 'red'
 format = '([$all_status$ahead_behind]($style) )'
 
 [cmd_duration]
 min_time = 2_000
-style = '#d3869b'
+style = 'bright-white'
 format = '[$duration]($style) '
 
+# Active virtualenv name only: no version, no snake.
 [python]
-style = '#d3869b'
-format = '[$symbol$version]($style) '
-
-[nodejs]
-style = '#d3869b'
-format = '[$symbol$version]($style) '
-
-[java]
-style = '#d3869b'
-format = '[$symbol$version]($style) '
-
-[lua]
-style = '#d3869b'
-format = '[$symbol$version]($style) '
-
-[terraform]
-style = '#d3869b'
-format = '[$symbol$version]($style) '
-
-[docker_context]
-style = '#d3869b'
-format = '[$symbol$context]($style) '
+style = 'bright-white'
+format = '[(\($virtualenv\) )]($style)'

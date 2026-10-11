@@ -1,8 +1,8 @@
 # Neovim
 
 Neovim 0.12 with the built-in `vim.pack`, built-in LSP and tree-sitter, and a
-small set of well-adopted plugins on top. Dark Gruvbox like the rest of the
-dotfiles. The layout mirrors `emacs/dot-emacs.d/`.
+small set of well-adopted plugins on top. Zenwritten Light (zenbones family)
+like the rest of the dotfiles. The layout mirrors `emacs/dot-emacs.d/`.
 
 ## Layout
 
@@ -11,7 +11,7 @@ dotfiles. The layout mirrors `emacs/dot-emacs.d/`.
 | `init.lua` | Leader, providers, the `PackChanged` build hook, loads the modules below |
 | `lua/kwb/basics.lua` | Options, filetypes, keymaps, netrw, quality-of-life autocmds (also loaded in VS Code) |
 | `lua/kwb/vscode.lua` | The `vim.g.vscode` branch: maps leader keys to VS Code commands, nothing else |
-| `lua/kwb/theme.lua` | gruvbox, nvim-web-devicons, mini.statusline |
+| `lua/kwb/theme.lua` | zenwritten (zenbones.nvim + lush), nvim-web-devicons, mini.statusline |
 | `lua/kwb/packages.lua` | telescope, tree-sitter, gitsigns, lazygit, smart-splits, which-key, zen-mode, mini.ai/surround, claudecode |
 | `lua/kwb/dev.lua` | LSP, blink.cmp, conform, nvim-lint, nvim-dap adapters, quarto |
 | `lua/kwb/pack.lua` | `vim.pack.add` wrapper: GitHub shorthand, no install prompt |
@@ -166,8 +166,11 @@ launched in the split attaches to this editor.
 
 ## Theme
 
-gruvbox (`contrast = "soft"`) in `theme.lua`. `:colorscheme` lists the
-built-ins for a change of scene.
+`zenwritten` (zenbones.nvim, via lush) in `theme.lua`. The terminal palette
+comes from ghostty; `vim.o.background = "light"` there is the light/dark
+switch, since zenbones reads it when the colorscheme loads. Tweaks go in
+`vim.g.zenwritten` (`darken_comments`, `lightness`, `italic_comments`, ...;
+see `:h zenbones`). `:colorscheme` lists the built-ins for a change of scene.
 
 ## Troubleshooting
 

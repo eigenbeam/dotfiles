@@ -44,12 +44,12 @@ All packages stow to `$HOME`.
 | `git`      | `~/.config/git/config`, `ignore` (XDG layout)                         |
 | `nvim`     | Neovim 0.12, `vim.pack`, `lua/kwb/` modules, LSP/DAP, Claude Code (see its README) |
 | `emacs`    | Emacs 31: eglot, apheleia, dape, corfu/vertico, Claude Code (see its README) |
-| `ghostty`  | Terminal config: CommitMono Nerd Font, Gruvbox Dark theme             |
+| `ghostty`  | Terminal config: Atkinson Hyperlegible Mono, Zenwritten Light theme   |
 | `keyboard` | macOS-only: right-option → right-control via `hidutil` launch agent   |
 | `tmux`     | Prefix `C-a`, vi keys, TPM plugins, session persistence               |
 | `starship` | `~/.config/starship.toml` prompt config                               |
-| `lazygit`  | `~/.config/lazygit/config.yml` (Gruvbox Dark theme)                   |
-| `yazi`     | `~/.config/yazi/` (Gruvbox Dark theme, behavior config)               |
+| `lazygit`  | `~/.config/lazygit/config.yml` (ANSI theme, follows the terminal)     |
+| `yazi`     | `~/.config/yazi/` (ANSI overlay on its light/dark preset, behavior)   |
 | `ssh`      | `~/.ssh/config` (connection multiplexing, keepalive)                  |
 
 Not stowed:

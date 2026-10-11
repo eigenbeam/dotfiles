@@ -55,12 +55,11 @@
 	navigate = true
 	side-by-side = true
 	line-numbers = true
-	syntax-theme = gruvbox-dark
-	light = false
-	minus-style = syntax "#3c2828"
-	minus-emph-style = syntax "#542e2e"
-	plus-style = syntax "#283c28"
-	plus-emph-style = syntax "#2e542e"
+	syntax-theme = ansi
+	file-style = bold
+	# Light-only for now. For auto light/dark later, delete this line: delta 0.20
+	# detects the terminal background (detect-dark-light = auto).
+	light = true
 [diff]
 	colorMoved = default
 	algorithm = histogram

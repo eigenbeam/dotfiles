@@ -4,7 +4,8 @@
 > that the noonday sun does the stars." — Neal Stephenson
 
 Emacs 31 (`emacs-plus-app` cask), built-ins first, a small set of
-well-adopted packages on top. Dark Gruvbox like the rest of the dotfiles.
+well-adopted packages on top. Zenwritten Light like the rest of the dotfiles
+(built-in `modus-operandi-tinted`, palette pinned to it).
 
 ## Layout
 
@@ -13,7 +14,7 @@ well-adopted packages on top. Dark Gruvbox like the rest of the dotfiles.
 | `early-init.el` | Startup GC, native-comp cache under `var/`, frame defaults |
 | `init.el` | package.el + MELPA, built-in `use-package`, loads the modules below |
 | `lisp/basics.el` | no-littering (first), defaults, vertico/consult/orderless/marginalia |
-| `lisp/theme.el` | Per-monitor font sizing, Nerd glyph fontset, mood-line, gruvbox-dark-hard |
+| `lisp/theme.el` | Per-monitor font sizing, Nerd glyph fontset, mood-line, modus-operandi-tinted pinned to Zenwritten Light |
 | `lisp/packages.el` | Editing, vterm, built-in tree-sitter, corfu/cape, embark, magit, project.el, Claude Code |
 | `lisp/dev.el` | eglot, apheleia, flymake-ruff, envrc, dape, Julia |
 | `lisp/org-config.el` | org, org-modern, org-appear |
@@ -122,9 +123,12 @@ recommends; switch with `claude-code-ide-terminal-backend` once vterm works.
 
 ## Theme
 
-`gruvbox-dark-hard` (`lisp/theme.el`). If light text smears, try
-`gruvbox-dark-soft`. The built-in `modus-vivendi` / `modus-operandi` are a
-`M-x load-theme` away for a high-contrast day.
+Built-in `modus-operandi-tinted` with the `faint` preset and
+`modus-operandi-tinted-palette-overrides` pinned to Zenwritten Light's values
+(`lisp/theme.el`), so Emacs matches ghostty and nvim without a zenbones port.
+`M-x modus-themes-toggle` flips to `modus-vivendi-tinted` for a dark day
+(unpinned until a dark variant is added). The old `gruvbox-theme` package is
+no longer required; `M-x package-autoremove` drops it.
 
 ## Troubleshooting
 

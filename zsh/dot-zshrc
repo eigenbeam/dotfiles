@@ -95,7 +95,7 @@ eval "$(direnv hook zsh)"
 # ------------------
 # Plugins (autosuggestions before syntax-highlighting, which must be last)
 # ------------------
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#665c54"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
 for _dir in "${HOMEBREW_PREFIX}/share" "/usr/share"; do
   [ -f "$_dir/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
     { source "$_dir/zsh-autosuggestions/zsh-autosuggestions.zsh"; break; }
@@ -106,6 +106,9 @@ for _dir in "${HOMEBREW_PREFIX}/share" "/usr/share"; do
     { source "$_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"; break; }
 done
 unset _dir
+# Its defaults are ANSI names already; the one casualty on a palette where
+# ANSI 0 is the background is comment = fg=black,bold.
+ZSH_HIGHLIGHT_STYLES[comment]='fg=8'
 
 # Uncomment to finish profiling
 # zprof
