@@ -30,9 +30,12 @@ workspaces).
    and `make debug-adapters` for the Java and JS debug adapters.
 2. On a machine that ran lazy.nvim or packer before, remove their leftovers
    first; `vim.pack` honours `packpath`, so anything under `site/pack` would
-   load alongside the new plugins:
+   load alongside the new plugins. Remove the whole tree-sitter state with
+   them: `site/queries` holds symlinks into the old plugin checkout, and the
+   plugin only relinks queries when it (re)installs a parser.
 
-       rm -rf ~/.local/share/nvim/{lazy,mason,site/pack/packer,site/queries}
+       rm -rf ~/.local/share/nvim/{lazy,mason,site/pack/packer}
+       rm -rf ~/.local/share/nvim/site/{parser,parser-info,queries}
 
 3. Start `nvim`. Plugins install from the lockfile in one parallel step,
    then tree-sitter parsers compile in the background (a few minutes the
@@ -172,6 +175,13 @@ built-ins for a change of scene.
   (`tree-sitter-cli`), `curl`, `tar`, and a C compiler must be on PATH.
   `:TSInstall <lang>` for one parser, or `:lua
   require("nvim-treesitter").update()` for all.
+- **Highlighting gone for everything but Lua and C**: the query links in
+  `~/.local/share/nvim/site/queries/` are missing or dangling (for example
+  after deleting that directory or the old plugin checkout). Parsers look
+  current, so they are not relinked. `:TSInstall! <lang>`, or for all:
+  `:lua require("nvim-treesitter").install(require("nvim-treesitter.config").get_installed(), { force = true })`.
+  With the fix in `packages.lua`, a language without queries now keeps
+  regex syntax instead of going blank.
 - **Old plugins reappear or two completion menus**: leftovers in
   `~/.local/share/nvim/site/pack/packer` or `lazy`; `make doctor` warns,
   First launch step 2 removes them.

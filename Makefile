@@ -263,6 +263,8 @@ doctor:
 	has tree-sitter && ok "tree-sitter CLI" || wrn "tree-sitter CLI (run make homebrew; parsers will not compile)"; \
 	ls "$(HOME)"/.local/share/nvim/site/parser/*.so >/dev/null 2>&1 \
 		&& ok "tree-sitter parsers compiled" || wrn "no tree-sitter parsers yet (start nvim once with the CLI installed)"; \
+	[ -f "$(HOME)/.local/share/nvim/site/queries/python/highlights.scm" ] \
+		&& ok "tree-sitter queries linked" || wrn "tree-sitter query links missing (:TSInstall! all; see nvim README troubleshooting)"; \
 	ls "$(HOME)"/.local/share/nvim/site/pack/core/opt/*/ >/dev/null 2>&1 \
 		&& ok "vim.pack plugins installed" || wrn "no vim.pack plugins yet (start nvim once)"; \
 	for d in lazy mason site/pack/packer; do \

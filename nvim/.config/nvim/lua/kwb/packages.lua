@@ -107,16 +107,21 @@ require("nvim-treesitter").install(parsers)
 vim.treesitter.language.register("markdown", "quarto")
 
 -- Start highlighting, folds, and indentation for any filetype that has a
--- parser. get_lang() maps filetype to parser (sh -> bash, typescriptreact
--- -> tsx, help -> vimdoc); a missing parser falls back to regex syntax.
--- Treesitter indentation is experimental; Vim's own indent scripts win for
--- the listed filetypes.
+-- parser and a highlights query. get_lang() maps filetype to parser (sh ->
+-- bash, typescriptreact -> tsx, help -> vimdoc). Starting tree-sitter turns
+-- regex syntax off, so a missing parser or query (the plugin links queries
+-- into site/queries at parser install time) keeps regex syntax rather than
+-- leaving the buffer blank. Treesitter indentation is experimental; Vim's
+-- own indent scripts win for the listed filetypes.
 local no_ts_indent = { python = true, yaml = true }
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("kwb-treesitter", { clear = true }),
     callback = function(args)
         local lang = vim.treesitter.language.get_lang(args.match)
         if not lang or not vim.treesitter.language.add(lang) then
+            return
+        end
+        if not vim.treesitter.query.get(lang, "highlights") then
             return
         end
         vim.treesitter.start(args.buf, lang)
