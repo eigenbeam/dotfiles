@@ -7,11 +7,12 @@
 # ------------------
 # Aliases
 # ------------------
+# Rule: only shadow a stock command name (ls, cat, grep...) when the replacement
+# accepts every flag the stock command does, so muscle memory still works on a
+# plain EC2 box. Otherwise give the tool its own name (ll, lt, z, bat, vd).
 alias vi=nvim
 alias vim=nvim
 alias bc='bc -l'
-alias cat='bat --paging=never'
-alias ls='eza'
 alias ll='eza -la --git --icons'
 alias lt='eza --tree --level=2 --icons'
 

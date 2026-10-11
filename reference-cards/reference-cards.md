@@ -335,9 +335,9 @@ terraform: terraform_fmt, toml: taplo. `SPC f` to format manually.
 # CARD 4 — CLI TOOLS (modern replacements)   (FRONT)
 # ═══════════════════════════════════════════════════
 
-**Aliases active:** `cat→bat` `ls→eza` `vi/vim→nvim`
+**Aliases active:** `ll`/`lt`→eza `vi/vim`→nvim (`ls` and `cat` are stock)
 
-## bat (cat replacement) — syntax highlighting, git integration
+## bat — syntax highlighting, git integration (not aliased to cat)
 ```
 bat file.py                  View with syntax + line numbers
 bat -l json                  Force language
@@ -348,9 +348,8 @@ bat -r 10:20 file            Lines 10-20 only
 ```
 Also used as: `MANPAGER` (man pages with highlighting)
 
-## eza (ls replacement) — icons, git status, tree
+## eza — icons, git status, tree (ls stays stock)
 ```
-ls                           eza (aliased)
 ll                           eza -la --git --icons
 lt                           eza --tree --level=2 --icons
 eza -la --sort=modified      Sort by modified
@@ -810,8 +809,6 @@ Right Option is remapped to Control (via hidutil). So `Right-Opt + h` = `C-h`.
 ## Quick Reference
 | Old | New (aliased) |
 |-----|---------------|
-| `cat` | `bat --paging=never` |
-| `ls` | `eza` |
 | `ll` | `eza -la --git --icons` |
 | `lt` | `eza --tree --level=2 --icons` |
 | `vi` / `vim` | `nvim` |

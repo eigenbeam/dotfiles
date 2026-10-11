@@ -362,7 +362,7 @@
 \cardtitle{cli tools}{front}
 \begin{multicols}{2}
 
-\sect{bat \normalfont(cat replacement)}
+\sect{bat \normalfont(not aliased to cat)}
 \begin{keys}
 \texttt{bat file.py}        & Syntax + line numbers \\
 \texttt{bat -l json}        & Force language \\
@@ -373,11 +373,10 @@
 \end{keys}
 {\scriptsize Also: \texttt{MANPAGER} (man pages with highlighting)}
 
-\sect{eza \normalfont(ls replacement)}
+\sect{eza \normalfont(ls stays stock)}
 \begin{keys}
-\texttt{ls}                     & eza (aliased) \\
-\texttt{ll}                     & \texttt{-la --git --icons} \\
-\texttt{lt}                     & \texttt{--tree --level=2} \\
+\texttt{ll}                     & \texttt{eza -la --git --icons} \\
+\texttt{lt}                     & \texttt{eza --tree --level=2 --icons} \\
 \texttt{eza -la --sort=modified} & Sort by time \\
 \texttt{eza -la --sort=size}    & Sort by size \\
 \texttt{eza --git-ignore}       & Respect .gitignore \\
@@ -490,8 +489,8 @@
 \sect{Alias Table}
 
 \begin{tabularx}{\linewidth}{@{}l@{~\textrightarrow~}Y@{}}
-\texttt{cat}         & \texttt{bat --paging=never} \\
-\texttt{ls}          & \texttt{eza} \\
+\texttt{ll}          & \texttt{eza -la --git --icons} \\
+\texttt{lt}          & \texttt{eza --tree --level=2} \\
 \texttt{vi / vim}    & \texttt{nvim} \\
 \texttt{man}         & via \texttt{bat} \\
 \end{tabularx}\par
@@ -950,8 +949,6 @@ Plugins: autosuggestions, syntax-highlighting}
 \sect{Quick Reference}
 
 \begin{tabularx}{\linewidth}{@{}l@{~\textrightarrow~}Y@{}}
-\texttt{cat}     & \texttt{bat --paging=never} \\
-\texttt{ls}      & \texttt{eza} \\
 \texttt{ll}      & \texttt{eza -la --git --icons} \\
 \texttt{lt}      & \texttt{eza --tree --level=2} \\
 \texttt{vi/vim}  & \texttt{nvim} \\

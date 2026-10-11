@@ -97,7 +97,7 @@ Key features:
 * **NVM** lazy-loaded on first use of `nvm`/`node`/`npm`/`npx`
 * **FZF** with ripgrep backend
 * **zsh-syntax-highlighting** and **zsh-autosuggestions**
-* **bat** as MANPAGER and aliased to `cat`
+* **bat** as MANPAGER; `ll`/`lt` via eza (`ls` and `cat` stay stock)
 * **Compinit caching** with 24h dump refresh (zsh)
 
 ## Platform Handling

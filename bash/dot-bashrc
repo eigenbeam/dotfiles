@@ -25,14 +25,6 @@ HISTCONTROL=ignoreboth
 eval "$(starship init bash)"
 
 # ------------------
-# Completions
-# ------------------
-if type brew &>/dev/null; then
-  BREW_PREFIX="$(brew --prefix)"
-  [[ -r "${BREW_PREFIX}/etc/profile.d/bash_completion.sh" ]] && . "${BREW_PREFIX}/etc/profile.d/bash_completion.sh"
-fi
-
-# ------------------
 # FZF (shell integration — env vars are in .shell-common)
 # ------------------
 eval "$(fzf --bash)"
