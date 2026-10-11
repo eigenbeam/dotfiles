@@ -1,27 +1,6 @@
 % Java Language Reference Card
-\documentclass[9pt]{extarticle}
-\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
-            margin=0.4in]{geometry}
-\usepackage{tabularx}
-\usepackage{multicol}
-\usepackage{needspace}
-\usepackage[T1]{fontenc}
-\usepackage{microtype}
-\usepackage{helvet}
-\usepackage[scaled=0.82]{beramono}
-\renewcommand{\familydefault}{\sfdefault}
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0pt}
-\setlength{\columnsep}{0.3in}
-
-\newcommand{\cardtitle}[1]{%
-  {\Large\bfseries #1}\par\vspace{1pt}%
-  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
-}
-\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+\documentclass[10pt]{extarticle}
+\usepackage{cards}
 
 \begin{document}\small
 
@@ -40,17 +19,17 @@ REPL                 & \texttt{jshell}                                    & Java
 Test                 & \texttt{mvn test}                                  & or \texttt{gradle test}; JUnit 5 \\
 Format               & \texttt{google-java-format}                        & or Spotless plugin \\
 Lint                 & ---                                                & IDE / SpotBugs / ErrorProne \\
-LSP                  & \texttt{jdtls}                                     & configured in neovim via lspconfig \\
+LSP                  & \texttt{jdtls}                                     & started by nvim and Emacs eglot \\
 \end{tabularx}
 
 \vspace{6pt}
 \rule{\linewidth}{0.2pt}
 
 % ── Language-Specific Content ──────────────────────────────────────
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{Basic Syntax}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{var x = expr}                & Local type inference \\
 \texttt{final var x = expr}          & Immutable local \\
 \texttt{if / else if / else}         & Conditional \\
@@ -64,7 +43,7 @@ LSP                  & \texttt{jdtls}                                     & conf
 \end{tabularx}
 
 \sect{Types \& Data}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{record R(int x, String y)}   & Record (16+) \\
 \texttt{sealed interface I}          & Sealed type (17+) \\
 \texttt{permits A, B}               & Permitted subtypes \\
@@ -77,7 +56,7 @@ LSP                  & \texttt{jdtls}                                     & conf
 \end{tabularx}
 
 \sect{Modern Java (17+)}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{case P when g ->}            & Guarded pattern (21+) \\
 \texttt{instanceof P p}              & Pattern match (16+) \\
 \texttt{""" text block """}          & Multiline string (15+) \\
@@ -88,7 +67,7 @@ LSP                  & \texttt{jdtls}                                     & conf
 \end{tabularx}
 
 \sect{Generics}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{class C<T>}                  & Generic class \\
 \texttt{<T> T f(T x)}               & Generic method \\
 \texttt{<T extends Comparable>}     & Upper bound \\
@@ -98,28 +77,32 @@ LSP                  & \texttt{jdtls}                                     & conf
 \end{tabularx}
 
 \sect{Collections}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{List.of(a, b, c)}           & Immutable list \\
 \texttt{Set.of(a, b)}               & Immutable set \\
 \texttt{Map.of(k1,v1, k2,v2)}      & Immutable map \\
 \texttt{new ArrayList<>()}           & Mutable list \\
 \texttt{new HashMap<>()}             & Mutable map \\
 \texttt{new HashSet<>()}             & Mutable set \\
-\texttt{Collections.unmodifiable*}  & Unmodifiable view \\
+\makebox[0pt][l]{\texttt{Collections.unmodifiable*}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Unmodifiable view} \\
 \texttt{Deque} / \texttt{ArrayDeque} & Stack / queue \\
 \end{tabularx}
 
 \sect{Streams}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{xs.stream()}                 & Create stream \\
 \texttt{.map(f)}                     & Transform \\
 \texttt{.filter(p)}                  & Filter \\
 \texttt{.flatMap(f)}                 & Flatten \\
 \texttt{.reduce(id, f)}             & Fold / reduce \\
 \texttt{.collect(toList())}          & Collect to list \\
-\texttt{.collect(groupingBy(f))}    & Group by key \\
-\texttt{.collect(joining(","))}     & Join strings \\
-\texttt{.sorted(comparator)}        & Sort \\
+\makebox[0pt][l]{\texttt{.collect(groupingBy(f))}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Group by key} \\
+\makebox[0pt][l]{\texttt{.collect(joining(","))}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Join strings} \\
+\makebox[0pt][l]{\texttt{.sorted(comparator)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Sort} \\
 \texttt{.distinct()}                 & Unique \\
 \texttt{.limit(n) / .skip(n)}       & Take / drop \\
 \texttt{.anyMatch(p)}               & Existential \\
@@ -142,7 +125,7 @@ LSP                  & \texttt{jdtls}                                     & conf
 \end{tabularx}
 
 \sect{Testing (JUnit 5)}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{@Test}                       & Test method \\
 \texttt{assertEquals(e, a)}         & Equality \\
 \texttt{assertTrue(p)}              & Boolean assertion \\
@@ -168,7 +151,7 @@ LSP                  & \texttt{jdtls}                                     & conf
 
 \cardtitle{Java --- Concurrency \& Standard Library}
 
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{Concurrency --- Basics}
 \begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
@@ -182,47 +165,54 @@ LSP                  & \texttt{jdtls}                                     & conf
 \end{tabularx}
 
 \sect{Concurrency --- Executors}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
-\texttt{Executors.newFixedThreadPool}  & Fixed pool \\
-\texttt{Executors.newVirtualThread*}   & Virtual threads (21+) \\
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
+\makebox[0pt][l]{\texttt{Executors.newFixedThreadPool}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Fixed pool} \\
+\makebox[0pt][l]{\texttt{Executors.newVirtualThread*}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Virtual threads (21+)} \\
 \texttt{executor.submit(task)}          & Submit task \\
 \texttt{Future<T>}                     & Async result \\
 \texttt{future.get()}                   & Block for result \\
 \end{tabularx}
 
 \sect{CompletableFuture}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{supplyAsync(() -> v)}          & Async supplier \\
 \texttt{.thenApply(f)}                  & Map result \\
 \texttt{.thenCompose(f)}                & FlatMap \\
 \texttt{.thenAccept(c)}                 & Consume result \\
 \texttt{.exceptionally(f)}              & Handle error \\
-\texttt{.thenCombine(other, f)}         & Combine two \\
+\makebox[0pt][l]{\texttt{.thenCombine(other, f)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Combine two} \\
 \texttt{allOf(a, b, c)}                 & Wait for all \\
 \texttt{anyOf(a, b, c)}                 & First completed \\
 \texttt{.join()}                         & Block (unchecked) \\
 \end{tabularx}
 
 \sect{Virtual Threads (21+)}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
-\texttt{Thread.ofVirtual().start(r)}  & Start virtual thread \\
-\texttt{Thread.startVirtualThread(r)} & Shorthand \\
-\texttt{newVirtualThreadPerTask*()}   & Executor factory \\
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
+\makebox[0pt][l]{\texttt{Thread.ofVirtual().start(r)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Start virtual thread} \\
+\makebox[0pt][l]{\texttt{Thread.startVirtualThread(r)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Shorthand} \\
+\makebox[0pt][l]{\texttt{newVirtualThreadPerTask*()}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Executor factory} \\
 \end{tabularx}
 
 \sect{Concurrent Collections}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{ConcurrentHashMap}             & Thread-safe map \\
 \texttt{CopyOnWriteArrayList}          & Thread-safe list \\
-\texttt{BlockingQueue}                  & Producer/consumer \\
+\texttt{BlockingQueue}                  & Producer, consumer \\
 \texttt{ConcurrentLinkedQueue}         & Lock-free queue \\
 \texttt{AtomicInteger / AtomicRef}     & Lock-free vars \\
 \end{tabularx}
 
 \sect{Optional}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{Optional.of(v)}               & Wrap non-null \\
-\texttt{Optional.ofNullable(v)}       & Wrap nullable \\
+\makebox[0pt][l]{\texttt{Optional.ofNullable(v)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Wrap nullable} \\
 \texttt{Optional.empty()}              & Empty optional \\
 \texttt{.map(f)}                        & Transform if present \\
 \texttt{.flatMap(f)}                    & Chain optionals \\
@@ -234,10 +224,13 @@ LSP                  & \texttt{jdtls}                                     & conf
 \end{tabularx}
 
 \sect{I/O \& Files}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
-\texttt{Files.readString(path)}        & Read file \\
-\texttt{Files.writeString(path, s)}   & Write file \\
-\texttt{Files.readAllLines(path)}      & Lines as list \\
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
+\makebox[0pt][l]{\texttt{Files.readString(path)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Read file} \\
+\makebox[0pt][l]{\texttt{Files.writeString(path, s)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Write file} \\
+\makebox[0pt][l]{\texttt{Files.readAllLines(path)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Lines as list} \\
 \texttt{Files.list(dir)}               & List directory \\
 \texttt{Files.walk(dir)}               & Recursive walk \\
 \texttt{Files.exists(path)}            & Check exists \\
@@ -246,7 +239,7 @@ LSP                  & \texttt{jdtls}                                     & conf
 \end{tabularx}
 
 \sect{Strings}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{s.formatted(args)}             & Format string (15+) \\
 \texttt{"\%s is \%d".formatted(a,b)}  & Printf-style \\
 \texttt{String.join(",", xs)}          & Join with separator \\
@@ -268,14 +261,17 @@ LSP                  & \texttt{jdtls}                                     & conf
 \end{tabularx}
 
 \sect{HTTP Client (11+)}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
-\texttt{HttpClient.newHttpClient()}    & Create client \\
-\texttt{HttpRequest.newBuilder()}      & Build request \\
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
+\makebox[0pt][l]{\texttt{HttpClient.newHttpClient()}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Create client} \\
+\makebox[0pt][l]{\texttt{HttpRequest.newBuilder()}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Build request} \\
 \texttt{.uri(URI.create(url))}          & Set URI \\
 \texttt{.GET() / .POST(body)}          & HTTP method \\
 \texttt{client.send(req, handler)}      & Sync send \\
 \texttt{client.sendAsync(req, h)}       & Async send \\
-\texttt{BodyHandlers.ofString()}       & String response \\
+\makebox[0pt][l]{\texttt{BodyHandlers.ofString()}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize String response} \\
 \end{tabularx}
 
 \sect{Key Packages}

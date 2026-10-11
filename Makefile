@@ -1,4 +1,4 @@
-.PHONY: all check bootstrap homebrew brewfile uninstall lint tex keyboard cards language-cards tools debug-adapters ssh sync fonts linux-packages ssm-plugin doctor
+.PHONY: all check bootstrap homebrew brewfile uninstall lint tex keyboard cards tools debug-adapters ssh sync fonts linux-packages ssm-plugin doctor
 
 # `check` is defined first below; without this, bare `make` would run only
 # `check` instead of stowing anything.
@@ -74,17 +74,15 @@ lint:
 	nvim --headless --clean -l nvim/.config/nvim/lint.lua
 	emacs -Q --batch --eval '(dolist (f (append (file-expand-wildcards "emacs/dot-emacs.d/*.el") (file-expand-wildcards "emacs/dot-emacs.d/lisp/*.el"))) (with-temp-buffer (insert-file-contents f) (emacs-lisp-mode) (condition-case err (check-parens) (error (message "%s: %s" f err) (kill-emacs 1)))))'
 
+# A5 duplex PDFs for a binder: the deck (reference-cards.tex) plus one topic
+# card per *-card.tex. cards.sty is the shared preamble; fancyhdr and the rest
+# come from `make tex`.
 cards:
-	pdflatex -interaction=nonstopmode -output-directory=reference-cards reference-cards/reference-cards.tex
-	@rm -f reference-cards/reference-cards.aux reference-cards/reference-cards.log
-	@echo "✓ reference-cards/reference-cards.pdf built"
-
-language-cards:
-	@for f in reference-cards/*-card.tex; do \
-		pdflatex -interaction=nonstopmode -output-directory=reference-cards "$$f"; \
+	@for f in reference-cards/reference-cards.tex reference-cards/*-card.tex; do \
+		TEXINPUTS=reference-cards: pdflatex -interaction=nonstopmode -halt-on-error -output-directory=reference-cards "$$f" >/dev/null || { echo "pdflatex failed on $$f"; exit 1; }; \
 	done
-	@rm -f reference-cards/*-card.aux reference-cards/*-card.log
-	@echo "✓ Language cards built"
+	@rm -f reference-cards/*.aux reference-cards/*.log
+	@echo "✓ Reference cards built (A5, duplex)"
 
 # Use Homebrew's npm so globals land in $(brew --prefix)/bin, which is always on
 # PATH. nvm's bin dir is only on PATH after nvm lazy-loads, so globals installed
@@ -141,7 +139,7 @@ tex:
 ifeq ($(UNAME),Darwin)
 	@command -v tlmgr >/dev/null 2>&1 || (echo "Error: tlmgr not found. Run 'brew install --cask basictex' first (needs sudo)." && exit 1)
 	sudo tlmgr update --self
-	sudo tlmgr install bera extsizes geometry helvetic microtype needspace psnfss tools
+	sudo tlmgr install bera extsizes fancyhdr geometry helvetic microtype needspace psnfss tools
 	@echo "✓ TeX packages for reference-cards installed"
 else
 	@echo "Skipped: on Linux, 'sudo make linux-packages' installs TeX Live via apt"

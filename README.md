@@ -58,7 +58,7 @@ Not stowed:
 |-------------------|--------------------------------------------------------------------|
 | `homebrew`        | `Brewfile` (core packages)                                         |
 | `linux`           | `packages.sh` — apt-based installs for Linux (Docker, Bitwarden, TeX Live, Quarto, Temurin JDK, Zotero, AWS SSM plugin) |
-| `reference-cards` | LaTeX sources for keybinding/language reference cards              |
+| `reference-cards` | A5 reference cards: a keybinding deck plus per-language cards (LaTeX) |
 
 ## Make Targets
 
@@ -80,8 +80,7 @@ Not stowed:
 | `make ssm-plugin`     | Install AWS Session Manager Plugin from AWS (requires sudo)   |
 | `make sync`           | Pull latest, install Homebrew packages, re-stow               |
 | `make tex`            | Install TeX packages for `make cards` (macOS, sudo)           |
-| `make cards`          | Build `reference-cards/reference-cards.pdf` via pdflatex      |
-| `make language-cards` | Build the per-language cards in `reference-cards/`            |
+| `make cards`          | Build the A5 reference cards in `reference-cards/` (pdflatex) |
 
 ## Shell Setup
 

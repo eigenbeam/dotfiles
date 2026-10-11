@@ -1,27 +1,6 @@
 % Julia Language Reference Card
-\documentclass[9pt]{extarticle}
-\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
-            margin=0.4in]{geometry}
-\usepackage{tabularx}
-\usepackage{multicol}
-\usepackage{needspace}
-\usepackage[T1]{fontenc}
-\usepackage{microtype}
-\usepackage{helvet}
-\usepackage[scaled=0.82]{beramono}
-\renewcommand{\familydefault}{\sfdefault}
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0pt}
-\setlength{\columnsep}{0.3in}
-
-\newcommand{\cardtitle}[1]{%
-  {\Large\bfseries #1}\par\vspace{1pt}%
-  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
-}
-\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+\documentclass[10pt]{extarticle}
+\usepackage{cards}
 
 \begin{document}\small
 
@@ -40,17 +19,17 @@ REPL                 & \texttt{julia}                                     & \tex
 Test                 & \texttt{] test}                                    & runs \texttt{test/runtests.jl} \\
 Format               & \texttt{JuliaFormatter.format\_file()}             & \texttt{] add JuliaFormatter} \\
 Lint                 & ---                                                & LSP provides diagnostics \\
-LSP                  & \texttt{LanguageServer.jl}                         & configured in neovim via lspconfig \\
+LSP                  & \texttt{LanguageServer.jl}                         & started by nvim and Emacs eglot \\
 \end{tabularx}
 
 \vspace{6pt}
 \rule{\linewidth}{0.2pt}
 
 % ── Language-Specific Content ──────────────────────────────────────
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{Basic Syntax}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{function f(x) ... end}      & Function \\
 \texttt{f(x) = expr}                & Short form \\
 \texttt{x -> expr}                   & Anonymous function \\
@@ -94,7 +73,7 @@ LSP                  & \texttt{LanguageServer.jl}                         & conf
 \end{tabularx}
 
 \sect{Arrays}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{[1, 2, 3]}                   & Vector (1-indexed) \\
 \texttt{[1 2; 3 4]}                  & Matrix \\
 \texttt{zeros(m, n)}                 & Zero matrix \\
@@ -112,7 +91,7 @@ LSP                  & \texttt{LanguageServer.jl}                         & conf
 \end{tabularx}
 
 \sect{Comprehensions \& Generators}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{[f(x) for x in xs]}         & Array comprehension \\
 \texttt{[f(x) for x in xs if p]}   & Filtered \\
 \texttt{[f(i,j) for i=1:m, j=1:n]} & 2D comprehension \\
@@ -136,7 +115,7 @@ LSP                  & \texttt{LanguageServer.jl}                         & conf
 \end{tabularx}
 
 \sect{Functional Patterns}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{map(f, xs)}                 & Apply f to each \\
 \texttt{filter(p, xs)}             & Keep matching \\
 \texttt{reduce(f, xs)}             & Fold \\
@@ -161,10 +140,11 @@ LSP                  & \texttt{LanguageServer.jl}                         & conf
 \end{tabularx}
 
 \sect{Error Handling}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{try ... catch e ... end}   & Try/catch \\
 \texttt{finally ... end}           & Always runs \\
-\texttt{throw(ErrorException(m))}  & Throw \\
+\makebox[0pt][l]{\texttt{throw(ErrorException(m))}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Throw} \\
 \texttt{error("msg")}             & Shorthand throw \\
 \texttt{@assert cond "msg"}       & Assertion \\
 \end{tabularx}
@@ -186,7 +166,7 @@ LSP                  & \texttt{LanguageServer.jl}                         & conf
 
 \cardtitle{Julia --- Scientific Computing}
 
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{LinearAlgebra}
 \begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
@@ -195,7 +175,7 @@ LSP                  & \texttt{LanguageServer.jl}                         & conf
 \texttt{A \textbackslash{} b}       & Solve Ax = b \\
 \texttt{det(A)}                     & Determinant \\
 \texttt{inv(A)}                     & Inverse \\
-\texttt{eigen(A)}                   & Eigendecomposition \\
+\texttt{eigen(A)}                   & Eigen\-decomposition \\
 \texttt{svd(A)}                     & SVD \\
 \texttt{qr(A)}                     & QR factorization \\
 \texttt{norm(x)}                    & Vector/matrix norm \\
@@ -219,7 +199,7 @@ LSP                  & \texttt{LanguageServer.jl}                         & conf
 \end{tabularx}
 
 \sect{Distributions.jl}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{Normal($\mu$, $\sigma$)}   & Normal distribution \\
 \texttt{Uniform(a, b)}              & Uniform distribution \\
 \texttt{Poisson($\lambda$)}        & Poisson distribution \\
@@ -229,7 +209,7 @@ LSP                  & \texttt{LanguageServer.jl}                         & conf
 \end{tabularx}
 
 \sect{DataFrames.jl}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{using DataFrames, CSV}       & Import \\
 \texttt{CSV.read(f, DataFrame)}     & Read CSV \\
 \texttt{CSV.write(f, df)}           & Write CSV \\
@@ -248,7 +228,7 @@ LSP                  & \texttt{LanguageServer.jl}                         & conf
 \end{tabularx}
 
 \sect{Plots.jl / Makie.jl}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{using Plots}                 & Import (GR default) \\
 \texttt{plot(x, y)}                  & Line plot \\
 \texttt{scatter(x, y)}              & Scatter plot \\
@@ -263,7 +243,7 @@ LSP                  & \texttt{LanguageServer.jl}                         & conf
 \end{tabularx}
 
 \sect{DifferentialEquations.jl}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{using DifferentialEquations} & Import \\
 \texttt{f(u, p, t) = ...}           & ODE function \\
 \texttt{ODEProblem(f, u0, tspan)}   & Define problem \\
@@ -296,11 +276,12 @@ LSP                  & \texttt{LanguageServer.jl}                         & conf
 \end{tabularx}
 
 \sect{Key Packages}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{DataFrames}          & Tabular data \\
 \texttt{CSV}                 & CSV read/write \\
 \texttt{Plots / Makie}       & Visualization \\
-\texttt{DifferentialEquations} & ODE/SDE/PDE \\
+\makebox[0pt][l]{\texttt{DifferentialEquations}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize ODE/SDE/PDE} \\
 \texttt{Optim / JuMP}        & Optimization \\
 \texttt{Flux / Lux}          & Neural networks \\
 \texttt{Distributions}       & Probability \\

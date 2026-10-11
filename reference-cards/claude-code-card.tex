@@ -1,27 +1,6 @@
 % Claude Code Reference Card
-\documentclass[9pt]{extarticle}
-\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
-            margin=0.4in]{geometry}
-\usepackage{tabularx}
-\usepackage{multicol}
-\usepackage{needspace}
-\usepackage[T1]{fontenc}
-\usepackage{microtype}
-\usepackage{helvet}
-\usepackage[scaled=0.82]{beramono}
-\renewcommand{\familydefault}{\sfdefault}
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0pt}
-\setlength{\columnsep}{0.3in}
-
-\newcommand{\cardtitle}[1]{%
-  {\Large\bfseries #1}\par\vspace{1pt}%
-  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
-}
-\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+\documentclass[10pt]{extarticle}
+\usepackage{cards}
 
 \begin{document}\small
 
@@ -36,12 +15,13 @@ Update               & \texttt{claude update}                            & or au
 Diagnose             & \texttt{claude doctor}                            & check installation health \\
 Auth                 & \texttt{claude auth login}                        & \texttt{-{}-sso} for SSO, \texttt{-{}-console} for API key \\
 Version              & \texttt{claude -v}                                & \\
+Editors              & \texttt{SPC ac} nvim, \texttt{C-c C-'} Emacs       & see the editor cards \\
 \end{tabularx}
 
 \vspace{6pt}
 \rule{\linewidth}{0.2pt}
 
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{CLI Flags --- Essentials}
 \begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
@@ -55,14 +35,14 @@ Version              & \texttt{claude -v}                                & \\
 \end{tabularx}
 
 \sect{CLI Flags --- Permissions}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{-{}-permission-mode \textit{m}} & default / plan / acceptEdits / dontAsk \\
 \texttt{-{}-allowedTools "..."}      & Auto-approve tools \\
 \texttt{-{}-disallowedTools "..."}   & Remove tools \\
 \end{tabularx}
 
 \sect{CLI Flags --- Output}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{-{}-output-format text}      & Plain text (default) \\
 \texttt{-{}-output-format json}      & JSON with metadata \\
 \texttt{-{}-output-format stream-json} & Streaming JSON \\
@@ -70,12 +50,13 @@ Version              & \texttt{claude -v}                                & \\
 \end{tabularx}
 
 \sect{CLI Flags --- Advanced}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{-{}-effort high}             & low / medium / high / max \\
 \texttt{-{}-max-turns 5}             & Limit agentic turns \\
 \texttt{-{}-max-budget-usd 5}       & Spending cap \\
 \texttt{-{}-system-prompt "..."}    & Replace system prompt \\
-\texttt{-{}-append-system-prompt}   & Add to system prompt \\
+\makebox[0pt][l]{\texttt{-{}-append-system-prompt}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Add to system prompt} \\
 \texttt{-{}-mcp-config f.json}      & Load MCP servers \\
 \texttt{-{}-add-dir ../lib}         & Add working dirs \\
 \texttt{-{}-debug}                   & Debug mode \\
@@ -156,8 +137,8 @@ Version              & \texttt{claude -v}                                & \\
 
 \sect{Model Aliases}
 \begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
-\texttt{sonnet}                      & Latest Sonnet (4.6) \\
-\texttt{opus}                        & Latest Opus (4.6) \\
+\texttt{sonnet}                      & Latest Sonnet \\
+\texttt{opus}                        & Latest Opus \\
 \texttt{haiku}                       & Fast / cheap \\
 \texttt{default}                     & Plan default \\
 \texttt{opus[1m]}                    & Opus 1M context \\
@@ -170,7 +151,7 @@ Version              & \texttt{claude -v}                                & \\
 
 \cardtitle{Claude Code --- Configuration \& Hooks}
 
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{CLAUDE.md Files}
 \begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
@@ -183,19 +164,22 @@ Version              & \texttt{claude -v}                                & \\
 {\footnotesize Rules support \texttt{paths:} frontmatter to scope to specific files. Keep CLAUDE.md $<$200 lines.}
 
 \sect{Settings Files}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
-\texttt{\~{}/.claude/settings.json}  & User settings \\
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
+\makebox[0pt][l]{\texttt{\~{}/.claude/settings.json}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize User settings} \\
 \texttt{.claude/settings.json}       & Project (shared) \\
-\texttt{.claude/settings.local.json} & Project (local, gitignored) \\
+\makebox[0pt][l]{\texttt{.claude/settings.local.json}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Project (local, gitignored)} \\
 \end{tabularx}
 {\footnotesize Precedence: user $<$ project $<$ local $<$ CLI args $<$ managed.}
 
 \sect{Settings Keys}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{model}                       & Default model alias \\
 \texttt{effortLevel}                 & low / medium / high \\
 \texttt{autoMemoryEnabled}          & Auto-memory on/off \\
-\texttt{permissions.defaultMode}    & Default perm mode \\
+\makebox[0pt][l]{\texttt{permissions.defaultMode}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Default perm mode} \\
 \texttt{permissions.allow}          & Auto-approve list \\
 \texttt{permissions.deny}           & Block list \\
 \texttt{hooks}                       & Hook definitions \\
@@ -204,13 +188,14 @@ Version              & \texttt{claude -v}                                & \\
 \end{tabularx}
 
 \sect{Permission Rules}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{"Bash"}                      & Entire tool \\
 \texttt{"Bash(npm run *)"}          & Glob on command \\
 \texttt{"Bash(git push *)"}         & In deny list \\
 \texttt{"Edit(src/**/*.ts)"}        & Glob on file path \\
 \texttt{"Read(\~{}/.ssh/*)"}        & Block sensitive files \\
-\texttt{"WebFetch(domain:gh.com)"}  & Domain filter \\
+\makebox[0pt][l]{\texttt{"WebFetch(domain:gh.com)"}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Domain filter} \\
 \texttt{"mcp\_\_server\_\_*"}       & MCP tool pattern \\
 \end{tabularx}
 {\footnotesize Eval order: deny $\to$ ask $\to$ allow.}
@@ -225,7 +210,7 @@ Version              & \texttt{claude -v}                                & \\
 \end{tabularx}
 
 \sect{Hook Events}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{PreToolUse}                  & Before tool (can block) \\
 \texttt{PostToolUse}                 & After tool success \\
 \texttt{UserPromptSubmit}           & User sends prompt \\
@@ -234,7 +219,8 @@ Version              & \texttt{claude -v}                                & \\
 \texttt{Stop}                        & Claude finishes \\
 \texttt{Notification}               & Needs attention \\
 \texttt{SubagentStart/Stop}         & Subagent lifecycle \\
-\texttt{PreCompact/PostCompact}     & Context compaction \\
+\makebox[0pt][l]{\texttt{PreCompact/PostCompact}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Context compaction} \\
 \end{tabularx}
 
 \sect{Hook Types}
@@ -288,18 +274,20 @@ Version              & \texttt{claude -v}                                & \\
 }
 
 \sect{Memory System}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
-\texttt{\~{}/.claude/projects/*/memory/} & Auto-memory dir \\
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
+\makebox[0pt][l]{\texttt{\~{}/.claude/projects/*/memory/}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Auto-memory dir} \\
 \texttt{MEMORY.md}                  & Index (auto-loaded) \\
 \texttt{*.md}                        & Topic files \\
 \texttt{/memory}                     & Manage memory \\
 \end{tabularx}
 
 \sect{Environment Variables}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{ANTHROPIC\_API\_KEY}        & API key auth \\
 \texttt{ANTHROPIC\_MODEL}           & Default model \\
-\texttt{CLAUDE\_CODE\_EFFORT\_LEVEL} & Effort level \\
+\makebox[0pt][l]{\texttt{CLAUDE\_CODE\_EFFORT\_LEVEL}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Effort level} \\
 \texttt{MAX\_THINKING\_TOKENS}      & Thinking budget \\
 \texttt{DISABLE\_AUTOUPDATER}       & Stop auto-updates \\
 \end{tabularx}

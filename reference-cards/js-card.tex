@@ -1,27 +1,6 @@
 % JavaScript / TypeScript Language Reference Card
-\documentclass[9pt]{extarticle}
-\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
-            margin=0.4in]{geometry}
-\usepackage{tabularx}
-\usepackage{multicol}
-\usepackage{needspace}
-\usepackage[T1]{fontenc}
-\usepackage{microtype}
-\usepackage{helvet}
-\usepackage[scaled=0.82]{beramono}
-\renewcommand{\familydefault}{\sfdefault}
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0pt}
-\setlength{\columnsep}{0.3in}
-
-\newcommand{\cardtitle}[1]{%
-  {\Large\bfseries #1}\par\vspace{1pt}%
-  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
-}
-\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+\documentclass[10pt]{extarticle}
+\usepackage{cards}
 
 \begin{document}\small
 
@@ -40,14 +19,14 @@ REPL                 & \texttt{node}                                      & \\
 Test                 & \texttt{vitest}                                    & or \texttt{jest}; \texttt{npx vitest} \\
 Format               & \texttt{prettier -{}-write .}                     & \texttt{-{}-check} for dry run \\
 Lint                 & \texttt{eslint .}                                  & \texttt{-{}-fix} to autofix \\
-LSP                  & \texttt{typescript-language-server}                 & configured in neovim via lspconfig \\
+LSP                  & \texttt{typescript-language-server}                 & started by nvim and Emacs eglot \\
 \end{tabularx}
 
 \vspace{6pt}
 \rule{\linewidth}{0.2pt}
 
 % ── Language-Specific Content ──────────────────────────────────────
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{Variables \& Types}
 \begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
@@ -94,7 +73,7 @@ LSP                  & \texttt{typescript-language-server}                 & con
 \end{tabularx}
 
 \sect{Array Methods}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{.map(f)}                    & Transform each \\
 \texttt{.filter(p)}                 & Keep matching \\
 \texttt{.reduce(f, init)}          & Fold \\
@@ -106,27 +85,30 @@ LSP                  & \texttt{typescript-language-server}                 & con
 \texttt{.sort((a,b) => a - b)}    & Sort \\
 \texttt{.slice(i, j)}              & Subarray (copy) \\
 \texttt{.splice(i, n, ...items)}   & Mutate in-place \\
-\texttt{Array.from(iterable)}      & From iterable \\
+\makebox[0pt][l]{\texttt{Array.from(iterable)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize From iterable} \\
 \texttt{[...new Set(xs)]}          & Unique values \\
 \texttt{.at(-1)}                    & Last element \\
 \end{tabularx}
 
 \sect{Object Methods}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{Object.keys(o)}             & Keys array \\
 \texttt{Object.values(o)}           & Values array \\
 \texttt{Object.entries(o)}          & [key, value] pairs \\
-\texttt{Object.fromEntries(es)}     & Pairs to object \\
+\makebox[0pt][l]{\texttt{Object.fromEntries(es)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Pairs to object} \\
 \texttt{Object.assign(t, s)}        & Merge / copy \\
 \texttt{structuredClone(o)}         & Deep clone \\
 \end{tabularx}
 
 \sect{Async / Await}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{async function f()}         & Async function \\
 \texttt{await promise}              & Await result \\
 \texttt{Promise.all(ps)}            & Wait for all \\
-\texttt{Promise.allSettled(ps)}     & All results \\
+\makebox[0pt][l]{\texttt{Promise.allSettled(ps)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize All results} \\
 \texttt{Promise.race(ps)}           & First settled \\
 \texttt{Promise.any(ps)}            & First fulfilled \\
 \texttt{new Promise((res, rej) =>)} & Create promise \\
@@ -134,7 +116,7 @@ LSP                  & \texttt{typescript-language-server}                 & con
 \end{tabularx}
 
 \sect{Error Handling}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{try \{ \} catch (e) \{ \}} & Try/catch \\
 \texttt{finally \{ \}}              & Always runs \\
 \texttt{throw new Error("msg")}     & Throw error \\
@@ -143,7 +125,7 @@ LSP                  & \texttt{typescript-language-server}                 & con
 \end{tabularx}
 
 \sect{Modules}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{export const x = v}         & Named export \\
 \texttt{export default f}           & Default export \\
 \texttt{import \{x\} from "m"}     & Named import \\
@@ -169,10 +151,10 @@ LSP                  & \texttt{typescript-language-server}                 & con
 
 \cardtitle{TypeScript --- Type System \& Node.js}
 
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{Basic Types}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{string, number, boolean}     & Primitives \\
 \texttt{null, undefined}             & Nullish types \\
 \texttt{unknown}                      & Safe any \\
@@ -183,7 +165,7 @@ LSP                  & \texttt{typescript-language-server}                 & con
 \end{tabularx}
 
 \sect{Interfaces \& Type Aliases}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{interface I \{ x: T \}}     & Interface \\
 \texttt{type T = A | B}              & Union type \\
 \texttt{type T = A \& B}             & Intersection type \\
@@ -193,7 +175,7 @@ LSP                  & \texttt{typescript-language-server}                 & con
 \end{tabularx}
 
 \sect{Generics}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{function f<T>(x: T): T}     & Generic function \\
 \texttt{<T extends Constraint>}     & Bounded generic \\
 \texttt{<T = Default>}               & Default type \\
@@ -218,7 +200,7 @@ LSP                  & \texttt{typescript-language-server}                 & con
 \end{tabularx}
 
 \sect{Advanced Types}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{T extends U ? A : B}        & Conditional type \\
 \texttt{infer R}                     & Infer in conditional \\
 \texttt{\{[K in keyof T]: V\}}     & Mapped type \\
@@ -230,7 +212,7 @@ LSP                  & \texttt{typescript-language-server}                 & con
 \end{tabularx}
 
 \sect{Type Guards}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{typeof x === "string"}      & Primitive guard \\
 \texttt{x instanceof C}              & Class guard \\
 \texttt{"key" in obj}                & Property guard \\
@@ -247,7 +229,7 @@ LSP                  & \texttt{typescript-language-server}                 & con
 \end{tabularx}
 
 \sect{Node.js --- File System}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{import fs from "node:fs/promises"} & Async FS \\
 \texttt{fs.readFile(f, "utf8")}     & Read file \\
 \texttt{fs.writeFile(f, data)}      & Write file \\
@@ -258,7 +240,7 @@ LSP                  & \texttt{typescript-language-server}                 & con
 \end{tabularx}
 
 \sect{Node.js --- Path \& Process}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{import path from "node:path"} & Path utils \\
 \texttt{path.join(a, b)}             & Join paths \\
 \texttt{path.resolve(p)}             & Absolute path \\
@@ -282,19 +264,21 @@ LSP                  & \texttt{typescript-language-server}                 & con
 {\footnotesize \texttt{from "node:child\_process"}}
 
 \sect{Testing (Vitest)}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{describe("...", () => \{\})} & Test suite \\
 \texttt{it("...", () => \{\})}       & Test case \\
 \texttt{expect(x).toBe(y)}           & Strict equal \\
-\texttt{expect(x).toEqual(y)}        & Deep equal \\
-\texttt{expect(f).toThrow()}         & Throws \\
+\makebox[0pt][l]{\texttt{expect(x).toEqual(y)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Deep equal} \\
+\makebox[0pt][l]{\texttt{expect(f).toThrow()}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Throws} \\
 \texttt{vi.fn()}                      & Mock function \\
 \texttt{vi.spyOn(obj, "method")}     & Spy on method \\
 \texttt{beforeEach / afterEach}      & Setup / teardown \\
 \end{tabularx}
 
 \sect{Package Config}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{"type": "module"}            & ESM in package.json \\
 \texttt{"strict": true}              & TS strict mode \\
 \texttt{tsconfig.json}               & TS configuration \\

@@ -1,27 +1,6 @@
 % SQL / PostgreSQL / PostGIS Reference Card
-\documentclass[9pt]{extarticle}
-\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
-            margin=0.4in]{geometry}
-\usepackage{tabularx}
-\usepackage{multicol}
-\usepackage{needspace}
-\usepackage[T1]{fontenc}
-\usepackage{microtype}
-\usepackage{helvet}
-\usepackage[scaled=0.82]{beramono}
-\renewcommand{\familydefault}{\sfdefault}
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0pt}
-\setlength{\columnsep}{0.3in}
-
-\newcommand{\cardtitle}[1]{%
-  {\Large\bfseries #1}\par\vspace{1pt}%
-  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
-}
-\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+\documentclass[10pt]{extarticle}
+\usepackage{cards}
 
 \begin{document}\small
 
@@ -42,7 +21,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \vspace{6pt}
 \rule{\linewidth}{0.2pt}
 
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{psql Meta-Commands}
 \begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
@@ -64,7 +43,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{SELECT Basics}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{SELECT * FROM t}            & All columns \\
 \texttt{SELECT a, b FROM t}         & Specific columns \\
 \texttt{WHERE cond}                  & Filter rows \\
@@ -75,7 +54,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{Filtering}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{= <> < > <= >=}             & Comparison \\
 \texttt{AND / OR / NOT}             & Logical \\
 \texttt{IN (a, b, c)}               & Set membership \\
@@ -100,7 +79,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{Aggregation}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{COUNT(*) / COUNT(col)}      & Row / non-null count \\
 \texttt{SUM(col)}                    & Total \\
 \texttt{AVG(col)}                    & Average \\
@@ -113,7 +92,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{Window Functions}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{OVER (PARTITION BY ...)}    & Window definition \\
 \texttt{OVER (ORDER BY ...)}        & Ordered window \\
 \texttt{ROW\_NUMBER()}              & Sequential number \\
@@ -125,7 +104,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{Subqueries \& CTEs}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{WITH cte AS (...)}          & Common table expression \\
 \texttt{WITH RECURSIVE ...}         & Recursive CTE \\
 \texttt{(SELECT ...) AS sub}        & Subquery in FROM \\
@@ -141,7 +120,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{DML --- Data Modification}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{INSERT INTO t (cols) VALUES} & Insert row \\
 \texttt{INSERT ... RETURNING *}     & Return inserted \\
 \texttt{UPDATE t SET c=v WHERE}     & Update rows \\
@@ -154,7 +133,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{DDL --- Schema}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{CREATE TABLE t (...)}       & Create table \\
 \texttt{ALTER TABLE t ADD col type} & Add column \\
 \texttt{ALTER TABLE t DROP col}     & Drop column \\
@@ -168,7 +147,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{Constraints}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{PRIMARY KEY}                 & Unique + not null \\
 \texttt{UNIQUE}                      & No duplicates \\
 \texttt{NOT NULL}                    & Required \\
@@ -184,10 +163,10 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 
 \cardtitle{PostgreSQL --- Types, Functions \& PostGIS}
 
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{PostgreSQL Types}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{integer / bigint}           & 32/64-bit int \\
 \texttt{numeric(p,s)}               & Exact decimal \\
 \texttt{real / double precision}    & 32/64-bit float \\
@@ -205,7 +184,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{JSONB Operations}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{j->>'key'}                   & Text value by key \\
 \texttt{j->'key'}                    & JSON value by key \\
 \texttt{j->>0}                       & Array element (text) \\
@@ -216,8 +195,10 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \texttt{jsonb\_set(j, path, val)}   & Update value \\
 \texttt{j || '\{"k":"v"\}'}         & Merge \\
 \texttt{jsonb\_each(j)}             & Key-value rows \\
-\texttt{jsonb\_array\_elements(j)}  & Array to rows \\
-\texttt{jsonb\_build\_object(k,v)}  & Build object \\
+\makebox[0pt][l]{\texttt{jsonb\_array\_elements(j)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Array to rows} \\
+\makebox[0pt][l]{\texttt{jsonb\_build\_object(k,v)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Build object} \\
 \texttt{to\_jsonb(record)}          & Row to JSON \\
 \end{tabularx}
 
@@ -235,7 +216,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{String Functions}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{length(s)}                   & String length \\
 \texttt{upper(s) / lower(s)}        & Case convert \\
 \texttt{trim(s)}                     & Trim whitespace \\
@@ -249,7 +230,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{Date / Time Functions}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{now() / current\_timestamp} & Current time \\
 \texttt{current\_date}               & Today \\
 \texttt{extract(year FROM ts)}      & Extract field \\
@@ -261,7 +242,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{Indexes}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{B-tree}                      & Default (equality, range) \\
 \texttt{GIN}                         & jsonb, arrays, full-text \\
 \texttt{GiST}                        & Geometry, range, full-text \\
@@ -282,7 +263,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{Transactions}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{BEGIN}                       & Start transaction \\
 \texttt{COMMIT}                      & Save changes \\
 \texttt{ROLLBACK}                    & Undo changes \\
@@ -293,7 +274,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{PostGIS --- Setup}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{CREATE EXTENSION postgis}   & Enable PostGIS \\
 \texttt{geometry / geography}       & Spatial column types \\
 \texttt{SRID 4326}                   & WGS 84 (lon/lat) \\
@@ -301,7 +282,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{PostGIS --- Constructors}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{ST\_Point(x, y)}            & Point geometry \\
 \texttt{ST\_MakeLine(a, b)}         & Line from points \\
 \texttt{ST\_MakePolygon(ring)}      & Polygon from ring \\
@@ -356,7 +337,7 @@ GUI                  & \texttt{pgcli} / DBeaver                          & \text
 \end{tabularx}
 
 \sect{PostGIS --- Spatial Indexes}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{CREATE INDEX ON t USING GiST (geom)} & Spatial index \\
 \texttt{a \&\& b}                    & Bounding box overlap \\
 \texttt{ORDER BY g <-> ref}         & KNN distance order \\

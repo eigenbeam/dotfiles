@@ -1,27 +1,6 @@
 % Python Language Reference Card
-\documentclass[9pt]{extarticle}
-\usepackage[landscape,paperwidth=11in,paperheight=8.5in,
-            margin=0.4in]{geometry}
-\usepackage{tabularx}
-\usepackage{multicol}
-\usepackage{needspace}
-\usepackage[T1]{fontenc}
-\usepackage{microtype}
-\usepackage{helvet}
-\usepackage[scaled=0.82]{beramono}
-\renewcommand{\familydefault}{\sfdefault}
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0pt}
-\setlength{\columnsep}{0.3in}
-
-\newcommand{\cardtitle}[1]{%
-  {\Large\bfseries #1}\par\vspace{1pt}%
-  \rule{\linewidth}{0.4pt}\par\vspace{4pt}%
-}
-\newcommand{\sect}[1]{\needspace{4\baselineskip}\vspace{6pt}{\footnotesize\bfseries\scshape #1}\par\vspace{2pt}}
+\documentclass[10pt]{extarticle}
+\usepackage{cards}
 
 \begin{document}\small
 
@@ -40,14 +19,14 @@ REPL                 & \texttt{uv run python} / \texttt{ipython}          & \\
 Test                 & \texttt{uv run pytest}                             & \texttt{-x} stop first fail, \texttt{-k \textit{pat}} filter \\
 Format               & \texttt{ruff format .}                             & \texttt{-{}-check} for dry run \\
 Lint                 & \texttt{ruff check .}                              & \texttt{-{}-fix} to autofix \\
-LSP                  & \texttt{pyright}                                   & configured in neovim via lspconfig \\
+LSP                  & \texttt{pyright}                                   & started by nvim and Emacs eglot \\
 \end{tabularx}
 
 \vspace{6pt}
 \rule{\linewidth}{0.2pt}
 
 % ── Language-Specific Content ──────────────────────────────────────
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{uv Extras}
 \begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
@@ -61,7 +40,7 @@ LSP                  & \texttt{pyright}                                   & conf
 \end{tabularx}
 
 \sect{Common Patterns}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{[x for x in xs if p(x)]}     & List comprehension \\
 \texttt{\{k: v for k, v in d\}}      & Dict comprehension \\
 \texttt{x if cond else y}            & Ternary \\
@@ -75,7 +54,7 @@ LSP                  & \texttt{pyright}                                   & conf
 \end{tabularx}
 
 \sect{Error Handling}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{try: ... except E as e:}     & Catch exception \\
 \texttt{except (A, B):}              & Catch multiple types \\
 \texttt{else:}                       & No exception branch \\
@@ -98,7 +77,7 @@ LSP                  & \texttt{pyright}                                   & conf
 \end{tabularx}
 
 \sect{Type Hints}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{x: int = 0}               & Variable annotation \\
 \texttt{def f(x: str) -> bool:}   & Function signature \\
 \texttt{list[int]}                 & Generic list \\
@@ -138,7 +117,7 @@ LSP                  & \texttt{pyright}                                   & conf
 \end{tabularx}
 
 \sect{Decorators}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{@property}                    & Getter method \\
 \texttt{@x.setter}                    & Setter method \\
 \texttt{@staticmethod}                & No self/cls arg \\
@@ -149,11 +128,13 @@ LSP                  & \texttt{pyright}                                   & conf
 \end{tabularx}
 
 \sect{Async}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{async def f():}               & Async function \\
 \texttt{await coro}                   & Await coroutine \\
-\texttt{asyncio.run(main())}          & Run event loop \\
-\texttt{asyncio.gather(*coros)}       & Run concurrently \\
+\makebox[0pt][l]{\texttt{asyncio.run(main())}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Run event loop} \\
+\makebox[0pt][l]{\texttt{asyncio.gather(*coros)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Run concurrently} \\
 \texttt{async with}                   & Async context manager \\
 \texttt{async for x in ait:}          & Async iteration \\
 \end{tabularx}
@@ -166,17 +147,18 @@ LSP                  & \texttt{pyright}                                   & conf
 \end{tabularx}
 
 \sect{Testing Patterns}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{def test\_\textit{name}():}    & Test function \\
 \texttt{assert x == y}                & Assertion \\
 \texttt{@pytest.fixture}              & Fixture decorator \\
-\texttt{@pytest.mark.parametrize}     & Parametrize tests \\
+\makebox[0pt][l]{\texttt{@pytest.mark.parametrize}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Parametrize tests} \\
 \texttt{pytest.raises(Exc)}           & Expect exception \\
 \texttt{tmp\_path}                    & Built-in temp dir fixture \\
 \end{tabularx}
 
 \sect{Functional Patterns}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{map(f, xs)}                   & Apply f to each element \\
 \texttt{filter(f, xs)}                & Keep elements where f is true \\
 \texttt{functools.reduce(f, xs)}      & Fold / accumulate \\
@@ -208,23 +190,24 @@ LSP                  & \texttt{pyright}                                   & conf
 
 \cardtitle{Python --- Scientific \& Geospatial}
 
-\begin{multicols}{3}
+\begin{multicols}{2}
 
 \sect{NumPy --- Creation}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{np.array([1, 2, 3])}        & From list \\
 \texttt{np.zeros((m, n))}           & Zero matrix \\
 \texttt{np.ones((m, n))}            & Ones matrix \\
 \texttt{np.eye(n)}                   & Identity matrix \\
 \texttt{np.arange(0, 10, 0.5)}      & Range with step \\
 \texttt{np.linspace(0, 1, 100)}     & Evenly spaced \\
-\texttt{np.random.default\_rng()}   & RNG instance \\
+\makebox[0pt][l]{\texttt{np.random.default\_rng()}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize RNG instance} \\
 \texttt{rng.normal(0, 1, (m, n))}   & Normal samples \\
 \texttt{np.full((m, n), v)}         & Fill with value \\
 \end{tabularx}
 
 \sect{NumPy --- Indexing \& Shape}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{a[1, 2]}                     & Element access \\
 \texttt{a[1:3, :]}                   & Row slice \\
 \texttt{a[:, 0]}                     & Column slice \\
@@ -252,10 +235,10 @@ LSP                  & \texttt{pyright}                                   & conf
 \end{tabularx}
 
 \sect{NumPy --- Linear Algebra}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{np.linalg.inv(A)}           & Inverse \\
 \texttt{np.linalg.det(A)}           & Determinant \\
-\texttt{np.linalg.eig(A)}           & Eigenvalues/vectors \\
+\texttt{np.linalg.eig(A)}           & Eigenvalues, vectors \\
 \texttt{np.linalg.svd(A)}           & SVD \\
 \texttt{np.linalg.solve(A, b)}      & Solve Ax = b \\
 \texttt{np.linalg.norm(x)}          & Vector/matrix norm \\
@@ -290,19 +273,21 @@ LSP                  & \texttt{pyright}                                   & conf
 \end{tabularx}
 
 \sect{Pandas --- Transform}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
-\texttt{df.groupby("k").agg(f)}     & Group + aggregate \\
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
+\makebox[0pt][l]{\texttt{df.groupby("k").agg(f)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Group + aggregate} \\
 \texttt{df.pivot\_table(...)}        & Pivot / crosstab \\
 \texttt{pd.merge(a, b, on="k")}     & Join DataFrames \\
 \texttt{pd.concat([a, b])}          & Stack DataFrames \\
 \texttt{df.apply(f)}                 & Apply function \\
 \texttt{df.assign(y=lambda d: ...)} & Add column \\
-\texttt{df.rename(columns=\{...\})} & Rename columns \\
+\makebox[0pt][l]{\texttt{df.rename(columns=\{...\})}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Rename columns} \\
 \texttt{df.melt(...)}                & Wide to long \\
 \end{tabularx}
 
 \sect{Math Module}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{math.sqrt(x)}               & Square root \\
 \texttt{math.sin, cos, tan}         & Trig functions \\
 \texttt{math.log(x)} / \texttt{log10}  & Ln / log base 10 \\
@@ -315,7 +300,7 @@ LSP                  & \texttt{pyright}                                   & conf
 \end{tabularx}
 
 \sect{Shapely --- Geometry}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{Point(x, y)}                & Point geometry \\
 \texttt{LineString([(x,y), ...])}   & Line geometry \\
 \texttt{Polygon([(x,y), ...])}      & Polygon geometry \\
@@ -329,7 +314,7 @@ LSP                  & \texttt{pyright}                                   & conf
 \end{tabularx}
 
 \sect{GeoPandas}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.62\linewidth}@{\enspace}Y@{}}
 \texttt{gpd.read\_file(f)}          & Read shapefile/gpkg \\
 \texttt{gpd.read\_parquet(f)}       & Read GeoParquet \\
 \texttt{gdf.to\_file(f)}            & Write to file \\
@@ -338,20 +323,22 @@ LSP                  & \texttt{pyright}                                   & conf
 \texttt{gdf.to\_crs(epsg=4326)}     & Reproject \\
 \texttt{gdf.plot()}                  & Quick plot \\
 \texttt{gpd.sjoin(a, b)}            & Spatial join \\
-\texttt{gdf.dissolve(by="col")}     & Merge geometries \\
+\makebox[0pt][l]{\texttt{gdf.dissolve(by="col")}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Merge geometries} \\
 \texttt{gdf.overlay(b, how="...")} & Spatial overlay \\
 \texttt{gdf.clip(mask)}             & Clip to boundary \\
 \end{tabularx}
 
 \sect{Rasterio}
-\begin{tabularx}{\linewidth}{@{}l@{\enspace}Y@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.55\linewidth}@{\enspace}Y@{}}
 \texttt{rasterio.open(f)}           & Open raster file \\
 \texttt{src.read(1)}                & Read band 1 (array) \\
 \texttt{src.bounds}                  & Spatial extent \\
 \texttt{src.crs}                     & Coordinate ref system \\
 \texttt{src.transform}              & Affine transform \\
 \texttt{src.meta}                    & Metadata dict \\
-\texttt{rasterio.plot.show(src)}    & Quick plot \\
+\makebox[0pt][l]{\texttt{rasterio.plot.show(src)}} & \\
+\multicolumn{2}{@{}l@{}}{\hspace*{1.5em}\footnotesize Quick plot} \\
 \end{tabularx}
 
 \sect{Coordinate Reference}
