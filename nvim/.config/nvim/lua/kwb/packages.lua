@@ -124,11 +124,15 @@ require("gitsigns").setup({
         local gitsigns = require("gitsigns")
         local map = function(mode, l, r, opts)
             opts = opts or {}
-            opts.buffer = bufnr
+            opts.buf = bufnr
             vim.keymap.set(mode, l, r, opts)
         end
-        map("n", "]h", gitsigns.next_hunk, { desc = "Next git hunk" })
-        map("n", "[h", gitsigns.prev_hunk, { desc = "Previous git hunk" })
+        map("n", "]h", function()
+            gitsigns.nav_hunk("next")
+        end, { desc = "Next git hunk" })
+        map("n", "[h", function()
+            gitsigns.nav_hunk("prev")
+        end, { desc = "Previous git hunk" })
         map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "Stage hunk" })
         map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset hunk" })
         map("n", "<leader>hb", gitsigns.blame_line, { desc = "Blame line" })

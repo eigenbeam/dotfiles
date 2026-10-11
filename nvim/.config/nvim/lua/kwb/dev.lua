@@ -18,53 +18,35 @@ local keymap = vim.keymap.set
 -- ── LSP ──────────────────────────────────────────────────────────────────
 require("fidget").setup({})
 
+-- Neovim 0.11+ maps grn/gra/grr/gri/grt, K, [d/]d, and <C-w>d by default;
+-- these are the leader-prefixed aliases that which-key makes discoverable.
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
     callback = function(event)
         local map = function(keys, func, desc, mode)
             mode = mode or "n"
-            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = desc })
+            vim.keymap.set(mode, keys, func, { buf = event.buf, desc = desc })
         end
         map("gd", vim.lsp.buf.definition, "Go to definition")
         map("gD", vim.lsp.buf.declaration, "Go to declaration")
-        map("gr", vim.lsp.buf.references, "Show references")
-        map("gi", vim.lsp.buf.implementation, "Go to implementation")
-        map("K", vim.lsp.buf.hover, "Hover documentation")
         map("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
-        map("<leader>ca", vim.lsp.buf.code_action, "Code action")
-        vim.keymap.set("x", "<leader>ca", vim.lsp.buf.code_action, { buffer = event.buf, desc = "Code action" })
+        map("<leader>ca", vim.lsp.buf.code_action, "Code action", { "n", "x" })
         map("<leader>d", vim.diagnostic.open_float, "Show diagnostics")
-
-        if vim.fn.has("nvim-0.11") == 1 then
-            map("[d", function()
-                vim.diagnostic.jump({ count = -1 })
-            end, "Previous diagnostic")
-            map("]d", function()
-                vim.diagnostic.jump({ count = 1 })
-            end, "Next diagnostic")
-        else
-            map("[d", vim.diagnostic.goto_prev, "Previous diagnostic")
-            map("]d", vim.diagnostic.goto_next, "Next diagnostic")
-        end
-
-        -- Toggle inlay hints if supported
-        if vim.lsp.inlay_hint then
-            map("<leader>th", function()
-                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-            end, "Toggle inlay hints")
-        end
+        map("<leader>th", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+        end, "Toggle inlay hints")
 
         -- Highlight references on cursor hold
         local client = vim.lsp.get_client_by_id(event.data.client_id)
-        if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+        if client and client:supports_method("textDocument/documentHighlight") then
             local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
             vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-                buffer = event.buf,
+                buf = event.buf,
                 group = highlight_augroup,
                 callback = vim.lsp.buf.document_highlight,
             })
             vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-                buffer = event.buf,
+                buf = event.buf,
                 group = highlight_augroup,
                 callback = vim.lsp.buf.clear_references,
             })
@@ -72,7 +54,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
                 callback = function(event2)
                     vim.lsp.buf.clear_references()
-                    vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = event2.buf })
+                    vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buf = event2.buf })
                 end,
             })
         end
@@ -102,7 +84,11 @@ vim.lsp.config("yamlls", {
     },
 })
 
+-- Servers: clangd (Xcode CLT), pyright/ruff/jdtls/bashls/yamlls/lua_ls/taplo
+-- (brew), ts_ls/dockerls (make tools), terraformls (brew tap), julials (see
+-- README). Java is started by ftplugin/java.lua through nvim-jdtls.
 vim.lsp.enable({
+    "clangd",
     "bashls",
     "pyright",
     "lua_ls",
@@ -125,12 +111,14 @@ require("blink.cmp").setup({
 })
 
 -- ── Formatting (conform) ─────────────────────────────────────────────────
+-- Matches the apheleia table in emacs/lisp/dev.el. C/C++, Java, and shell
+-- deliberately get only whitespace trimming, which also keeps lsp_format's
+-- fallback from running jdtls/clangd formatting on save.
 require("conform").setup({
     notify_on_error = false,
     format_on_save = function(bufnr)
-        local disable_filetypes = { c = true, cpp = true }
-        if disable_filetypes[vim.bo[bufnr].filetype] then
-            return nil
+        if vim.bo[bufnr].filetype == "quarto" then
+            return nil -- trailing spaces are hard breaks in prose cells
         end
         return { timeout_ms = 500, lsp_format = "fallback" }
     end,
@@ -138,12 +126,23 @@ require("conform").setup({
         lua = { "stylua" },
         python = { "ruff_format" },
         javascript = { "prettier" },
+        javascriptreact = { "prettier" },
         typescript = { "prettier" },
+        typescriptreact = { "prettier" },
         json = { "prettier" },
+        jsonc = { "prettier" },
+        css = { "prettier" },
+        html = { "prettier" },
         yaml = { "prettier" },
         markdown = { "prettier" },
         terraform = { "terraform_fmt" },
         toml = { "taplo" },
+        c = { "trim_whitespace" },
+        cpp = { "trim_whitespace" },
+        java = { "trim_whitespace" },
+        sh = { "trim_whitespace" },
+        bash = { "trim_whitespace" },
+        ["_"] = { "trim_whitespace" },
     },
 })
 keymap("", "<leader>f", function()
@@ -154,8 +153,6 @@ end, { desc = "Format buffer" })
 local lint = require("lint")
 lint.linters_by_ft = {
     python = { "ruff" },
-    javascript = { "eslint" },
-    typescript = { "eslint" },
     terraform = { "tflint" },
 }
 vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
