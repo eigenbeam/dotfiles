@@ -5,24 +5,18 @@ tap "d12frosted/emacs-plus", trusted: true  # macOS-only
 
 # Shell & terminal
 brew "bat"
-brew "bottom"
 brew "direnv"
 brew "dust"
 brew "eza"
 brew "fd"
-brew "figlet"
-brew "fswatch"
 brew "fzf"
 brew "hyperfine"
 brew "jq"
-brew "procs"
 brew "ripgrep"
 brew "starship"
 brew "stow"
 brew "tealdeer"
 brew "tmux"
-brew "tokei"
-brew "tpm"
 brew "yazi"
 brew "zoxide"
 brew "zsh-autosuggestions"
@@ -46,7 +40,6 @@ brew "yaml-language-server"
 brew "cmake"     # also builds the Emacs vterm module
 brew "elan-init"
 brew "juliaup"
-brew "just"
 brew "libvterm"  # Emacs vterm module
 brew "make"
 brew "maven"
@@ -90,7 +83,6 @@ brew "duckdb"
 brew "neonctl"
 brew "postgis"
 brew "postgresql@16"
-brew "visidata"
 
 # Geospatial & scientific
 brew "gdal"
@@ -138,3 +130,4 @@ cask "zotero"
 
 # uv tools
 uv "ipython"
+uv "visidata"
