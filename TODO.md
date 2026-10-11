@@ -2,7 +2,7 @@
 
 ## Planned
 
-- [ ] **Neovim auto-cd on BufEnter** — The `auto-root` augroup in `init.lua`
+- [ ] **Neovim auto-cd on BufEnter** — The `auto-root` augroup in `lua/kwb/basics.lua`
   changes cwd whenever a buffer from a different project is entered, which
   confuses Telescope and `:terminal` when editing across projects. Either switch
   to a per-buffer root approach or accept the trade-off.
@@ -20,6 +20,42 @@
   `make minimal` (no root, no stow): `ln -sf` bash and git configs only, plus a
   new plugin-free `vim/dot-vimrc` and a fallback `PS1` in `.bashrc` for when
   starship is absent.
+
+- [ ] **Linux parity** — `linux/packages.sh` and the `fonts` target date from
+  March 2026 and predate the Oct 2026 theme, editor, and reference-card work.
+  Not needed now; capture for the next Linux desktop. Verify each on a real
+  box before committing.
+  - [ ] **Fonts** — `make fonts` installs CommitMono Nerd Font on Linux and
+    recommends it on macOS. Ghostty now uses Atkinson Hyperlegible Mono with
+    Symbols Nerd Font Only for icons. Atkinson is not in the nerd-fonts
+    releases; fetch it from the Braille Institute release and Symbols Nerd Font
+    from nerd-fonts, then update the macOS echo to the two Brewfile casks.
+  - [ ] **TeX packages for `make cards`** — `packages.sh` installs
+    `texlive-latex-recommended` and `texlive-fonts-recommended` only.
+    `cards.sty` needs extsizes and needspace (Debian: `texlive-latex-extra`)
+    and bera (`texlive-fonts-extra`). Unverified on Linux; expect `make cards`
+    to fail until added.
+  - [ ] **Emacs 31** — `emacs-plus-app` is a macOS cask; apt's Emacs is older
+    and the config (`treesit-enabled-modes`, built-in `use-package`, Org 9.8)
+    assumes 31. Options: the emacs-snapshot PPA, a build from source, or a
+    `linux/emacs.sh`. The Emacs README "first launch" should name the Linux
+    path once one exists. `libvterm`/`cmake` already come via Linuxbrew.
+  - [ ] **tflint** — Brewfile has it as a macOS-only cask; `brew bundle` skips
+    it on Linux, so nvim-lint and `terraform` checks silently lose it. Use the
+    tap formula or the GitHub release install script in `packages.sh`.
+  - [ ] **Keyboard** — right-option → right-control is `hidutil` only. Decide
+    the Linux equivalent (GNOME: `gsettings` xkb options; otherwise
+    `keyd`/`xremap`) or document that it is macOS-only on the cards.
+  - [ ] **Clipboard** — tmux-yank and nvim `clipboard=unnamedplus` need
+    `wl-copy` (Wayland) or `xclip`/`xsel` (X11); add to `packages.sh` and a
+    `make doctor` check. nvim already warns at startup if no provider exists.
+  - [ ] **`make doctor` on Linux** — the Emacs vterm check looks under
+    `$(brew --prefix)/opt/libvterm`, which is right for Linuxbrew too, but the
+    `lldb-dap` and `xcrun` branches, the launch-agent checks, and the TeX
+    assumption should each be exercised once on Linux.
+  - [ ] **Ghostty** — still "build from source" in `packages.sh`; Ghostty now
+    publishes Linux packages (Snap, Flatpak, distro repos). Update the note
+    or install it.
 
 ## Ideas
 
