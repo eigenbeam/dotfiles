@@ -210,10 +210,10 @@
 
 \sect{Splits \& Buffers}
 \begin{keys}
-\texttt{SPC sv}      & Vertical split \\
-\texttt{SPC sh}      & Horizontal split \\
-\texttt{SPC se}      & Equalize splits \\
-\texttt{SPC sx}      & Close split \\
+\texttt{SPC |}       & Vertical split \\
+\texttt{SPC -}       & Horizontal split \\
+\texttt{C-w =}       & Equalize splits \\
+\texttt{C-w q}       & Close split \\
 \texttt{C-h/j/k/l}  & Navigate (smart-splits) \\
 \texttt{A-h/j/k/l}  & Resize (smart-splits) \\
 \texttt{S-h / S-l}  & Prev / next buffer \\
@@ -305,8 +305,8 @@
 \begin{keys}
 \texttt{gd}        & Go to definition \\
 \texttt{gD}        & Go to declaration \\
-\texttt{gr}        & References \\
-\texttt{gi}        & Go to implementation \\
+\texttt{grr / gri} & References / implementation \\
+\texttt{grn / gra} & Rename / code action \\
 \texttt{K}         & Hover docs \\
 \texttt{SPC rn}    & Rename symbol \\
 \texttt{SPC ca}    & Code action \\
@@ -518,16 +518,17 @@
 \texttt{SPC ll}    & Lint current file \\
 \end{keys}
 {\scriptsize Auto-lints on save. Linters: ruff (python),
-eslint (js/ts), tflint (terraform).}
+tflint (terraform).}
 
 \sect{Debug (nvim-dap)}
 \begin{keys}
-\texttt{SPC Db}    & Toggle breakpoint \\
-\texttt{SPC Dc}    & Continue \\
-\texttt{SPC Do}    & Step over \\
-\texttt{SPC Di}    & Step into \\
+\texttt{SPC Db / DB} & Toggle / conditional breakpoint \\
+\texttt{SPC Dc}    & Continue or start \\
+\texttt{SPC Do / Di / DO} & Step over / into / out \\
+\texttt{SPC Dr / Dt} & REPL / terminate \\
 \texttt{SPC Du}    & Toggle DAP UI \\
 \end{keys}
+{\scriptsize debugpy, lldb-dap, pwa-node, java (jdtls).}
 
 \columnbreak
 
@@ -540,11 +541,11 @@ eslint (js/ts), tflint (terraform).}
 \sect{which-key}
 {\scriptsize Press \texttt{SPC} and wait to see all bindings by group.}
 
-\sect{Plugin Management}
+\sect{Plugins (vim.pack)}
 \begin{keys}
-\texttt{:Lazy}          & Plugin manager UI \\
-\texttt{:Lazy sync}     & Update all plugins \\
-\texttt{:Lazy health}   & Check plugin health \\
+\texttt{:lua vim.pack.update()} & Update; \texttt{:w} to apply \\
+\texttt{:lua vim.pack.del\{..\}} & Remove from disk \\
+\texttt{:checkhealth vim.pack} & Plugin health \\
 \texttt{:checkhealth}   & Nvim diagnostics \\
 \end{keys}
 

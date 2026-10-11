@@ -191,10 +191,9 @@ it / at       HTML tag              i{ / a{       braces
 ## Splits & Buffers
 | Key | Action |
 |-----|--------|
-| `SPC sv` | Vertical split |
-| `SPC sh` | Horizontal split |
-| `SPC se` | Equalize splits |
-| `SPC sx` | Close split |
+| `SPC \|` | Vertical split |
+| `SPC -` | Horizontal split |
+| `C-w =` / `C-w q` | Equalize / close split |
 | `C-h/j/k/l` | Navigate splits (crosses into tmux) |
 | `A-h/j/k/l` | Resize splits |
 | `S-h` / `S-l` | Prev / next buffer |
@@ -213,19 +212,17 @@ it / at       HTML tag              i{ / a{       braces
 # CARD 3 — NVIM: LSP, SEARCH & GIT          (FRONT)
 # ═══════════════════════════════════════════════════
 
-**LSP: bashls, pyright, lua_ls, yamlls, ts_ls, terraformls, dockerls, taplo, julials, jdtls** · **Completion: blink.cmp**
+**LSP: clangd, bashls, pyright, lua_ls, yamlls, ts_ls, terraformls, dockerls, taplo, julials, jdtls** · **Completion: blink.cmp**
 
 ## LSP
 | Key | Action |
 |-----|--------|
 | `gd` | Go to definition |
 | `gD` | Go to declaration |
-| `gr` | References |
-| `gi` | Go to implementation |
+| `grr` / `gri` / `grt` | References / implementation / type definition |
+| `grn` / `gra` | Rename / code action (`SPC rn`, `SPC ca` too) |
 | `K` | Hover docs |
-| `SPC rn` | Rename symbol |
-| `SPC ca` | Code action |
-| `SPC d` | Diagnostics float |
+| `SPC d` / `C-w d` | Diagnostics float |
 | `[d` / `]d` | Prev / next diagnostic |
 | `SPC th` | Toggle inlay hints |
 | `SPC f` | Format buffer (conform.nvim) |
@@ -284,16 +281,18 @@ it / at       HTML tag              i{ / a{       braces
 |-----|--------|
 | `SPC ll` | Lint current file |
 
-Auto-lints on save. Linters: ruff (python), eslint (js/ts), tflint (terraform).
+Auto-lints on save. Linters: ruff (python), tflint (terraform).
 
 ## Debug (nvim-dap)
 | Key | Action |
 |-----|--------|
-| `SPC Db` | Toggle breakpoint |
-| `SPC Dc` | Continue |
-| `SPC Do` | Step over |
-| `SPC Di` | Step into |
+| `SPC Db` / `DB` | Toggle / conditional breakpoint |
+| `SPC Dc` | Continue (or start: pick a launch config) |
+| `SPC Do` / `Di` / `DO` | Step over / into / out |
+| `SPC Dr` / `Dl` / `Dt` | REPL / run last / terminate |
 | `SPC Du` | Toggle DAP UI |
+
+Adapters: debugpy (python, `uv add --dev debugpy`), lldb-dap (c/c++), pwa-node (js/ts), java (jdtls). `make debug-adapters`.
 
 ## Toggles
 | Key | Action |
@@ -304,13 +303,22 @@ Auto-lints on save. Linters: ruff (python), eslint (js/ts), tflint (terraform).
 ## which-key
 Press `SPC` and wait — shows all leader bindings grouped by category.
 
-## Plugin Management
+## Plugin Management (vim.pack)
 ```
-:Lazy                  Open lazy.nvim UI
-:Lazy sync             Update all plugins
-:Lazy health           Check plugin health
-:checkhealth           Nvim diagnostic check
+:lua vim.pack.update()           Fetch updates; :w in the diff buffer to apply
+:lua vim.pack.update(nil, { target = "lockfile" })   Revert to nvim-pack-lock.json
+:lua vim.pack.del({ "name" })    Remove a plugin from disk
+:checkhealth vim.pack            Plugin health
 ```
+
+## Claude Code (claudecode.nvim)
+| Key | Action |
+|-----|--------|
+| `SPC ac` / `af` | Toggle / focus the Claude split |
+| `SPC ar` / `aC` | Resume / continue a session |
+| `SPC ab` | Add current buffer |
+| `SPC as` | Send selection (visual); add file (netrw) |
+| `SPC aa` / `ad` | Accept / deny diff |
 
 ## Treesitter
 Installed: bash, c, cpp, css, diff, dockerfile, hcl, html, java, javascript,
