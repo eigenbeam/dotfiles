@@ -70,6 +70,8 @@ brewfile:
 
 lint:
 	cd bash && shellcheck -x -e SC1091 dot-bashrc dot-bash_profile dot-profile dot-shell-common
+	stylua --check nvim/.config/nvim
+	nvim --headless --clean -l nvim/.config/nvim/lint.lua
 	emacs -Q --batch --eval '(dolist (f (append (file-expand-wildcards "emacs/dot-emacs.d/*.el") (file-expand-wildcards "emacs/dot-emacs.d/lisp/*.el"))) (with-temp-buffer (insert-file-contents f) (emacs-lisp-mode) (condition-case err (check-parens) (error (message "%s: %s" f err) (kill-emacs 1)))))'
 
 cards:
@@ -180,6 +182,7 @@ doctor:
 	link_ok "$(HOME)/.config/git/ignore"          && ok "git/ignore"           || nok "git/ignore"; \
 	link_ok "$(HOME)/.config/lazygit/config.yml"  && ok "lazygit/config.yml"   || nok "lazygit/config.yml"; \
 	link_ok "$(HOME)/.config/nvim/init.lua"       && ok "nvim/init.lua"        || nok "nvim/init.lua"; \
+	link_ok "$(HOME)/.config/nvim/nvim-pack-lock.json" && ok "nvim/nvim-pack-lock.json" || nok "nvim/nvim-pack-lock.json"; \
 	link_ok "$(HOME)/.config/starship.toml"       && ok "starship.toml"        || nok "starship.toml"; \
 	link_ok "$(HOME)/.config/yazi/yazi.toml"      && ok "yazi/yazi.toml"       || nok "yazi/yazi.toml"; \
 	link_ok "$(HOME)/.claude/CLAUDE.md"            && ok "claude/CLAUDE.md"     || nok "claude/CLAUDE.md"; \
