@@ -69,6 +69,7 @@ Not stowed:
 | `make uninstall`      | Remove all stow symlinks                                      |
 | `make doctor`         | Verify symlinks, tools, configs, shell, and the editor toolchains |
 | `make homebrew`       | Install core packages from `Brewfile`                         |
+| `make brew-sync`      | Remove packages not in `Brewfile` (asks first), then install/upgrade |
 | `make brewfile`       | Dump current Homebrew state to `Brewfile`                     |
 | `make tools`          | Install npm globals (LSPs, prettier) and uv tools             |
 | `make debug-adapters` | Download the Java and JS debug adapters (Emacs dape, nvim-dap) |
@@ -78,7 +79,7 @@ Not stowed:
 | `make fonts`          | Install CommitMono Nerd Font (Linux: downloads from GitHub, macOS: use cask) |
 | `make linux-packages` | Install desktop apps via apt (requires sudo)                  |
 | `make ssm-plugin`     | Install AWS Session Manager Plugin from AWS (requires sudo)   |
-| `make sync`           | Pull latest, install Homebrew packages, re-stow               |
+| `make sync`           | Pull latest, `make brew-sync`, re-stow                        |
 | `make tex`            | Install TeX packages for `make cards` (macOS, sudo)           |
 | `make cards`          | Build the A5 reference cards in `reference-cards/` (pdflatex) |
 
@@ -114,5 +115,9 @@ installed state to `homebrew/Brewfile` and commit it. On another
 machine:
 
 ```
-$ make sync         # git pull + brew bundle install + re-stow
+$ make sync         # git pull + brew bundle cleanup + brew bundle install + re-stow
 ```
+
+Cleanup runs before install, so packages dropped from the Brewfile are
+removed (after a y/n prompt) before their replacements install. Declining
+the prompt stops the sync.

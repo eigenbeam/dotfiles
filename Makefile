@@ -1,4 +1,4 @@
-.PHONY: all check bootstrap homebrew brewfile uninstall lint tex keyboard cards tools debug-adapters ssh sync fonts linux-packages ssm-plugin doctor
+.PHONY: all check bootstrap homebrew brew-sync brewfile uninstall lint tex keyboard cards tools debug-adapters ssh sync fonts linux-packages ssm-plugin doctor
 
 # `check` is defined first below; without this, bare `make` would run only
 # `check` instead of stowing anything.
@@ -65,6 +65,14 @@ endif
 homebrew:
 	brew bundle install --file=homebrew/Brewfile
 
+# Make Homebrew match the Brewfile: remove what it no longer lists (brew
+# asks first), then install and upgrade the rest. Cleanup must run first: a
+# package that moved from formula to cask (emacs-plus) keeps its formula's
+# links until cleanup, and a cask installed alongside them skips its own.
+brew-sync:
+	brew bundle cleanup --file=homebrew/Brewfile
+	brew bundle install --file=homebrew/Brewfile
+
 brewfile:
 	brew bundle dump --force --file=homebrew/Brewfile
 
@@ -116,7 +124,7 @@ ssh:
 
 sync:
 	git pull
-	brew bundle install --file=homebrew/Brewfile
+	@$(MAKE) brew-sync
 	@$(MAKE) all
 	@echo "✓ Synced"
 
