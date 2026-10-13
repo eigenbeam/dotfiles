@@ -64,10 +64,10 @@ Not stowed:
 
 | Target                | Description                                                   |
 |-----------------------|---------------------------------------------------------------|
-| `make` / `make all`   | Symlink all stow packages (runs `make keyboard` on macOS)     |
+| `make` / `make all`   | Restow all packages, dropping links to deleted files (runs `make keyboard` on macOS) |
 | `make bootstrap`      | Full setup from scratch (Homebrew + Stow + all + homebrew + tools) |
 | `make uninstall`      | Remove all stow symlinks                                      |
-| `make doctor`         | Verify symlinks, tools, configs, shell, and the editor toolchains |
+| `make doctor`         | Verify symlinks (and flag broken ones), tools, configs, shell, and the editor toolchains |
 | `make homebrew`       | Install core packages from `Brewfile`                         |
 | `make brew-sync`      | Remove packages not in `Brewfile` (asks first), then install/upgrade |
 | `make brewfile`       | Dump current Homebrew state to `Brewfile`                     |

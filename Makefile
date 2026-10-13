@@ -11,10 +11,18 @@ UNAME := $(shell uname)
 JAVA_DEBUG_VERSION := 0.53.1
 DEBUG_ADAPTERS := $(HOME)/.local/share/debug-adapters
 
+# Where stow links land besides $(HOME) itself: the packages' top-level
+# directories. make doctor scans them for links into this repo that no
+# longer resolve.
+LINK_ROOTS := .claude .config .emacs.d .local .ssh Library/LaunchAgents
+REPO_REL := $(patsubst $(HOME)/%,%,$(CURDIR))
+
 check:
 	@command -v stow >/dev/null 2>&1 || (echo "Error: GNU Stow not found. Please install it first." && exit 1)
 	@echo "✓ Dependencies checked ($(UNAME))"
 
+# stow -R (restow) drops links to files deleted from a package. Links under a
+# deleted directory survive it; make doctor reports those.
 all: check
 	@mkdir -p $(HOME)/.cache/zsh
 	@mkdir -p $(HOME)/.config
@@ -27,17 +35,17 @@ all: check
 		fi; \
 		echo "✓ Created ~/.gitconfig-local with credential helper"; \
 	fi
-	stow --dotfiles --no-folding -t $(HOME) ai
-	stow --dotfiles --no-folding -t $(HOME) bash
-	stow --dotfiles --no-folding -t $(HOME) emacs
-	stow --dotfiles --no-folding -t $(HOME) ghostty
-	stow --dotfiles --no-folding -t $(HOME) git
-	stow --dotfiles --no-folding -t $(HOME) lazygit
-	stow --dotfiles --no-folding -t $(HOME) nvim
-	stow --dotfiles --no-folding -t $(HOME) starship
-	stow --dotfiles --no-folding -t $(HOME) tmux
-	stow --dotfiles --no-folding -t $(HOME) yazi
-	stow --dotfiles --no-folding -t $(HOME) zsh
+	stow --dotfiles --no-folding -R -t $(HOME) ai
+	stow --dotfiles --no-folding -R -t $(HOME) bash
+	stow --dotfiles --no-folding -R -t $(HOME) emacs
+	stow --dotfiles --no-folding -R -t $(HOME) ghostty
+	stow --dotfiles --no-folding -R -t $(HOME) git
+	stow --dotfiles --no-folding -R -t $(HOME) lazygit
+	stow --dotfiles --no-folding -R -t $(HOME) nvim
+	stow --dotfiles --no-folding -R -t $(HOME) starship
+	stow --dotfiles --no-folding -R -t $(HOME) tmux
+	stow --dotfiles --no-folding -R -t $(HOME) yazi
+	stow --dotfiles --no-folding -R -t $(HOME) zsh
 	@$(MAKE) keyboard
 	@echo "✓ Dotfiles installed successfully"
 
@@ -118,7 +126,7 @@ ssh:
 		chmod 600 $(HOME)/.ssh/config-local; \
 		echo "✓ Created empty ~/.ssh/config-local"; \
 	fi
-	stow --dotfiles --no-folding -t $(HOME) ssh
+	stow --dotfiles --no-folding -R -t $(HOME) ssh
 	@chmod 600 ssh/.ssh/config
 	@echo "✓ SSH config installed"
 
@@ -155,7 +163,7 @@ endif
 
 keyboard:
 ifeq ($(UNAME),Darwin)
-	stow --dotfiles --no-folding -t $(HOME) keyboard
+	stow --dotfiles --no-folding -R -t $(HOME) keyboard
 	@launchctl bootout gui/$$(id -u)/com.local.KeyRemapping 2>/dev/null || true
 	@launchctl bootstrap gui/$$(id -u) $(HOME)/Library/LaunchAgents/com.local.KeyRemapping.plist
 	@echo "✓ Keyboard remapping agent loaded (right-option → right-control)"
@@ -200,6 +208,15 @@ doctor:
 			&& ok "keyboard remap agent loaded" || nok "keyboard remap agent not loaded (run make keyboard)"; \
 		hidutil property --get UserKeyMapping 2>/dev/null | grep -q 30064771300 \
 			&& ok "right-option → right-control active" || nok "right-option remap inactive (run make keyboard)"; \
+	fi; \
+	broken=$$( { find "$(HOME)" -maxdepth 1 -type l -lname '*$(REPO_REL)/*'; \
+		find $(addprefix "$(HOME)"/,$(LINK_ROOTS)) -type l -lname '*$(REPO_REL)/*'; } 2>/dev/null \
+		| while IFS= read -r l; do [ -e "$$l" ] || echo "$$l"; done ); \
+	if [ -z "$$broken" ]; then \
+		ok "no broken links into the repo"; \
+	else \
+		nok "$$(printf '%s\n' "$$broken" | wc -l | tr -d ' ') broken links into the repo (stale stow links; delete them):"; \
+		printf '%s\n' "$$broken" | sed 's|^$(HOME)/|      ~/|'; \
 	fi; \
 	echo ""; \
 	echo "Configs:"; \
