@@ -129,4 +129,4 @@ cask "zotero"
 
 # uv tools
 uv "ipython"
-uv "visidata"
+uv "visidata", with: ["h5py", "numpy", "pyarrow"]
