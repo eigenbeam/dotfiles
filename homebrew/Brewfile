@@ -110,6 +110,7 @@ cask "basictex"  # pdflatex for reference-cards; run `make tex` once for extra p
 cask "bitwarden"
 cask "copilot-cli"
 cask "discord"
+cask "docker-desktop"
 cask "emacs-plus-app"  # prebuilt Emacs 31; icons via ~/.config/emacs-plus/build.yml
 cask "font-atkinson-hyperlegible-mono"  # low-vision monospace (primary)
 cask "font-commit-mono-nerd-font"       # fallback / A-B alternative
