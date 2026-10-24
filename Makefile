@@ -295,8 +295,11 @@ doctor:
 	done; \
 	echo ""; \
 	echo "Homebrew:"; \
-	brew bundle check --file=homebrew/Brewfile >/dev/null 2>&1 \
-		&& ok "Brewfile packages installed" || wrn "some Brewfile packages missing (run make homebrew)"; \
+	if ! brew bundle check --no-upgrade --file=homebrew/Brewfile >/dev/null 2>&1; then \
+		wrn "some Brewfile packages missing (run make homebrew)"; \
+	elif ! brew bundle check --file=homebrew/Brewfile >/dev/null 2>&1; then \
+		wrn "Brewfile packages installed, some outdated (run brew upgrade)"; \
+	else ok "Brewfile packages installed and current"; fi; \
 	echo ""; \
 	echo "================"; \
 	printf 'Summary: \033[32m%d passed\033[0m' "$$pass"; \
